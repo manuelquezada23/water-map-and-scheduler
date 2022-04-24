@@ -4,18 +4,20 @@ import About from './main-pages/About'
 import Map from './main-pages/Map'
 import Contact from './main-pages/Contact'
 import PageNotFound from './main-pages/PageNotFound'
+import LogIn from './main-pages/LogIn'
 
 function Main() {
     return (
-        <BrowserRouter>
+        // <BrowserRouter>
             <Routes>
-                <Route path="/" element={<Home/>}></Route>
-                <Route path="/about" element={<About/>}></Route>
-                <Route path="/map" element={<Map/>}></Route>
-                <Route path="/contact" element={<Contact/>}></Route>
-                <Route path="*" element={<PageNotFound/>}></Route>
+                <Route path="/" element={<Home />}></Route>
+                <Route path="/about" element={<About />}></Route>
+                <Route path="/map" element={<Map />}></Route>
+                <Route path="/contact" element={<Contact />}></Route>
+                <Route path="/login" element={<LogIn />}></Route>
+                <Route path="*" element={<PageNotFound />}></Route>
             </Routes>
-        </BrowserRouter>
+        // </BrowserRouter>
     );
 }
 
