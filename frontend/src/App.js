@@ -1,16 +1,13 @@
-import logo from './logo.png';
-import './App.css';
+import Main from './Main.js';
+import NavigationBar from './components/NavigationBar';
+import React from 'react';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p style={{color: "black"}}>
-          Coming soon ;)
-        </p>
-      </header>
-    </div>
+    <React.Fragment>
+      <NavigationBar />
+      <Main />
+    </React.Fragment>
   );
 }
 
