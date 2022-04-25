@@ -11,14 +11,13 @@
 #navigationBar-logo {
     width: 125px;
     height: 125px;
-    padding-left: 100px;
+    margin-left: 100px;
 }
 
 .navigationBar-mainPageButtons {
     display: flex;
     flex-direction: row;
     padding-left: 50px;
-    align-items: flex-start;
 }
 
 .navigationBar-button {
@@ -29,6 +28,7 @@
     background-color: transparent;
     cursor: pointer;
     margin-right: 80px;
+    min-width: 80px;
 }
 
 .navigationBar-userButtons {
@@ -36,4 +36,11 @@
     flex-direction: row;
     margin-left: auto;
     padding-right: 30px;
+    background-color: red;
+}
+
+@media only screen and (max-width: 860px) {
+    #navigationBar-logo {
+        display: none;
+    }
 }
