@@ -1,4 +1,6 @@
-package edu.brown.cs.student.main;
+package edu.brown.cs.student.main.userFunc;
+
+import edu.brown.cs.student.main.userFunc.Event;
 
 import java.util.List;
 
