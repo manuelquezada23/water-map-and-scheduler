@@ -1,7 +1,5 @@
 package edu.brown.cs.student.main.userFunc;
 
-import edu.brown.cs.student.main.userFunc.Event;
-
 import java.util.List;
 
 public class User {
@@ -10,4 +8,6 @@ public class User {
   private String key;
   private List<Event> events;
   private double waterBottleSize;
+  
+
 }

@@ -7,3 +7,5 @@ public class Event {
   private int time;
   private List<String> dayOfWeek;
 }
+
+
