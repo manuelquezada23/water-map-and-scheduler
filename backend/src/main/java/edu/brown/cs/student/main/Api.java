@@ -80,7 +80,7 @@ public class Api {
 
       String json = "";
       try {
-        json = Api.this.db.getUsers(tableName);
+        json = Api.this.db.getUsers();
       } catch (SQLException e) {
         e.printStackTrace();
       }
@@ -101,7 +101,7 @@ public class Api {
 
       String json = "";
       try {
-        json = Api.this.db.getReviews(tableName);
+        json = Api.this.db.getReviews();
       } catch (SQLException e) {
         e.printStackTrace();
       }
@@ -122,7 +122,7 @@ public class Api {
 
       String json = "";
       try {
-        json = Api.this.db.getBuildingsFountain(tableName);
+        json = Api.this.db.getBuildingsFountain();
       } catch (SQLException e) {
         e.printStackTrace();
       }

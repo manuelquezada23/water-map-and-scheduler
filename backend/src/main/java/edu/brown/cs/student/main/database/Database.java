@@ -46,4 +46,15 @@ public class Database {
     }
   }
 
+  public String getUsers() throws SQLException {
+    return null;
+  }
+
+  public String getReviews() throws SQLException {
+    return null;
+  }
+
+  public String getBuildingsFountain() throws SQLException {
+    return null;
+  }
 }
