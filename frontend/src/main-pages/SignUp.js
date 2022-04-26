@@ -3,14 +3,14 @@ import logo from '../logo.png';
 import './main-pages.css'
 import { useNavigate, useLocation } from "react-router-dom";
 
-function LogIn() {
+function SignUp() {
     const navigate = useNavigate();
     return (
         <div className="login">
             <img onClick={() => {
                 navigate("/")
             }} src={logo} className="login-logo" alt="logo" />
-            <p className="login-header">Welcome to Water</p>
+            <p className="login-header">Sign Up for Water</p>
             <form>
                 <div className="login-input-boxes">
                     <div>
@@ -19,15 +19,15 @@ function LogIn() {
                     <div>
                         <input className="login-input" placeholder="Password" type="text" name="pass" required />
                     </div>
-                    <div className="forgot-password">
-                        <p className="forgot-password-text">Forgot Password?</p>
+                    <div>
+                        <input className="login-input" placeholder="Confirm Password" type="text" name="pass" required />
                     </div>
-                    <button className="login-submit-button">Log In</button>
-                    <p>Don't have an account yet? <span className="sign-up-from-login" onClick={() => {navigate('/signup')}}>Sign Up</span></p>
+                    <button className="login-submit-button">Sign Up</button>
+                    <p>Already have an account? <span className="sign-up-from-login" onClick={() => {navigate('/login')}}>Log in</span></p>
                 </div>
             </form>
         </div>
     );
 }
 
-export default LogIn;
+export default SignUp;
