@@ -1,5 +1,10 @@
-.Home {
+.main-page-body {
   text-align: center;
+  background-color: red;
+  width: 100%;
+  height: calc(100vh - 150px);
+  margin-top: 150px;
+  justify-content: center;
 }
 
 .login {

@@ -36,7 +36,7 @@
     flex-direction: row;
     margin-left: auto;
     padding-right: 30px;
-    background-color: red;
+    padding-left: 50px;
 }
 
 @media only screen and (max-width: 860px) {
