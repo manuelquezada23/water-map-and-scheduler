@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import './components.css'
 import logo from '../logo.png'
 import { useNavigate, useLocation } from "react-router-dom";
+import PictureIcon from '../picture.png'
 
 function NavigationBar() {
 
@@ -72,8 +73,8 @@ function NavigationBar() {
       </div>
       {(isLoggedIn === true) &&
         <div className="navigationBar-userButtons">
-          <button className="navigationBar-button" id="signup-button" onClick={() => { navBarButtonOnClick("signup-button") }}>Sign Up</button>
-          <button className="navigationBar-button" id="login-button" onClick={() => { navBarButtonOnClick("login-button") }}>Log In</button>
+          <img className="navigationBar-profile-image" src={PictureIcon}></img>
+          <p className="navigationBar-profile-name">Manuel Quezada</p>
         </div>
       }
       {(isLoggedIn === false) &&
