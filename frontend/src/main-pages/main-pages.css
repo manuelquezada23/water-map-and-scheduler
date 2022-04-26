@@ -1,10 +1,78 @@
 .main-page-body {
   text-align: center;
-  background-color: red;
   width: 100%;
   height: calc(100vh - 150px);
   margin-top: 150px;
   justify-content: center;
+}
+
+/* Split the screen in half */
+.split {
+  /* height: 100%; */
+  height: calc(100vh - 150px);
+  margin-top: 150px;
+  width: 50%;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  overflow-x: hidden;
+  padding-top: 20px;
+}
+
+/* Control the left side */
+.left {
+  left: 0;
+}
+
+/* Control the right side */
+.right {
+  right: 0;
+  max-width: 600px;
+}
+
+/* If you want the content centered horizontally and vertically */
+.centered {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+/* Style the image inside the centered container, if needed */
+.centered img {
+  width: 475px;
+}
+
+.home-content-title {
+  font-family: 'Playfair Display';
+  font-weight: bold;
+  font-size: 80px;
+  text-align: left;
+  margin-left: 100px;
+  margin-top: 10px;
+}
+
+.home-content-subtitle {
+  font-family: 'Playfair Display';
+  font-size: 25px;
+  text-align: left;
+  margin-left: 100px;
+  margin-top: -70px;
+}
+
+.home-get-started-button { 
+  height: 50px;
+  width: 200px;
+  background-color: #5393C6;
+  border-radius: 50px;
+  color: white;
+  font-family: 'Playfair Display';
+  font-size: 20px;
+  position: absolute;
+  left: 0;
+  margin-left: 100px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
 }
 
 .login {

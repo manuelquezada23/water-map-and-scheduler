@@ -8,6 +8,8 @@ function NavigationBar() {
   const location = useLocation();
   const navigate = useNavigate();
 
+  const isLoggedIn = false
+
   useEffect(() => {
     let currentPathName = location.pathname
 
@@ -68,11 +70,18 @@ function NavigationBar() {
         <button className="navigationBar-button" id="map-button" onClick={() => { navBarButtonOnClick("map-button") }}>Map</button>
         <button className="navigationBar-button" id="contact-button" onClick={() => { navBarButtonOnClick("contact-button") }}>Contact</button>
       </div>
-      <div className="navigationBar-userButtons">
-        <button className="navigationBar-button" id="login-button" onClick={() => { navBarButtonOnClick("login-button") }}>Log In</button>
-        <button className="navigationBar-button" id="signup-button" onClick={() => { navBarButtonOnClick("signup-button") }}>Sign Up</button>
-      </div>
-
+      {(isLoggedIn === true) &&
+        <div className="navigationBar-userButtons">
+          <button className="navigationBar-button" id="signup-button" onClick={() => { navBarButtonOnClick("signup-button") }}>Sign Up</button>
+          <button className="navigationBar-button" id="login-button" onClick={() => { navBarButtonOnClick("login-button") }}>Log In</button>
+        </div>
+      }
+      {(isLoggedIn === false) &&
+        <div className="navigationBar-userButtons">
+          <button className="navigationBar-button" id="signup-button" onClick={() => { navBarButtonOnClick("signup-button") }}>Sign Up</button>
+          <button className="navigationBar-button" id="login-button" onClick={() => { navBarButtonOnClick("login-button") }}>Log In</button>
+        </div>
+      }
     </div>
   );
 }
