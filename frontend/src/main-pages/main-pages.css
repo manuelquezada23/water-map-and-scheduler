@@ -50,6 +50,7 @@ Login page & Sign up page:
 
 .login-input-boxes {
   display: flex;
+  background-color: red;
   flex-direction: column;
   margin: 0 auto;
   padding-top: 20px;
@@ -154,7 +155,7 @@ Contact Page
 
 .contact-message {
   width: 60%;
-  height: 300px;
+  height: 40px;
   left: 506px;
   top: 441px;
   background: #FFFFFF;
