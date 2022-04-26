@@ -190,3 +190,41 @@
   border-bottom: 1px solid #5393C6;
 }
 /*change the please add something here color*/
+
+.about-title {
+  color: #5393C6;
+  font-weight: bold;
+  font-size: 40px;
+}
+
+.about-middle-text {
+  font-size: 20px;
+  max-width: 60%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: -20px;
+  padding-bottom: 50px;
+}
+
+.about-diagrams {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  text-align: center;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 50px;
+}
+
+.about-drop-logo {
+  width: 150px;
+  height: 150px;
+}
+
+.about-diagram-text {
+  width: 60%;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 20px;
+}
