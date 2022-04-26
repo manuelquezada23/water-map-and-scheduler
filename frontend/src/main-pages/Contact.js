@@ -11,7 +11,7 @@ function Contact() {
                       <input className="contact-input" placeholder="Name" type="text" required />
                       <input className="contact-input" placeholder="Email" type="text" required />
                   </div>
-                  <textarea className="contact-message" placeholder="Type response here" type="text" required />
+                  <textarea className="contact-message" placeholder="Type response here" rows="10" type="text" required />
                   <div className='contact-submit'>
                     <button className="contact-submit-button">Send</button>
                   </div>

@@ -50,10 +50,10 @@ Login page & Sign up page:
 
 .login-input-boxes {
   display: flex;
-  background-color: red;
   flex-direction: column;
   margin: 0 auto;
   padding-top: 20px;
+  height: auto;
 }
 
 .login-input {
@@ -155,7 +155,7 @@ Contact Page
 
 .contact-message {
   width: 60%;
-  height: 40px;
+  height: 100%;
   left: 506px;
   top: 441px;
   background: #FFFFFF;
@@ -171,9 +171,13 @@ Contact Page
 .contact-message[type="text"] {
   font-size: 18px;
   text-indent: 15px;
+  padding-top: 16px;
+  font-family: 'Playfair Display';
+  font-style: normal;
   vertical-align: top;
   font-family: 'Serif';
   resize: none;
+
 }
 
 .contact-submit {
