@@ -80,7 +80,7 @@
   background-color: white;
   position: absolute;
   margin: 0;
-  z-index: 1000;
+  z-index: 2;
   text-align: center;
   display: flex;
   justify-content: center;
