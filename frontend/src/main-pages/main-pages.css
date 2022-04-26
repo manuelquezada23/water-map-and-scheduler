@@ -91,9 +91,20 @@
 }
 
 .login-logo {
-  /* background-color: red; */
   height: 150px;
   cursor: pointer;
+}
+
+.pagenotfound-logo {
+  height: 300px;
+  cursor: pointer;
+}
+
+.pagenotfound-text {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-size: 30px;
+  margin-top: 0px;
 }
 
 .login-header {

@@ -1,16 +1,19 @@
 import React from 'react';
 import logo from '../logo.png'
+import { useNavigate } from "react-router-dom";
 
-export default class PageNotFound extends React.Component {
-  render() {
-    return (
-      <div className="Home">
-        <header className="header">
-          <img src={logo} className="logo" alt="logo" />
-          <h1 style={{ color: "#5393C6", marginBottom: -20 }}>404</h1>
-          <p style={{ color: "black" }}> Page Not Found :( </p>
-        </header>
-      </div>
-    );
-  }
+function PageNotFound() {
+  const navigate = useNavigate()
+
+  return (
+    <div className="login">
+      <img onClick={() => {
+        navigate("/")
+      }} src={logo} className="pagenotfound-logo" alt="logo" />
+      <p className="login-header">404</p>
+      <p className="pagenotfound-text">Page Not Found :(</p>
+    </div>
+  );
 }
+
+export default PageNotFound;
