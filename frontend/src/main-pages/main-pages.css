@@ -257,7 +257,6 @@ Contact Page
   vertical-align: top;
   font-family: 'Serif';
   resize: none;
-
 }
 
 .contact-submit {
@@ -419,6 +418,118 @@ Contact Page
   margin-bottom: 20px;
 }
 
+/*
+  Review popup
+*/
 
+.review-popup {
+  border-color: #5393C6;
+  border-style: solid;
+  border-radius: 30px;
+  width: 50%;
+}
+
+.popup-box {
+  /* background-color: red; */
+  display: flex;
+  justify-content: center;
+  height: 75%;
+  width: 100%;
+}
+
+.building-name {
+  display: flex;
+  justify-content: left;
+  margin-left: 10%;
+  font-size: 25px;
+  font-weight: bold;
+  font-family: 'Playfair Display';
+  font-style: normal;
+}
+
+.review-image {
+  width: 10%;
+  height: 10%;
+  margin-left: 5%;
+  margin-top: -5px;
+  margin-bottom: 20px;
+  margin-right: 20px;
+}
+
+.author-box {
+  margin-left: 5%;
+  display: flex;
+  flex-direction: row;
+}
+
+.review-box {
+  width: 80%;
+  height: 40%;
+  left: 506px;
+  top: 441px;
+  background: #FFFFFF;
+  border: 1px solid #5393C6;
+  box-sizing: border-box;
+  border-radius: 20px;
+  margin-bottom: 20px;
+  padding-right: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  resize: none;
+}
+
+.review-box[type="text"] {
+  font-size: 18px;
+  text-indent: 15px;
+  padding-top: 16px;
+  font-family: 'Playfair Display';
+  font-style: normal;
+  vertical-align: top;
+  font-family: 'Serif';
+  resize: none;
+}
+
+.review-submit {
+  display: flex;
+  flex-flow: column wrap;
+  align-content: flex-end;
+  margin-right: 10%;
+}
+
+.review-submit-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 63px;
+  background: #5393C6;
+  border: none;
+  border-radius: 50px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  font-family: 'Playfair Display';
+  font-style: normal;
+  text-align: center;
+  width: 17%;
+  height: 40px;
+  cursor: pointer;
+}
+
+.stars{
+  display: flex;
+  flex-flow: column wrap;
+  align-content: flex-start;
+  justify-content: left;
+  width: 50%;
+  margin-top: -15px;
+}
+
+.author {
+  margin-left: 3%;
+  font-size: 15px;
+  font-weight: bold;
+  font-family: 'Playfair Display';
+  font-style: normal;
+}
 
 
