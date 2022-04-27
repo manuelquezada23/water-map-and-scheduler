@@ -15,7 +15,7 @@ function Map() {
               <p>star rating</p>
             </div>
           </div>
-          <textarea className="review-box" placeholder="Type response here" rows="10" type="text" required />
+          <textarea className="review-box" placeholder="What did you think?" type="text" required />
           <div className="review-submit">
             <button className="review-submit-button">Post</button>
           </div>
