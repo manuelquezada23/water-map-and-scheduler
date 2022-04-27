@@ -1,5 +1,5 @@
 import React from 'react';
-import PictureIcon from '../picture.png'
+import PictureIconLarge from '../picture-large.png'
 import './main-pages.css'
 import { useNavigate, useLocation } from "react-router-dom";
 
@@ -10,7 +10,7 @@ function UserProfile() {
             <div className="user-profile-box">
                 <div className="user-profile">
                     <p className='profile-header'>My Profile</p>
-                    <img className="profile-image" src={PictureIcon}></img>
+                    <img className="profile-image" src={PictureIconLarge}></img>
                     <input className='user-input' defaultValue="Emily Hinds" type="text"/>
                     <input className='user-input' defaultValue="emily_hinds@brown.edu" type="text"/>
                     <button className="info-change-button">Save</button>
