@@ -154,6 +154,12 @@ Login page & Sign up page:
   /* margin-left: 2px; */
 }
 
+.login-input[type="password"] {
+  font-size: 18px;
+  text-indent: 15px;
+  /* margin-left: 2px; */
+}
+
 .login-submit-button {
   padding: 8px 63px;
   background: #5393C6;
@@ -408,6 +414,11 @@ Contact Page
 }
 
 .user-input[type="text"] {
+  font-size: 18px;
+  text-indent: 15px;
+}
+
+.user-input[type="password"] {
   font-size: 18px;
   text-indent: 15px;
 }

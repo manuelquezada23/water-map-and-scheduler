@@ -14,10 +14,10 @@ function LogIn() {
             <form>
                 <div className="login-input-boxes">
                     <div>
-                        <input className="login-input" placeholder="Email" type="text" name="uname" required />
+                        <input className="login-input" placeholder="Email" type="text" required />
                     </div>
                     <div>
-                        <input className="login-input" placeholder="Password" type="text" name="pass" required />
+                        <input className="login-input" placeholder="Password" type="password" required />
                     </div>
                     <div className="forgot-password">
                         <p className="forgot-password-text">Forgot Password?</p>
