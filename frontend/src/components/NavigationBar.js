@@ -52,7 +52,8 @@ function NavigationBar() {
         navigate("/contact")
         break;
       case "login-button":
-        navigate("/login")
+        navigate("/user-profile")
+        // navigate("/login")
         break;
       case "signup-button":
         navigate("/signup")
