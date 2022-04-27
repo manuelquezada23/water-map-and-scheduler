@@ -1,13 +1,18 @@
 package edu.brown.cs.student.main.buildings;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Building {
     private int code;
     private String name;
     private double lat;
     private double lon;
+    private List<Fountain> fountainList;
 
     public Building(int code) {
         this.code = code;
+        this.fountainList = new ArrayList<>();
     }
 
     public int getCode() {
@@ -36,5 +41,13 @@ public class Building {
 
     public double getLon() {
         return this.lon;
+    }
+
+    public void addFountain(Fountain fountain) {
+        this.fountainList.add(fountain);
+    }
+
+    public List<Fountain> getFountainList() {
+        return this.fountainList;
     }
 }

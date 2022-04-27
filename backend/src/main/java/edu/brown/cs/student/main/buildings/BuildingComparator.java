@@ -6,14 +6,14 @@ import java.util.Comparator;
  * This class is a comparator for Buildings that compares their
  * latitude and longitude based on Euclidean distance.
  */
-public class DistanceComparator implements Comparator<Building> {
+public class BuildingComparator implements Comparator<Building> {
     private final Building targetBuilding;
 
     /**
      * Stores target building.
      * @param targetBuilding building to base comparison on
      */
-    public DistanceComparator(Building targetBuilding) {
+    public BuildingComparator(Building targetBuilding) {
         this.targetBuilding = targetBuilding;
     }
 
