@@ -3,7 +3,7 @@ import logo from '../logo.png'
 import { useNavigate } from "react-router-dom";
 
 function Map() {
-  const isLoggedIn = false
+  const isLoggedIn = true
   const navigate = useNavigate()
 
   return (
@@ -13,6 +13,11 @@ function Map() {
           <img src={logo} className="map-not-loggedin-logo" alt="logo" />
           <p className="map-not-loggedin-text">Log In or Sign Up to use our map!</p>
           <button onClick={() => {navigate("/login")}} className="map-not-loggedin-button">Get Started</button>
+        </div>
+      }
+      {(isLoggedIn === true) &&
+        <div className="map-loggedin">
+          
         </div>
       }
     </div>

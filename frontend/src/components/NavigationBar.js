@@ -15,7 +15,7 @@ function NavigationBar() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const isLoggedIn = false
+  const isLoggedIn = true
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -131,7 +131,7 @@ function NavigationBar() {
               </ListItemIcon>
               Profile
             </MenuItem>
-            <MenuItem>
+            <MenuItem onClick={() => {navigate("/schedule")}}>
               <ListItemIcon>
                 <CalendarMonthIcon fontSize="small" />
               </ListItemIcon>

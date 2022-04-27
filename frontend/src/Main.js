@@ -7,6 +7,7 @@ import PageNotFound from './main-pages/PageNotFound'
 import LogIn from './main-pages/LogIn'
 import SignUp from './main-pages/SignUp'
 import UserProfile from "./main-pages/UserProfile";
+import Schedule from "./main-pages/Schedule";
 
 function Main() {
     return (
@@ -19,6 +20,7 @@ function Main() {
                 <Route path="/login" element={<LogIn />}></Route>
                 <Route path="/signup" element={<SignUp />}></Route>
                 <Route path="/user-profile" element={<UserProfile />}></Route>
+                <Route path="/schedule" element={<Schedule />}></Route>
                 <Route path="*" element={<PageNotFound />}></Route>
             </Routes>
         // </BrowserRouter>
