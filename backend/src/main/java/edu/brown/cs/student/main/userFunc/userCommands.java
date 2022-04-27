@@ -23,6 +23,10 @@ public class userCommands {
       this.users.add(new User(rs.getInt(1)));
     }
     for (int i = 0; i < this.users.size(); i++) {
+      rs = this.database.executeCommand("SELECT name FROM users");
+      while (rs.next()) {
+        this.users.get(i).setName(rs.getString(1));
+      }
       rs = this.database.executeCommand("SELECT email FROM users");
       while (rs.next()) {
         this.users.get(i).setEmail(rs.getString(1));
@@ -35,6 +39,8 @@ public class userCommands {
       while (rs.next()) {
         this.users.get(i).setKey(rs.getString(1));
       }
+      rs = this.database.executeCommand
+      //get list of events from other database 
     }
   }
 
