@@ -34,7 +34,7 @@
 .centered {
   position: absolute;
   left: 0;
-  top: 0;
+  top: -30px;
 }
 
 /* Style the image inside the centered container, if needed */
@@ -301,7 +301,7 @@ Contact Page
   margin-left: auto;
   margin-right: auto;
   margin-top: -20px;
-  padding-bottom: 50px;
+  padding-bottom: 70px;
 }
 
 .about-diagrams {
@@ -313,6 +313,7 @@ Contact Page
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 50px;
+  margin-top: -20px;
 }
 
 .about-drop-logo {
@@ -372,7 +373,7 @@ Contact Page
   justify-content: space-evenly;
   text-align: center;
   width: 75%;
-  height: 80%;
+  height: 75%;
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 50px;
@@ -392,6 +393,7 @@ Contact Page
   margin-left: auto;
   margin-right: auto;
   cursor: pointer;
+  margin-top: -20px;
 }
 
 .info-change-button {
@@ -418,6 +420,7 @@ Contact Page
   flex-flow: column wrap;
   text-align: left;
   margin-left: 5%;
+  margin-top: 15px;
 }
 
 .user-profile {
@@ -449,7 +452,7 @@ Contact Page
 
 .profile-image {
   width: 30%;
-  margin-top: -5px;
+  margin-top: -20px;
   margin-bottom: 20px;
 }
 

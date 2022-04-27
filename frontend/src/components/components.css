@@ -64,3 +64,15 @@
         display: none;
     }
 }
+
+.bottomBar {
+    height: 50px;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    align-items: center;
+    text-align: center;
+    z-index: 1;
+    margin-top: 50px;
+    background-color: white;
+}
