@@ -1,0 +1,12 @@
+edu/brown/cs/student/main/ReadCommand.class
+edu/brown/cs/student/main/Main.class
+edu/brown/cs/student/main/Api$UpdateHandler.class
+edu/brown/cs/student/main/ReaderSuite.class
+edu/brown/cs/student/main/Api$DeleteHandler.class
+edu/brown/cs/student/main/CommandSuite.class
+edu/brown/cs/student/main/REPL.class
+edu/brown/cs/student/main/Api$AddHandler.class
+edu/brown/cs/student/main/Api$GetHandler.class
+edu/brown/cs/student/main/Database.class
+edu/brown/cs/student/main/Api.class
+edu/brown/cs/student/main/Command.class

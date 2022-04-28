@@ -1,0 +1,30 @@
+-------------------------------------------------------------------------------
+Test set: edu.brown.cs.student.StaticTableUITest
+-------------------------------------------------------------------------------
+Tests run: 2, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 11.863 s <<< FAILURE! - in edu.brown.cs.student.StaticTableUITest
+edu.brown.cs.student.StaticTableUITest.testTableSize  Time elapsed: 8.33 s  <<< ERROR!
+org.openqa.selenium.NoSuchElementException: 
+no such element: Unable to locate element: {"method":"css selector","selector":".load\-button"}
+  (Session info: chrome=100.0.4896.75)
+For documentation on this error, please visit: https://selenium.dev/exceptions/#no_such_element
+Build info: version: '4.0.0', revision: '3a21814679'
+System info: host: 'Chriss-MacBook-Pro.local', ip: 'fd14:615d:deb6:4406:ca5:91b5:d1f4:898d%en0', os.name: 'Mac OS X', os.arch: 'x86_64', os.version: '11.5.2', java.version: '17.0.1'
+Driver info: org.openqa.selenium.chrome.ChromeDriver
+Command: [d356c0e823fd7a86721054550e825967, findElement {using=css selector, value=.load\-button}]
+Capabilities {acceptInsecureCerts: false, browserName: chrome, browserVersion: 100.0.4896.75, chrome: {chromedriverVersion: 100.0.4896.60 (6a5d10861ce8..., userDataDir: /var/folders/2t/5wfdcnr92gl...}, goog:chromeOptions: {debuggerAddress: localhost:49246}, javascriptEnabled: true, networkConnectionEnabled: false, pageLoadStrategy: normal, platform: MAC, platformName: MAC, proxy: Proxy(), se:cdp: ws://localhost:49246/devtoo..., se:cdpVersion: 100.0.4896.75, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:virtualAuthenticators: true}
+Session ID: d356c0e823fd7a86721054550e825967
+	at edu.brown.cs.student.StaticTableUITest.setUpTests(StaticTableUITest.java:59)
+
+edu.brown.cs.student.StaticTableUITest.testPageSetup  Time elapsed: 2.422 s  <<< ERROR!
+org.openqa.selenium.NoSuchElementException: 
+no such element: Unable to locate element: {"method":"css selector","selector":".load\-button"}
+  (Session info: chrome=100.0.4896.75)
+For documentation on this error, please visit: https://selenium.dev/exceptions/#no_such_element
+Build info: version: '4.0.0', revision: '3a21814679'
+System info: host: 'Chriss-MacBook-Pro.local', ip: 'fd14:615d:deb6:4406:ca5:91b5:d1f4:898d%en0', os.name: 'Mac OS X', os.arch: 'x86_64', os.version: '11.5.2', java.version: '17.0.1'
+Driver info: org.openqa.selenium.chrome.ChromeDriver
+Command: [b80b8872031c80617bd57c5def235049, findElement {using=css selector, value=.load\-button}]
+Capabilities {acceptInsecureCerts: false, browserName: chrome, browserVersion: 100.0.4896.75, chrome: {chromedriverVersion: 100.0.4896.60 (6a5d10861ce8..., userDataDir: /var/folders/2t/5wfdcnr92gl...}, goog:chromeOptions: {debuggerAddress: localhost:49286}, javascriptEnabled: true, networkConnectionEnabled: false, pageLoadStrategy: normal, platform: MAC, platformName: MAC, proxy: Proxy(), se:cdp: ws://localhost:49286/devtoo..., se:cdpVersion: 100.0.4896.75, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:virtualAuthenticators: true}
+Session ID: b80b8872031c80617bd57c5def235049
+	at edu.brown.cs.student.StaticTableUITest.setUpTests(StaticTableUITest.java:59)
+
