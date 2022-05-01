@@ -1,10 +1,39 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import logo from '../logo.png';
 import './main-pages.css'
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 
 function SignUp() {
     const navigate = useNavigate();
+    const auth = getAuth();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('')
+
+    function signUp(event) {
+        event.preventDefault();
+        if ((email.length !== 0 && password.length !== 0 && confirmPassword !== 0) && (password === confirmPassword)) {
+            createUserWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    // Signed in 
+                    const user = userCredential.user;
+                    navigate('/')
+                })
+                .catch((error) => {
+                    // Not signed in
+                    window.alert(error.message)
+                    setEmail('')
+                    setPassword('')
+                    setConfirmPassword('')
+                });
+        } else if ((email.length !== 0 && password.length !== 0 && confirmPassword !== 0) && (password !== confirmPassword)) {
+            window.alert("Passwords provided do not match.")
+            setPassword('')
+            setConfirmPassword('')
+        }
+    }
+
     return (
         <div className="login">
             <img onClick={() => {
@@ -14,16 +43,16 @@ function SignUp() {
             <form>
                 <div className="login-input-boxes">
                     <div>
-                        <input className="login-input" placeholder="Email" type="text" name="uname" required />
+                        <input value={email} className="login-input" placeholder="Email" type="text" name="uname" onChange={e => setEmail(e.target.value)} required />
                     </div>
                     <div>
-                        <input className="login-input" placeholder="Password" type="text" name="pass" required />
+                        <input value={password} className="login-input" placeholder="Password" type="password" name="pass" onChange={e => setPassword(e.target.value)} required />
                     </div>
                     <div>
-                        <input className="login-input" placeholder="Confirm Password" type="text" name="pass" required />
+                        <input value={confirmPassword} className="login-input" placeholder="Confirm Password" type="password" name="pass" onChange={e => setConfirmPassword(e.target.value)} required />
                     </div>
-                    <button className="login-submit-button">Sign Up</button>
-                    <p>Already have an account? <span className="sign-up-from-login" onClick={() => {navigate('/login')}}>Log in</span></p>
+                    <button type="submit" className="login-submit-button" onClick={e => { signUp(e) }}>Sign Up</button>
+                    <p>Already have an account? <span className="sign-up-from-login" onClick={() => { navigate('/login') }}>Log in</span></p>
                 </div>
             </form>
         </div>

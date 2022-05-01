@@ -150,7 +150,11 @@ Login page & Sign up page:
 .login-input[type="text"] {
   font-size: 18px;
   text-indent: 15px;
-  /* margin-left: 2px; */
+}
+
+.login-input[type="password"] {
+  font-size: 18px;
+  text-indent: 15px;
 }
 
 .login-submit-button {

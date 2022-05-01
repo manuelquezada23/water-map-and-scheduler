@@ -13,9 +13,11 @@
     "@testing-library/user-event": "^13.5.0",
     "expo-app-loading": "^1.3.0",
     "expo-font": "^10.0.5",
+    "firebase": "^9.7.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-router-dom": "^6.3.0",
+    "react-router-redirect": "^1.0.1",
     "react-scripts": "5.0.1",
     "typeface-playfair-display": "^1.1.13",
     "web-vitals": "^2.1.4"
