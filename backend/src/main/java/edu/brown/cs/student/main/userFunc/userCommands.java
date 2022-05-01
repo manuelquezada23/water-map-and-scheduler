@@ -24,23 +24,23 @@ public class userCommands {
     }
     for (int i = 0; i < this.users.size(); i++) {
       int id = this.users.get(i).getUserid();
-      rs = this.database.executeCommand("SELECT Name FROM users");
+      rs = this.database.executeCommand("SELECT Name FROM users WHERE UserID = " + id);
       while (rs.next()) {
         this.users.get(i).setName(rs.getString(1));
       }
-      rs = this.database.executeCommand("SELECT Email FROM users");
+      rs = this.database.executeCommand("SELECT Email FROM users WHERE UserID = " + id);
       while (rs.next()) {
         this.users.get(i).setEmail(rs.getString(1));
       }
-      rs = this.database.executeCommand("SELECT WaterBottleSize FROM users");
+      rs = this.database.executeCommand("SELECT WaterBottleSize FROM users WHERE UserID = " + id);
       while (rs.next()) {
         this.users.get(i).setWaterBottleSize(rs.getDouble(1));
       }
-      rs = this.database.executeCommand("SELECT Key FROM users");
+      rs = this.database.executeCommand("SELECT Key FROM users WHERE UserID = " + id);
       while (rs.next()) {
         this.users.get(i).setKey(rs.getString(1));
       }
-      rs = this.database.executeCommand
+      rs = this.database.executeCommand()
       //get list of events from other database 
     }
   }
