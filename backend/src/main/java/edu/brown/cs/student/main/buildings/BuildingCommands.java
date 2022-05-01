@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BuildingCommands {
-    private Database database;
-    private List<Building> buildings;
+    private final Database database;
+    private final List<Building> buildings;
 
     public BuildingCommands(Database database) {
         this.database = database;
