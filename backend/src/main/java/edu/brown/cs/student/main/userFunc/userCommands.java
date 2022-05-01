@@ -40,7 +40,7 @@ public class userCommands {
       while (rs.next()) {
         this.users.get(i).setKey(rs.getString(1));
       }
-      rs = this.database.executeCommand()
+      
       //get list of events from other database 
     }
   }
