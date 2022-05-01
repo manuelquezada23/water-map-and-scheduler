@@ -31,8 +31,8 @@ function Main() {
             <Route path="/contact" element={<Contact />}></Route>
             <Route path="/login" element={isLoggedIn ? <Navigate to="/" /> : <LogIn />}></Route>
             <Route path="/signup" element={isLoggedIn ? <Navigate to="/" /> : <SignUp />}></Route>
-            <Route path="/user-profile" element={<UserProfile />}></Route>
-            <Route path="/schedule" element={<Schedule />}></Route>
+            <Route path="/user-profile" element={isLoggedIn ? <UserProfile /> : <Navigate to="/" />}></Route>
+            <Route path="/schedule" element={isLoggedIn ? <Schedule /> : <Navigate to="/" />}></Route>
             <Route path="*" element={<PageNotFound />}></Route>
         </Routes>
     );
