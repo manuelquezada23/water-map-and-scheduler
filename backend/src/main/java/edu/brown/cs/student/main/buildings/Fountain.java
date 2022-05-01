@@ -14,6 +14,7 @@ public class Fountain {
         this.id = id;
         this.buildingCode = buildingCode;
         this.buildingName = buildingName;
+        this.floor = floor;
         this.reviewList = new ArrayList<>();
     }
 

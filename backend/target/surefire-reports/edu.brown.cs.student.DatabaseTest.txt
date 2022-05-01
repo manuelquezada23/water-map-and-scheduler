@@ -1,4 +1,28 @@
 -------------------------------------------------------------------------------
 Test set: edu.brown.cs.student.DatabaseTest
 -------------------------------------------------------------------------------
-Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.03 s - in edu.brown.cs.student.DatabaseTest
+Tests run: 4, Failures: 0, Errors: 4, Skipped: 0, Time elapsed: 0.092 s <<< FAILURE! - in edu.brown.cs.student.DatabaseTest
+edu.brown.cs.student.DatabaseTest.removeAndReturn  Time elapsed: 0.01 s  <<< ERROR!
+java.lang.NoClassDefFoundError: edu/brown/cs/student/main/Database
+	at edu.brown.cs.student.DatabaseTest.removeAndReturn(DatabaseTest.java:55)
+Caused by: java.lang.ClassNotFoundException: edu.brown.cs.student.main.Database
+	at edu.brown.cs.student.DatabaseTest.removeAndReturn(DatabaseTest.java:55)
+
+edu.brown.cs.student.DatabaseTest.invalidSql  Time elapsed: 0.001 s  <<< ERROR!
+java.lang.NoClassDefFoundError: edu/brown/cs/student/main/Database
+	at edu.brown.cs.student.DatabaseTest.invalidSql(DatabaseTest.java:100)
+Caused by: java.lang.ClassNotFoundException: edu.brown.cs.student.main.Database
+	at edu.brown.cs.student.DatabaseTest.invalidSql(DatabaseTest.java:100)
+
+edu.brown.cs.student.DatabaseTest.readTest  Time elapsed: 0.001 s  <<< ERROR!
+java.lang.NoClassDefFoundError: edu/brown/cs/student/main/Database
+	at edu.brown.cs.student.DatabaseTest.readTest(DatabaseTest.java:23)
+Caused by: java.lang.ClassNotFoundException: edu.brown.cs.student.main.Database
+	at edu.brown.cs.student.DatabaseTest.readTest(DatabaseTest.java:23)
+
+edu.brown.cs.student.DatabaseTest.invalidTable  Time elapsed: 0.001 s  <<< ERROR!
+java.lang.NoClassDefFoundError: edu/brown/cs/student/main/Database
+	at edu.brown.cs.student.DatabaseTest.invalidTable(DatabaseTest.java:42)
+Caused by: java.lang.ClassNotFoundException: edu.brown.cs.student.main.Database
+	at edu.brown.cs.student.DatabaseTest.invalidTable(DatabaseTest.java:42)
+
