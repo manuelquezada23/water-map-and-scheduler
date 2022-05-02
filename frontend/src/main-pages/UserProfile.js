@@ -1,11 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import PictureIconLarge from '../picture-large.png'
 import './main-pages.css'
-import { useNavigate } from "react-router-dom";
 import { getAuth } from "firebase/auth";
 
 function UserProfile() {
-    const navigate = useNavigate();
     const auth = getAuth();
     const user = auth.currentUser;
     const userEmail = user.email;
@@ -15,7 +13,7 @@ function UserProfile() {
             <div className="user-profile-box">
                 <div className="user-profile">
                     <p className='profile-header'>My Profile</p>
-                    <img className="profile-image" src={PictureIconLarge}></img>
+                    <img className="profile-image" src={PictureIconLarge} alt="profile"></img>
                     <input className='user-input' placeholder="Name" type="text" />
                     <input className='user-input' placeholder="Email" type="text" disabled value={userEmail}></input>
                     <button className="info-change-button">Save</button>

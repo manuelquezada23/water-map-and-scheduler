@@ -21,7 +21,7 @@ function Map() {
             <div className='review-popup'>
               <p className="building-name">Sciences Library</p>
               <div className='author-box'>
-                <img className="review-image" src={PictureIcon}></img>
+                <img className="review-image" src={PictureIcon} alt="review"></img>
                 <div className="stars">
                   <p className="author">Jane Doe</p>
                   {/* <p className="author">stars</p> */}

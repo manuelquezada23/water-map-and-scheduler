@@ -34,7 +34,6 @@ function NavigationBar() {
       if (user) {
         // User is signed in, see docs for a list of available properties
         // https://firebase.google.com/docs/reference/js/firebase.User
-        const uid = user.uid;
         setLoggedIn(true)
         setUserEmail(user.email)
       } else {
@@ -108,7 +107,7 @@ function NavigationBar() {
 
   return (
     <div className="navigationBar">
-      <img id="navigationBar-logo" src={logo}></img>
+      <img id="navigationBar-logo" src={logo} alt="logo"></img>
       <div className="navigationBar-mainPageButtons">
         <button className="navigationBar-button" id="home-button" onClick={() => { navBarButtonOnClick("home-button") }}>Home</button>
         <button className="navigationBar-button" id="about-button" onClick={() => { navBarButtonOnClick("about-button") }}>About</button>
@@ -117,7 +116,7 @@ function NavigationBar() {
       </div>
       {(isLoggedIn === true) &&
         <div className="navigationBar-userButtons">
-          <img className="navigationBar-profile-image" src={PictureIcon}></img>
+          <img className="navigationBar-profile-image" src={PictureIcon} alt="profile"></img>
           <p className="navigationBar-profile-name" onClick={handleClick}>{userEmail}</p>
           <Menu
             anchorEl={anchorEl}

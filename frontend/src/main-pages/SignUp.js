@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import logo from '../logo.png';
 import './main-pages.css'
 import { useNavigate } from "react-router-dom";
-import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 function SignUp() {
     const navigate = useNavigate();
@@ -15,9 +15,8 @@ function SignUp() {
         event.preventDefault();
         if ((email.length !== 0 && password.length !== 0 && confirmPassword !== 0) && (password === confirmPassword)) {
             createUserWithEmailAndPassword(auth, email, password)
-                .then((userCredential) => {
+                .then(() => {
                     // Signed in 
-                    const user = userCredential.user;
                     navigate('/')
                 })
                 .catch((error) => {

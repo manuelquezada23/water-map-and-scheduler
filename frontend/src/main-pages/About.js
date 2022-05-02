@@ -8,12 +8,12 @@ function About() {
       <p className="about-middle-text">say cool shit here say cool shit here say cool shit here say cool shit here say cool shit here say cool shit here say cool shit here say cool shit here say cool shit here say cool shit here say cool shit here say cool shit here say cool shit here say cool shit here </p>
       <div className="about-diagrams">
         <div className="about-diagram">
-          <img className="about-drop-logo" src={DropLogo}></img>
+          <img className="about-drop-logo" src={DropLogo} alt="drop-logo"></img>
           <p className="about-diagram-text">say cool shit here say cool shit here say cool shit here say cool shit here say cool shit here say cool shit here say cool shit here say cool shit here say cool shit here say cool shit here say cool shit here say cool shit here say cool shit here say cool shit here </p>
         </div>
         <div className="about-diagram">
           <div className="about-diagram">
-            <img className="about-drop-logo" src={DropLogo}></img>
+            <img className="about-drop-logo" src={DropLogo} alt="drop-logo"></img>
             <p className="about-diagram-text">say cool shit here say cool shit here say cool shit here say cool shit here say cool shit here say cool shit here say cool shit here say cool shit here say cool shit here say cool shit here say cool shit here say cool shit here say cool shit here say cool shit here </p>
           </div>
         </div>
