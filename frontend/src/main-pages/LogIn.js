@@ -40,7 +40,7 @@ function LogIn() {
                         <input value={password} className="login-input" placeholder="Password" type="password" name="pass" id="password" onChange={e => setPassword(e.target.value)} required />
                     </div>
                     <div className="forgot-password">
-                        <p className="forgot-password-text">Forgot Password?</p>
+                        <p className="forgot-password-text" onClick={() => { navigate('/forgot-password') }}>Forgot Password?</p>
                     </div>
                     <button type="submit" className="login-submit-button" onClick={e => { logIn(e) }}>Log In</button>
                     <p>Don't have an account yet? <span className="sign-up-from-login" onClick={() => { navigate('/signup') }}>Sign Up</span></p>

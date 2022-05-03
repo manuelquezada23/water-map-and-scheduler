@@ -10,6 +10,7 @@ import UserProfile from "./main-pages/UserProfile";
 import Schedule from "./main-pages/Schedule";
 import { onAuthStateChanged, getAuth } from "firebase/auth";
 import React, { useState, useEffect } from 'react';
+import ForgotPassword from "./components/ForgotPassword";
 
 function Main() {
     const [isLoggedIn, setLoggedIn] = useState(false)
@@ -35,6 +36,7 @@ function Main() {
             <Route path="/signup" element={isLoggedIn ? <Navigate to="/" /> : <SignUp />}></Route>
             <Route path="/user-profile" element={isLoggedIn ? <UserProfile /> : <Navigate to="/" />}></Route>
             <Route path="/schedule" element={isLoggedIn ? <Schedule /> : <Navigate to="/" />}></Route>
+            <Route path="/forgot-password" element={isLoggedIn ? <Navigate to="/" /> : <ForgotPassword />}></Route>
             <Route path="*" element={<PageNotFound />}></Route>
         </Routes>
     );

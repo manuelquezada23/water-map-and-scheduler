@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import PictureIconLarge from '../picture-large.png'
 import './main-pages.css'
-import { getAuth } from "firebase/auth";
+import { getAuth, updateProfile } from "firebase/auth";
+import { getStorage, ref, uploadString } from "firebase/storage";
 
 function UserProfile() {
     const auth = getAuth();
@@ -11,17 +12,32 @@ function UserProfile() {
     const userProfileImage = user.photoURL
 
     const [file, setFile] = useState(PictureIconLarge)
+    const [newImage, setNewImage] = useState()
 
     if (userProfileImage) {
-        setFile(userProfileImage)
+        // console.log(userProfileImage)
+        // setFile(userProfileImage)
     }
 
     function handleChange(event) {
-        setFile(URL.createObjectURL(event.target.files[0]))
+        const newPicture = URL.createObjectURL(event.target.files[0])
+        if (newPicture != null) {
+            setFile(newPicture)
+            setNewImage(newPicture)
+        }
     }
 
     function uploadPicture() {
-        console.log("cool")
+        if (newImage) {
+            updateProfile(auth.currentUser, {
+                photoURL: newImage
+            }).then(() => {
+                // Profile updated!
+                window.location.reload(false);
+            }).catch((error) => {
+                window.alert(error)
+            });
+        }
     }
 
     return (
@@ -33,7 +49,7 @@ function UserProfile() {
                         <img className="profile-image" src={file} alt="profile"></img>
                         <div className="user-image-buttons">
                             <label htmlFor="fusk" className="upload-button">Upload</label>
-                            <input id="fusk" type="file" defaultValue="" name="photo" style={{display: "none"}} onChange={(e) => {handleChange(e)}}></input>
+                            <input id="fusk" type="file" defaultValue="" name="photo" style={{ display: "none" }} onChange={(e) => { handleChange(e) }}></input>
                         </div>
                     </div>
                     <input className='user-input' placeholder="Name" type="text" value={userDisplayName} />

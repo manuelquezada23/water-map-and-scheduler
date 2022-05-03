@@ -475,8 +475,8 @@ Contact Page
   margin-bottom: 10px;
   height: 125px;
   width: 125px;
-  max-height: 125px;
-  max-width: 125px;
+  min-height: 125px;
+  min-width: 125px;
   margin-left: auto;
   margin-right: auto;
   border-radius: 50%;

@@ -10,6 +10,7 @@ import Logout from '@mui/icons-material/Logout';
 import EditIcon from '@mui/icons-material/Edit';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+import PictureIconLarge from '../picture-large.png'
 
 function NavigationBar() {
 
@@ -28,6 +29,7 @@ function NavigationBar() {
   const [isLoggedIn, setLoggedIn] = useState(false)
   const [userEmail, setUserEmail] = useState('')
   const [userDisplayName, setUserDisplayName] = useState('')
+  const [file, setFile] = useState(PictureIconLarge)
 
   useEffect(() => {
     const auth = getAuth();
@@ -38,6 +40,11 @@ function NavigationBar() {
         setLoggedIn(true)
         setUserEmail(user.email)
         setUserDisplayName(user.displayName)
+        const photoURL = user.photoURL;
+        console.log(photoURL)
+        // if (typeof user.photoURL != "undefined") {
+        //   setFile(user.photoURL)
+        // }
       } else {
         // User is signed out
         setLoggedIn(false)
@@ -116,7 +123,7 @@ function NavigationBar() {
       </div>
       {(isLoggedIn === true) &&
         <div className="navigationBar-userButtons">
-          <img className="navigationBar-profile-image" src={PictureIcon} alt="profile"></img>
+          <img className="navigationBar-profile-image" src={file} alt="profile"></img>
           <p className="navigationBar-profile-name" onClick={handleClick}>{userDisplayName}</p>
           <Menu
             anchorEl={anchorEl}
@@ -165,7 +172,7 @@ function NavigationBar() {
               </ListItemIcon>
               Schedule
             </MenuItem>
-            <MenuItem onClick={() => {logOut()}}>
+            <MenuItem onClick={() => { logOut() }}>
               <ListItemIcon>
                 <Logout fontSize="small" />
               </ListItemIcon>
