@@ -34,7 +34,6 @@
 .centered {
   position: absolute;
   left: 0;
-  top: -30px;
 }
 
 /* Style the image inside the centered container, if needed */
@@ -59,7 +58,7 @@
   margin-top: -70px;
 }
 
-.home-get-started-button { 
+.home-get-started-button {
   height: 50px;
   width: 200px;
   background-color: #5393C6;
@@ -186,7 +185,7 @@ Login page & Sign up page:
   cursor: pointer;
 }
 
-.forgot-password-text:hover{
+.forgot-password-text:hover {
   border-bottom: 1px solid #5393C6;
 }
 
@@ -196,7 +195,7 @@ Login page & Sign up page:
   cursor: pointer;
 }
 
-.sign-up-from-login:hover{
+.sign-up-from-login:hover {
   border-bottom: 1px solid #5393C6;
 }
 
@@ -366,6 +365,7 @@ Contact Page
   color: white;
   cursor: pointer;
 }
+
 /*
   User profile
 */
@@ -380,6 +380,8 @@ Contact Page
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 50px;
+  min-width: 900px;
+  min-height: 450px;
 }
 
 .profile-edit-save-button {
@@ -430,7 +432,7 @@ Contact Page
   border-color: #5393C6;
   border-style: solid;
   border-radius: 30px;
-  width: 40%;
+  width: 400px;
 }
 
 .user-input {
@@ -453,10 +455,32 @@ Contact Page
   text-indent: 15px;
 }
 
+.profile-image-box {
+  margin-top: -10px;
+  margin-bottom: 10px;
+  height: 125px;
+  width: 150px;
+  max-height: 125px;
+  max-width: 150px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .profile-image {
   width: 30%;
-  margin-top: -20px;
-  margin-bottom: 20px;
+  margin-top: -10px;
+  margin-bottom: 10px;
+  height: 125px;
+  width: 125px;
+  max-height: 125px;
+  max-width: 125px;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 50%;
+  border: 1px solid black;
 }
 
 .schedule {
@@ -594,7 +618,7 @@ Contact Page
   cursor: pointer;
 }
 
-.stars{
+.stars {
   display: flex;
   flex-flow: column wrap;
   align-content: flex-start;
@@ -612,4 +636,34 @@ Contact Page
   font-style: normal;
 }
 
+.user-image-buttons {
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+}
 
+.upload-button {
+  background: #5393C6;
+  border: none;
+  border-radius: 50px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  font-family: 'Playfair Display';
+  font-style: normal;
+  /* height: 30px; */
+  cursor: pointer;
+  margin-left: 10px;
+  margin-top: 10px;
+  width: 100px;
+}
+
+#upload-photo {
+  opacity: 0;
+  position: absolute;
+  z-index: -1;
+}
+
+input[type='file'] {
+  color: transparent;
+}

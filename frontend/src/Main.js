@@ -21,7 +21,9 @@ function Main() {
                 setLoggedIn(true)
             }
         });
-    });
+    })
+
+    console.log(isLoggedIn)
 
     return (
         <Routes>

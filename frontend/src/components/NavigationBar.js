@@ -27,6 +27,7 @@ function NavigationBar() {
 
   const [isLoggedIn, setLoggedIn] = useState(false)
   const [userEmail, setUserEmail] = useState('')
+  const [userDisplayName, setUserDisplayName] = useState('')
 
   useEffect(() => {
     const auth = getAuth();
@@ -36,13 +37,12 @@ function NavigationBar() {
         // https://firebase.google.com/docs/reference/js/firebase.User
         setLoggedIn(true)
         setUserEmail(user.email)
+        setUserDisplayName(user.displayName)
       } else {
         // User is signed out
         setLoggedIn(false)
       }
     });
-
-    console.log(isLoggedIn)
 
     let currentPathName = location.pathname
 
@@ -117,7 +117,7 @@ function NavigationBar() {
       {(isLoggedIn === true) &&
         <div className="navigationBar-userButtons">
           <img className="navigationBar-profile-image" src={PictureIcon} alt="profile"></img>
-          <p className="navigationBar-profile-name" onClick={handleClick}>{userEmail}</p>
+          <p className="navigationBar-profile-name" onClick={handleClick}>{userDisplayName}</p>
           <Menu
             anchorEl={anchorEl}
             id="account-menu"

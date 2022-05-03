@@ -2,22 +2,29 @@ import React, { useState } from 'react';
 import logo from '../logo.png';
 import './main-pages.css'
 import { useNavigate } from "react-router-dom";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 
 function SignUp() {
     const navigate = useNavigate();
     const auth = getAuth();
+    const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('')
 
     function signUp(event) {
         event.preventDefault();
-        if ((email.length !== 0 && password.length !== 0 && confirmPassword !== 0) && (password === confirmPassword)) {
+        if ((name.length !== 0 && email.length !== 0 && password.length !== 0 && confirmPassword !== 0) && (password === confirmPassword)) {
             createUserWithEmailAndPassword(auth, email, password)
-                .then(() => {
+                .then((userCredential) => {
                     // Signed in 
-                    navigate('/')
+                    updateProfile(userCredential.user, {
+                        displayName: name
+                    }).then(() => {
+                        navigate('/')
+                    }).catch((error) => {
+                        window.alert(error.message)
+                    });
                 })
                 .catch((error) => {
                     // Not signed in
@@ -41,6 +48,9 @@ function SignUp() {
             <p className="login-header">Sign Up for Water</p>
             <form>
                 <div className="login-input-boxes">
+                    <div>
+                        <input value={name} className="login-input" placeholder="Name" type="text" onChange={e => setName(e.target.value)} required />
+                    </div>
                     <div>
                         <input value={email} className="login-input" placeholder="Email" type="text" name="uname" onChange={e => setEmail(e.target.value)} required />
                     </div>

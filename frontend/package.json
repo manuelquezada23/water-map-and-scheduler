@@ -16,6 +16,8 @@
     "firebase": "^9.7.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
+    "react-image-upload": "^2.0.1",
+    "react-images-upload": "^1.2.8",
     "react-router-dom": "^6.3.0",
     "react-router-redirect": "^1.0.1",
     "react-scripts": "5.0.1",
