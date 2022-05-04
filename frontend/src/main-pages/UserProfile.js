@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import PictureIconLarge from '../picture-large.png'
 import './main-pages.css'
 import { getAuth, updateProfile } from "firebase/auth";
-import { getStorage, ref, uploadString } from "firebase/storage";
 
 function UserProfile() {
     const auth = getAuth();

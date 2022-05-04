@@ -1,21 +1,36 @@
-import React from 'react';
+import React, { useState } from 'react';
 import logo from '../logo.png'
 import { useNavigate } from "react-router-dom";
 import PictureIcon from '../picture.png'
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 function Map() {
-  const isLoggedIn = true
+  const auth = getAuth();
+  const [isLoggedIn, setLogIn] = useState(false)
+  const [wait, finishAwait] = useState(false)
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      setLogIn(true)
+      finishAwait(true)
+    } else {
+      finishAwait(true)
+    }
+  });
+
   const navigate = useNavigate()
   return (
     <div className="main-page-body">
-      {(isLoggedIn === false) &&
+      {(wait === false) &&
+        <div></div>
+      }
+      {(wait === true && isLoggedIn === false) &&
         <div className="map-not-loggedin">
           <img src={logo} className="map-not-loggedin-logo" alt="logo" />
           <p className="map-not-loggedin-text">Log In or Sign Up to use our map!</p>
           <button onClick={() => { navigate("/login") }} className="map-not-loggedin-button">Get Started</button>
         </div>
       }
-      {(isLoggedIn === true) &&
+      {(wait === true && isLoggedIn === true) &&
         <div className="map-loggedin">
           <div className='popup-box'>
             <div className='review-popup'>
