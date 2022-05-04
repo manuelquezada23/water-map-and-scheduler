@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import logo from '../logo.png';
 import '../main-pages/main-pages.css'
 import { useNavigate } from "react-router-dom";
-import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
+import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 
 function ForgotPassword() {
     const navigate = useNavigate();

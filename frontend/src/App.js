@@ -1,7 +1,7 @@
 import Main from './Main.js';
 import NavigationBar from './components/NavigationBar';
 import BottomBar from './components/BottomBar'
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter } from "react-router-dom";
 
 // Import the functions you need from the SDKs you need
@@ -22,11 +22,11 @@ const firebaseConfig = {
   measurementId: "G-9MKZ2VSG47"
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-getAnalytics(app);
-
 function App() {
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  getAnalytics(app);
+
   return (
     <React.Fragment>
       <BrowserRouter>

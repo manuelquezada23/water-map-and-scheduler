@@ -519,6 +519,148 @@ Contact Page
   font-weight: bold;
   font-size: 25px;
   margin-left: 20px;
+  margin-bottom: 10px;
+}
+
+.schedule-subtitle {
+  color: black;
+  font-weight: bold;
+  font-family: "Playfair Display";
+  font-size: 20px;
+  margin-left: 20px;
+  margin-top: 0px;
+}
+
+.schedule-subtitle-flex {
+  color: black;
+  font-weight: bold;
+  font-family: "Playfair Display";
+  font-size: 20px;
+  margin-top: 0px;
+}
+
+.schedule-dropdown {
+  border-radius: 8px;
+  margin-left: 20px;
+  border: 1px solid lightgrey;
+  color: #5393C6;
+  height: 35px;
+  width: 150px;
+  font-family: "Playfair Display";
+  margin-top: -15px;
+  margin-bottom: 15px;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.schedule-day-button {
+  border: 1px solid #5393C6;
+  color: #5393C6;
+  font-weight: bold;
+  border-radius: 10px;
+  height: 35px;
+  width: 90px;
+  margin-bottom: 5px;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  line-height: 35px;
+  cursor: pointer;
+}
+
+.schedule-day-button-selected {
+  border: 1px solid #5393C6;
+  color: white;
+  background-color: #5393C6;
+  font-weight: bold;
+  border-radius: 10px;
+  height: 35px;
+  width: 90px;
+  margin-bottom: 5px;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  line-height: 35px;
+  cursor: pointer;
+}
+
+.schedule-add-button {
+  height: 35px;
+  font-family: "Playfair Display";
+  background-color: #5393C6;
+  border-radius: 50px;
+  width: 100px;
+  line-height: 35px;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 5px;
+  cursor: pointer;
+}
+
+.schedule-view-content {
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - 65px);
+  background-color: red;
+}
+
+.schedule-view-days {
+  height: 50px;
+  background-color: blue;
+  width: calc(100% - 100px);
+  display: flex;
+  flex-direction: row;
+  margin-left: 100px;
+  /* justify-content: center; */
+  align-items: center;
+}
+
+.schedule-view-day {
+  flex-grow: 1;
+  height: 35px;
+  background-color: #5393C6;
+  color: white;
+  font-family: "Playfair Display";
+  font-weight: bold;
+  border-radius: 10px;
+  line-height: 35px;
+  width: 100px;
+  text-align: center;
+  justify-content: space-between;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.row {
+  margin-left: 20px;
+}
+
+.column {
+  float: left;
+  width: 50%;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.schedule-dropdown-time {
+  border-radius: 8px;
+  border: 1px solid lightgrey;
+  color: #5393C6;
+  height: 35px;
+  width: 80px;
+  font-family: "Playfair Display";
+  margin-top: -15px;
+  margin-bottom: 15px;
+  font-weight: bold;
+  font-size: 16px;
 }
 
 /*

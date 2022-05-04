@@ -41,7 +41,7 @@ function NavigationBar() {
         setUserEmail(user.email)
         setUserDisplayName(user.displayName)
         const photoURL = user.photoURL;
-        console.log(photoURL)
+        // console.log(photoURL)
         // if (typeof user.photoURL != "undefined") {
         //   setFile(user.photoURL)
         // }
