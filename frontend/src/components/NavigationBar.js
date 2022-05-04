@@ -26,31 +26,25 @@ function NavigationBar() {
     setAnchorEl(null);
   };
 
-  const [isLoggedIn, setLoggedIn] = useState(false)
+  const auth = getAuth();
+  const [isLoggedIn, setLogIn] = useState(false)
   const [userEmail, setUserEmail] = useState('')
   const [userDisplayName, setUserDisplayName] = useState('')
   const [file, setFile] = useState(PictureIconLarge)
+  const [wait, finishAwait] = useState(false)
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      setLogIn(true)
+      setUserEmail(user.email)
+      setUserDisplayName(user.displayName)
+      finishAwait(true)
+    } else {
+      finishAwait(true)
+    }
+  });
 
   useEffect(() => {
-    const auth = getAuth();
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        // User is signed in, see docs for a list of available properties
-        // https://firebase.google.com/docs/reference/js/firebase.User
-        setLoggedIn(true)
-        setUserEmail(user.email)
-        setUserDisplayName(user.displayName)
-        const photoURL = user.photoURL;
-        // console.log(photoURL)
-        // if (typeof user.photoURL != "undefined") {
-        //   setFile(user.photoURL)
-        // }
-      } else {
-        // User is signed out
-        setLoggedIn(false)
-      }
-    });
-
     let currentPathName = location.pathname
 
     document.getElementById('home-button').style.color = "black"
@@ -121,7 +115,10 @@ function NavigationBar() {
         <button className="navigationBar-button" id="map-button" onClick={() => { navBarButtonOnClick("map-button") }}>Map</button>
         <button className="navigationBar-button" id="contact-button" onClick={() => { navBarButtonOnClick("contact-button") }}>Contact</button>
       </div>
-      {(isLoggedIn === true) &&
+      {(wait === false) &&
+        <div></div>
+      }
+      {(wait === true && isLoggedIn === true) &&
         <div className="navigationBar-userButtons">
           <img className="navigationBar-profile-image" src={file} alt="profile"></img>
           <p className="navigationBar-profile-name" onClick={handleClick}>{userDisplayName}</p>
@@ -181,7 +178,7 @@ function NavigationBar() {
           </Menu>
         </div>
       }
-      {(isLoggedIn === false) &&
+      {(wait === true && isLoggedIn === false) &&
         <div className="navigationBar-userButtons">
           <button className="navigationBar-button" id="signup-button" onClick={() => { navBarButtonOnClick("signup-button") }}>Sign Up</button>
           <button className="navigationBar-button" id="login-button" onClick={() => { navBarButtonOnClick("login-button") }}>Log In</button>
