@@ -504,7 +504,7 @@ Contact Page
 .schedule-box {
   width: calc(75% - 50px);
   min-width: 600px;
-  min-height: 70%;
+  max-height: 70%;
   border: 1px solid #5393C6;
   border-radius: 20px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -520,6 +520,7 @@ Contact Page
   font-size: 25px;
   margin-left: 20px;
   margin-bottom: 10px;
+  margin-top: 10px;
 }
 
 .schedule-subtitle {
@@ -603,19 +604,18 @@ Contact Page
 .schedule-view-content {
   display: flex;
   flex-direction: column;
-  height: calc(100% - 65px);
-  background-color: red;
+  max-height: 440px;
+  margin-right: 10px;
 }
 
 .schedule-view-days {
   height: 50px;
-  background-color: blue;
   width: calc(100% - 100px);
   display: flex;
   flex-direction: row;
   margin-left: 100px;
-  /* justify-content: center; */
   align-items: center;
+  margin-right: 5px;
 }
 
 .schedule-view-day {
@@ -632,6 +632,45 @@ Contact Page
   justify-content: space-between;
   margin-left: 5px;
   margin-right: 5px;
+}
+
+.schedule-view-body {
+  margin-top: 10px;
+  width: calc(100% - 10px);
+  max-height: calc(100% - 65px);
+  margin-left: 10px;
+  overflow: auto;
+  display: flex;
+  flex-direction: row;
+}
+
+.schedule-view-grid {
+  margin-left: 30px;
+  height: 1200px;
+  width: calc(100%);
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-template-rows: repeat(24, 50px);
+  border: 1px solid #5393C6;
+  margin-right: 5px;
+  margin-top: 10px;
+}
+
+.schedule-view-line {
+  border: 1px solid #E5E5E5;
+}
+
+.schedule-view-body::-webkit-scrollbar {
+  display: none;
+  /* Safari and Chrome */
+}
+
+.schedule-view-time {
+  display: flex;
+  flex-direction: column;
+  row-gap: 0px;
+  text-align: center;
+  margin-top: -10px;
 }
 
 .row {
@@ -655,7 +694,7 @@ Contact Page
   border: 1px solid lightgrey;
   color: #5393C6;
   height: 35px;
-  width: 80px;
+  width: 90px;
   font-family: "Playfair Display";
   margin-top: -15px;
   margin-bottom: 15px;
@@ -675,7 +714,6 @@ Contact Page
 }
 
 .popup-box {
-  /* background-color: red; */
   display: flex;
   justify-content: center;
   height: 75%;
