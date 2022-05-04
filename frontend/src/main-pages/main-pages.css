@@ -610,7 +610,7 @@ Contact Page
 
 .schedule-view-days {
   height: 50px;
-  width: calc(100% - 100px);
+  width: calc(100% - 107px);
   display: flex;
   flex-direction: row;
   margin-left: 100px;
@@ -644,20 +644,9 @@ Contact Page
   flex-direction: row;
 }
 
-.schedule-view-grid {
-  margin-left: 30px;
-  height: 1200px;
-  width: calc(100%);
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  grid-template-rows: repeat(24, 50px);
-  border: 1px solid #5393C6;
-  margin-right: 5px;
-  margin-top: 10px;
-}
-
 .schedule-view-line {
-  border: 1px solid #E5E5E5;
+  border-bottom: 1px solid #E5E5E5;
+  border-right: 1px solid #E5E5E5;
 }
 
 .schedule-view-body::-webkit-scrollbar {
@@ -668,9 +657,27 @@ Contact Page
 .schedule-view-time {
   display: flex;
   flex-direction: column;
-  row-gap: 0px;
+  row-gap: 12px;
   text-align: center;
-  margin-top: -10px;
+  margin-top: 0px;
+}
+
+.schedule-time-style {
+  line-height: 15px;
+  border-bottom: 1px solid white;
+}
+
+/* Each line is 60 pixels, thus the full height is (60 * 24) = 1440px */
+.schedule-view-grid {
+  margin-left: 30px;
+  height: 1440px;
+  width: calc(100% - 100px);
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-template-rows: repeat(24, 60px);
+  border: 1px solid #5393C6;
+  margin-left: 28px;
+  margin-top: 20px;
 }
 
 .row {

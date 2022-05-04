@@ -147,10 +147,10 @@ function Schedule() {
                         <div className="schedule-view-body">
                             <div className="schedule-view-time">
                                 {scheduleTimes.map((time) => (
-                                    <p>{time}</p>
+                                    <p className="schedule-time-style">{time}</p>
                                 ))}
                             </div>
-                            <div className="schedule-view-grid">
+                            <div className="schedule-view-grid" id="grid">
                                 {Array.from({ length: 168 }, (_, i) => <div className="schedule-view-line"></div>)}
                             </div>
                         </div>
