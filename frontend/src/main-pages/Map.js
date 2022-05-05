@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState, useRef, useCallback } from 'react';
 import logo from '../logo.png'
 import { useNavigate } from "react-router-dom";
 import PictureIcon from '../picture.png'
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
 
 function Map() {
+  // Authentication:
   const auth = getAuth();
   const [isLoggedIn, setLogIn] = useState(false)
   const [wait, finishAwait] = useState(false)
@@ -16,8 +18,14 @@ function Map() {
       finishAwait(true)
     }
   });
-
   const navigate = useNavigate()
+  
+  const {isLoaded} = useLoadScript({
+    googleMapsApiKey: "AIzaSyDErH86isLuYWxjCkmsE_bpyQ6f59PO2po"
+  })
+  //loading still
+  if (!isLoaded) return <div>Loading...</div>;
+  // map page:
   return (
     <div className="main-page-body">
       {(wait === false) &&
@@ -31,30 +39,24 @@ function Map() {
         </div>
       }
       {(wait === true && isLoggedIn === true) &&
-        <div className="map-loggedin">
-          <div className='popup-box'>
-            <div className='review-popup'>
-              <p className="building-name">Sciences Library</p>
-              <div className='author-box'>
-                <img className="review-image" src={PictureIcon} alt="review"></img>
-                <div className="stars">
-                  <p className="author">Jane Doe</p>
-                  {/* <p className="author">stars</p> */}
-                  <p>star rating</p>
-                </div>
-              </div>
-              <textarea className="review-box" placeholder="What did you think?" type="text" required />
-              <div className="review-submit">
-                <button className="review-submit-button">Post</button>
-              </div>
-            </div>
-          </div>
-        </div>
+      //map goes here:
+        // <div className="map-loggedin">
+        <MapPanel />
       }
     </div>
   );
 }
 
+function MapPanel() {
+  const center = useMemo(()=>({lat: 41.8268, lng: -71.4025}), [])
+  const mapRef = useRef();
+  const onLoad = useCallback((map) => (mapRef.current = map), []);
+
+  return (
+    <GoogleMap id="google-map" zoom={15} mapContainerClassName="map-container" center={center} onLoad={onLoad}/>
+  );
+}
+//{window.dispatchEvent(new Event('resize'))} to get map to loaad in a div
 export default Map
 //   let LatLngLiteral = google.maps.LatLngLiteral;
 //   let DirectionsResult = google.maps.DirectionsResult;

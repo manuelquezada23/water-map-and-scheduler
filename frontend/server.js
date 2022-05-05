@@ -13,16 +13,12 @@ app.use(express.json())
 
 app.get('/express_backend', (req, res)=>{
     res.send({express: "your backend is connected"});
-    // res.render(__dirname + '/src/Contact.js')
 })
 
 app.post('/send', (req, res)=>{
     var name = req.body.name
     var email = req.body.email
     var message = req.body.message
-    //get the actual message etc.
-    //send confirmation to the user
-    // console.log(req)
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {

@@ -865,3 +865,20 @@ Contact Page
 input[type='file'] {
   color: transparent;
 }
+
+/*Map*/
+
+.map-container{
+  display: flex;;
+  flex-flow: column wrap;
+  align-content: flex-end;
+
+}
+
+#google-map{
+  height: 100%;
+  /* display: flex;
+  flex-direction: column;
+  justify-content: right; */
+  width: 80%;
+}
