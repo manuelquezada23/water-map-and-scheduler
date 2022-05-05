@@ -1,4 +1,4 @@
 module.exports = {
-    USER: 'maya_fleischer@brown.edu',
-    PASS: 'Flippers3!'
+    USER: 'brownwatermap@gmail.com',
+    PASS: 'cs32water'
 }

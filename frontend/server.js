@@ -17,7 +17,6 @@ app.get('/express_backend', (req, res)=>{
 })
 
 app.post('/send', (req, res)=>{
-    console.log("alosy")
     var name = req.body.name
     var email = req.body.email
     var message = req.body.message
@@ -56,13 +55,12 @@ app.post('/send', (req, res)=>{
         }
     })
 
-
     transporter.sendMail(mailOptionsFeedback, (error, info)=>{
         if (error) {
             console.log(error)
             res.send('error')
         } else {
-            console.log("email send: "+info)
+            console.log("email sent: "+info)
             res.send('success')
         }
     })

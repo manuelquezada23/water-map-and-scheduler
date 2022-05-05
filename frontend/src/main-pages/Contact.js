@@ -15,7 +15,7 @@ function Contact() {
             <form id='contact-form'>
                 <div className="login-input-boxes">
                     <div className="contact-input-boxes">
-                        <input className="contact-input" placeholder="Name" type="text" onChange={(e) => setName(e.target.value)} required />
+                        <input id="name-input" className="contact-input" placeholder="Name" type="text" onChange={(e) => setName(e.target.value)} required />
                         <input className="contact-input" placeholder="Email" type="email" onChange={(e) => setEmail(e.target.value)} required />
                     </div>
                     <textarea className="contact-message" placeholder="Type response here" rows="10" type="text" onChange={(e) => setMessage(e.target.value)} required />
@@ -49,9 +49,15 @@ function handleContact(n, e, m) {
     })
     .then(function (response) {
         console.log(response);
+        console.log("hello yes")
+        for (const el of document.getElementById('contact-form').querySelectorAll("[required]")) {
+                el.value = ""
+        }
+        alert("Email sent!")
     })
     .catch(function (error) {
         console.log(error);
+        alert("Oops, you dropped something")
     });
 
     // let xhr = new XMLHttpRequest();
