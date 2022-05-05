@@ -642,6 +642,19 @@ Contact Page
   overflow: auto;
   display: flex;
   flex-direction: row;
+  position: relative;
+}
+
+.schedule-view-inputs {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: calc(100% - 100px);
+  margin-top: 20px;
+  margin-right: 9px;
+  min-height: 1440px;
+  margin-left: 10px;
+  overflow: auto;
 }
 
 .schedule-view-line {
