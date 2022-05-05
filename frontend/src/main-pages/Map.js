@@ -51,12 +51,19 @@ function MapPanel() {
   const center = useMemo(()=>({lat: 41.8268, lng: -71.4025}), [])
   const mapRef = useRef();
   const onLoad = useCallback((map) => (mapRef.current = map), []);
+  const [toggleSeen, setToggle] = useState(false)
 
   return (
-    <GoogleMap id="google-map" zoom={15} mapContainerClassName="map-container" center={center} onLoad={onLoad}/>
+      <div className='map-container'>
+        <div className="controls">
+          <h1>Commute go here</h1>
+        </div>
+        <GoogleMap id="google-map" zoom={15} center={center} onLoad={onLoad}>
+        <Marker position={center} onClick={()=>setToggle(true)} />
+        </GoogleMap>
+      </div>
   );
 }
-//{window.dispatchEvent(new Event('resize'))} to get map to loaad in a div
 export default Map
 //   let LatLngLiteral = google.maps.LatLngLiteral;
 //   let DirectionsResult = google.maps.DirectionsResult;
