@@ -14,6 +14,14 @@ const scheduleTimes = [
     "09:00PM", "10:00PM", "11:00PM"
 ]
 
+const userScheduleData = [
+    { id: 1, location: "Location 1", days: "Monday", startTime: "2020-01-01T12:00:00Z", endTime: "2020-01-01T12:50:00Z" },
+    { id: 1, location: "Location 1", days: "Wednesday", startTime: "2020-01-01T12:00:00Z", endTime: "2020-01-01T12:50:00Z" },
+    { id: 1, location: "Location 1", days: "Friday", startTime: "2020-01-01T12:00:00Z", endTime: "2020-01-01T12:50:00Z" },
+    { id: 2, location: "Location 2", days: "Tuesday", startTime: "2020-01-01T14:30:00Z", endTime: "2020-01-01T15:50:00Z" },
+    { id: 2, location: "Location 2", days: "Thursday", startTime: "2020-01-01T14:30:00Z", endTime: "2020-01-01T15:50:00Z" },
+]
+
 function Schedule() {
     const [monday, setMonday] = useState(false)
     const [tuesday, setTuesday] = useState(false)
@@ -22,6 +30,64 @@ function Schedule() {
     const [friday, setFriday] = useState(false)
     const [saturday, setSaturday] = useState(false)
     const [sunday, setSunday] = useState(false)
+
+    function setEvents(data) {
+        const location = data.location;
+        const day = data.days;
+        const startTime = data.startTime;
+        const endTime = data.endTime;
+
+        const pixelsMap = new Map();
+        for (let i = 0; i < 24; i++) {
+            pixelsMap.set(i, i * 60);
+        }
+
+        var startDate = Date.parse(startTime)
+        var endDate = Date.parse(endTime)
+
+        //number of minutes
+        const heightOfEvent = Math.abs((endDate - startDate) / 60000);
+
+        //start of event
+        var date = new Date(startTime.toLocaleString('en-US', { timeZone: 'America/New_York' }))
+        const startTimeHour = date.getHours()
+        const startTimeMinutes = date.getMinutes()
+
+        //offset from javascript Date parser
+        const startOfEvent = (startTimeHour * 60) + startTimeMinutes + 300
+
+        //each column is 118.5px wide
+        const daysMap = new Map();
+        daysMap.set("Sunday", 17)
+        daysMap.set("Monday", 135.5)
+        daysMap.set("Tuesday", 254)
+        daysMap.set("Wednesday", 372.5)
+        daysMap.set("Thursday", 491)
+        daysMap.set("Friday", 609.5)
+        daysMap.set("Saturday", 728)
+
+        //the schedule is 1440px long. 1 pixel = 1 minute
+        let styles = {
+            scheduleViewEvent: {
+                position: "absolute",
+                top: startOfEvent + "px",
+                left: daysMap.get(day) + "px",
+                height: heightOfEvent + "px",
+                lineHeight: heightOfEvent + "px",
+                minWidth: "100px",
+                background: "#FFFFFF",
+                border: "2px solid #5393C6",
+                borderRadius: "10px",
+                fontFamily: "Playfair Display",
+                color: "#5393C6",
+                textAlign: "center",
+                backgroundColor: "white"
+            }
+        }
+        return (
+            <div style={styles.scheduleViewEvent}>{location}</div>
+        );
+    }
 
     function selectDay(event) {
         const day = event.target.innerHTML
@@ -154,7 +220,9 @@ function Schedule() {
                                 {Array.from({ length: 168 }, (_, i) => <div className="schedule-view-line"></div>)}
                             </div>
                             <div className="schedule-view-inputs">
-                                cool
+                                {userScheduleData.map(function (item) {
+                                    return (setEvents(item))
+                                })}
                             </div>
                         </div>
                     </div>
