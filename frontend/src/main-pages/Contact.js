@@ -59,55 +59,6 @@ function handleContact(n, e, m) {
         console.log(error);
         alert("Oops, you dropped something")
     });
-
-    // let xhr = new XMLHttpRequest();
-    // xhr.open('POST', '/send');
-    // xhr.setRequestHeader('content-type', 'application/json');
-    // xhr.onload = function() {
-    //     console.log(xhr.responseText);
-    //     if (xhr.responseText == 'success'){
-    //         alert("Email sent");
-    //         //reload the form
-    //     } else {
-    //         alert("Oops, something went wrong.")
-    //     }
-    // }
-
-    // xhr.send("hello")
-
-    // fetch("/send", {
-    //     method: "post",
-    //     body: email,
-    //   }).then((response) => {
-    //     return response.json();
-    //   }).catch();
-    
-    // fetch('http://localhost:3000/send', {
-    //     method: "POST",
-    //     body: JSON.stringify(name,email,message),
-    //     headers: {
-    //         'Accept': 'application/json',
-    //         'Content-Type': 'application/json'
-    //     },
-    //     }).then(
-    //     (response) => (response.json())
-    //     ).then((response)=> {}
-    //     ).catch((error) => {})
 }
-
-// function setSuccess() {
-//     return (
-//         <div className="main-page-body">
-//             <p className="login-header">Thank you!</p>
-//             <p className="contact-display-message">Your message has been sent.</p>
-//         </div>
-//     )
-// }
-
-// const contactFrom = document.getElementById('contact-form')
-// contactFrom.addEventListener('submit', (e)=>{
-//     e.preventDefault
-    
-// })
 
 export default Contact;
