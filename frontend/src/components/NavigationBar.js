@@ -1,15 +1,48 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import './components.css'
 import logo from '../logo.png'
 import { useNavigate, useLocation } from "react-router-dom";
-import PictureIcon from '../picture.png'
+import PictureIcon from '../picture.png';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import Logout from '@mui/icons-material/Logout';
+import EditIcon from '@mui/icons-material/Edit';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+import PictureIconLarge from '../picture-large.png'
 
 function NavigationBar() {
 
   const location = useLocation();
   const navigate = useNavigate();
 
-  const isLoggedIn = false
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const auth = getAuth();
+  const [isLoggedIn, setLogIn] = useState(false)
+  const [userEmail, setUserEmail] = useState('')
+  const [userDisplayName, setUserDisplayName] = useState('')
+  const [file, setFile] = useState(PictureIconLarge)
+  const [wait, finishAwait] = useState(false)
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      setLogIn(true)
+      setUserEmail(user.email)
+      setUserDisplayName(user.displayName)
+      finishAwait(true)
+    } else {
+      finishAwait(true)
+    }
+  });
 
   useEffect(() => {
     let currentPathName = location.pathname
@@ -52,8 +85,7 @@ function NavigationBar() {
         navigate("/contact")
         break;
       case "login-button":
-        navigate("/user-profile")
-        // navigate("/login")
+        navigate("/login")
         break;
       case "signup-button":
         navigate("/signup")
@@ -63,22 +95,90 @@ function NavigationBar() {
     }
   }
 
+  function logOut() {
+    const auth = getAuth();
+    signOut(auth).then(() => {
+      navigate('/')
+      window.location.reload(false);
+    }).catch((error) => {
+      // An error happened.
+      window.alert(error)
+    });
+  }
+
   return (
     <div className="navigationBar">
-      <img id="navigationBar-logo" src={logo}></img>
+      <img id="navigationBar-logo" src={logo} alt="logo"></img>
       <div className="navigationBar-mainPageButtons">
         <button className="navigationBar-button" id="home-button" onClick={() => { navBarButtonOnClick("home-button") }}>Home</button>
         <button className="navigationBar-button" id="about-button" onClick={() => { navBarButtonOnClick("about-button") }}>About</button>
         <button className="navigationBar-button" id="map-button" onClick={() => { navBarButtonOnClick("map-button") }}>Map</button>
         <button className="navigationBar-button" id="contact-button" onClick={() => { navBarButtonOnClick("contact-button") }}>Contact</button>
       </div>
-      {(isLoggedIn === true) &&
+      {(wait === false) &&
+        <div></div>
+      }
+      {(wait === true && isLoggedIn === true) &&
         <div className="navigationBar-userButtons">
-          <img className="navigationBar-profile-image" src={PictureIcon}></img>
-          <p className="navigationBar-profile-name">Manuel Quezada</p>
+          <img className="navigationBar-profile-image" src={file} alt="profile"></img>
+          <p className="navigationBar-profile-name" onClick={handleClick}>{userDisplayName}</p>
+          <Menu
+            anchorEl={anchorEl}
+            id="account-menu"
+            open={open}
+            onClose={handleClose}
+            onClick={handleClose}
+            PaperProps={{
+              elevation: 0,
+              sx: {
+                overflow: 'visible',
+                filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+                mt: 1.5,
+                '& .MuiAvatar-root': {
+                  width: 32,
+                  height: 32,
+                  ml: -0.5,
+                  mr: 1,
+                },
+                '&:before': {
+                  content: '""',
+                  display: 'block',
+                  position: 'absolute',
+                  top: 0,
+                  right: 14,
+                  width: 10,
+                  height: 10,
+                  bgcolor: 'background.paper',
+                  transform: 'translateY(-50%) rotate(45deg)',
+                  zIndex: 0,
+                },
+              },
+            }}
+            transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+            anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+          >
+            <MenuItem onClick={() => { navigate("/user-profile") }}>
+              <ListItemIcon>
+                <EditIcon fontSize="small" />
+              </ListItemIcon>
+              Profile
+            </MenuItem>
+            <MenuItem onClick={() => { navigate("/schedule") }}>
+              <ListItemIcon>
+                <CalendarMonthIcon fontSize="small" />
+              </ListItemIcon>
+              Schedule
+            </MenuItem>
+            <MenuItem onClick={() => { logOut() }}>
+              <ListItemIcon>
+                <Logout fontSize="small" />
+              </ListItemIcon>
+              Log out
+            </MenuItem>
+          </Menu>
         </div>
       }
-      {(isLoggedIn === false) &&
+      {(wait === true && isLoggedIn === false) &&
         <div className="navigationBar-userButtons">
           <button className="navigationBar-button" id="signup-button" onClick={() => { navBarButtonOnClick("signup-button") }}>Sign Up</button>
           <button className="navigationBar-button" id="login-button" onClick={() => { navBarButtonOnClick("login-button") }}>Log In</button>
