@@ -55,7 +55,7 @@ function Map() {
   );
 }
 
-// export default function Map() {
+export default Map
 //   let LatLngLiteral = google.maps.LatLngLiteral;
 //   let DirectionsResult = google.maps.DirectionsResult;
 //   let MapOptions = google.maps.MapOptions;
