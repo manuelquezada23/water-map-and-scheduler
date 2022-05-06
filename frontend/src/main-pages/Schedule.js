@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 
 const times = [
-    "12:00AM", "12:30AM", "01:00AM", "01:30AM", "02:00AM", "02:30AM", "03:00AM", "03:30AM", "04:00AM", "04:30AM", "05:00AM", "05:30AM", "06:00AM",
-    "06:30AM", "07:00AM", "07:30AM", "08:00AM", "08:30AM", "09:00AM", "09:30AM", "10:00AM", "10:30AM", "11:00AM", "11:30AM", "12:00PM", "12:30PM",
-    "01:00PM", "01:30PM", "02:00PM", "02:30PM", "03:00PM", "03:30PM", "04:00PM", "04:30PM", "05:00PM", "05:30PM", "06:00PM", "06:30PM", "07:00PM",
-    "07:30PM", "08:00PM", "08:30PM", "09:00PM", "09:30PM", "10:00PM", "10:30PM", "11:00PM", "11:30PM"
+    "12:00 AM", "12:30 AM", "01:00 AM", "01:30 AM", "02:00 AM", "02:30 AM", "03:00 AM", "03:30 AM", "04:00 AM", "04:30 AM", "05:00 AM", "05:30 AM", "06:00 AM",
+    "06:30 AM", "07:00 AM", "07:30 AM", "08:00 AM", "08:30 AM", "09:00 AM", "09:30 AM", "10:00 AM", "10:30 AM", "11:00 AM", "11:30 AM", "12:00 PM", "12:30 PM",
+    "01:00 PM", "01:30 PM", "02:00 PM", "02:30 PM", "03:00 PM", "03:30 PM", "04:00 PM", "04:30 PM", "05:00 PM", "05:30 PM", "06:00 PM", "06:30 PM", "07:00 PM",
+    "07:30 PM", "08:00 PM", "08:30 PM", "09:00 PM", "09:30 PM", "10:00 PM", "10:30 PM", "11:00 PM", "11:30 PM"
 ]
 
 const scheduleTimes = [
@@ -14,7 +14,7 @@ const scheduleTimes = [
     "09:00PM", "10:00PM", "11:00PM"
 ]
 
-const userScheduleData = [
+let userScheduleData = [
     { id: 1, location: "Location 1", days: "Monday", startTime: "2020-01-01T12:00:00Z", endTime: "2020-01-01T12:50:00Z" },
     { id: 1, location: "Location 1", days: "Wednesday", startTime: "2020-01-01T12:00:00Z", endTime: "2020-01-01T12:50:00Z" },
     { id: 1, location: "Location 1", days: "Friday", startTime: "2020-01-01T12:00:00Z", endTime: "2020-01-01T12:50:00Z" },
@@ -30,6 +30,10 @@ function Schedule() {
     const [friday, setFriday] = useState(false)
     const [saturday, setSaturday] = useState(false)
     const [sunday, setSunday] = useState(false)
+    const [startTime, setStartTime] = useState('01:00 PM')
+    const [endTime, setEndTime] = useState('02:00 PM')
+    const [location, setLocation] = useState('')
+    const [data, setData] = useState(userScheduleData)
 
     function setEvents(data) {
         const location = data.location;
@@ -147,8 +151,51 @@ function Schedule() {
         }
     }
 
-    function addToSchedule() {
+    function convertTime(timeStr) {
+        const [time, modifier] = timeStr.split(' ');
+        let [hours, minutes] = time.split(':');
+        if (hours === '12') {
+            hours = '00';
+        }
+        if (modifier === 'PM') {
+            hours = parseInt(hours, 10) + 12;
+        }
 
+        return hours + ":" + minutes
+    }
+
+    function addToSchedule() {
+        let newData = data.slice()
+
+        if (location.length !== 0 && startTime.length !== 0 && endTime.length !== 0) {
+            let formattedStartTime = "2020-01-01T" + convertTime(startTime) + "Z";
+            let formattedEndTime = "2020-01-01T" + convertTime(endTime) + "Z";
+
+            if (monday) {
+                newData.push({ id: 3, location: location, days: "Monday", startTime: formattedStartTime, endTime: formattedEndTime })
+            }
+            if (tuesday) {
+                newData.push({ id: 3, location: location, days: "Tuesday", startTime: formattedStartTime, endTime: formattedEndTime })
+            }
+            if (wednesday) {
+                newData.push({ id: 3, location: location, days: "Wednesday", startTime: formattedStartTime, endTime: formattedEndTime })
+            }
+            if (thursday) {
+                newData.push({ id: 3, location: location, days: "Thursday", startTime: formattedStartTime, endTime: formattedEndTime })
+            }
+            if (friday) {
+                newData.push({ id: 3, location: location, days: "Friday", startTime: formattedStartTime, endTime: formattedEndTime })
+            }
+            if (saturday) {
+                newData.push({ id: 3, location: location, days: "Saturday", startTime: formattedStartTime, endTime: formattedEndTime })
+            }
+            if (sunday) {
+                newData.push({ id: 3, location: location, days: "Sunday", startTime: formattedStartTime, endTime: formattedEndTime })
+            }
+            setData(newData)
+        } else {
+            window.alert("Some fields were not selected.")
+        }
     }
 
     return (
@@ -157,10 +204,10 @@ function Schedule() {
                 <div className="schedule-addtoschedule-box">
                     <p className="schedule-header">Add To Schedule</p>
                     <p className="schedule-subtitle">Location</p>
-                    <select name="locations" id="locations" className="schedule-dropdown">
-                        <option value="location1">Location 1</option>
-                        <option value="location2">Location 2</option>
-                        <option value="location3">Location 3</option>
+                    <select name="locations" id="locations" className="schedule-dropdown" onChange={(e) => { setLocation(e.target.value) }}>
+                        <option value="Location 1">Location 1</option>
+                        <option value="Location 2">Location 2</option>
+                        <option value="Location 3">Location 3</option>
                     </select>
                     <p className="schedule-subtitle">Day of the Week</p>
                     <div style={{ marginBottom: "10px", marginTop: "-10px" }}>
@@ -181,7 +228,7 @@ function Schedule() {
                     <div className="row">
                         <div className="column">
                             <p className="schedule-subtitle-flex">Start Time</p>
-                            <select name="startTimes" id="startTimes" className="schedule-dropdown-time">
+                            <select name="startTimes" id="startTimes" className="schedule-dropdown-time" value="01:00 PM" onChange={(e) => { setStartTime(e.target.value) }}>
                                 {times.map((time) => (
                                     <option value={time}>{time}</option>
                                 ))}
@@ -189,7 +236,7 @@ function Schedule() {
                         </div>
                         <div className="column">
                             <p className="schedule-subtitle-flex">End Time</p>
-                            <select name="endTimes" id="endTimes" className="schedule-dropdown-time">
+                            <select name="endTimes" id="endTimes" className="schedule-dropdown-time" value="02:00 PM" onChange={(e) => { setEndTime(e.target.value) }}>
                                 {times.map((time) => (
                                     <option value={time}>{time}</option>
                                 ))}
@@ -220,7 +267,7 @@ function Schedule() {
                                 {Array.from({ length: 168 }, (_, i) => <div className="schedule-view-line"></div>)}
                             </div>
                             <div className="schedule-view-inputs">
-                                {userScheduleData.map(function (item) {
+                                {data.map(function (item) {
                                     return (setEvents(item))
                                 })}
                             </div>
