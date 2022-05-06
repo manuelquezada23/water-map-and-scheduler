@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import './components.css'
 import logo from '../logo.png'
 import { useNavigate, useLocation } from "react-router-dom";
@@ -9,13 +9,13 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import Logout from '@mui/icons-material/Logout';
 import EditIcon from '@mui/icons-material/Edit';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+import PictureIconLarge from '../picture-large.png'
 
 function NavigationBar() {
 
   const location = useLocation();
   const navigate = useNavigate();
-
-  const isLoggedIn = true
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -26,7 +26,31 @@ function NavigationBar() {
     setAnchorEl(null);
   };
 
+  const [isLoggedIn, setLoggedIn] = useState(false)
+  const [userEmail, setUserEmail] = useState('')
+  const [userDisplayName, setUserDisplayName] = useState('')
+  const [file, setFile] = useState(PictureIconLarge)
+
   useEffect(() => {
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is signed in, see docs for a list of available properties
+        // https://firebase.google.com/docs/reference/js/firebase.User
+        setLoggedIn(true)
+        setUserEmail(user.email)
+        setUserDisplayName(user.displayName)
+        const photoURL = user.photoURL;
+        // console.log(photoURL)
+        // if (typeof user.photoURL != "undefined") {
+        //   setFile(user.photoURL)
+        // }
+      } else {
+        // User is signed out
+        setLoggedIn(false)
+      }
+    });
+
     let currentPathName = location.pathname
 
     document.getElementById('home-button').style.color = "black"
@@ -77,9 +101,20 @@ function NavigationBar() {
     }
   }
 
+  function logOut() {
+    const auth = getAuth();
+    signOut(auth).then(() => {
+      navigate('/')
+      window.location.reload(false);
+    }).catch((error) => {
+      // An error happened.
+      window.alert(error)
+    });
+  }
+
   return (
     <div className="navigationBar">
-      <img id="navigationBar-logo" src={logo}></img>
+      <img id="navigationBar-logo" src={logo} alt="logo"></img>
       <div className="navigationBar-mainPageButtons">
         <button className="navigationBar-button" id="home-button" onClick={() => { navBarButtonOnClick("home-button") }}>Home</button>
         <button className="navigationBar-button" id="about-button" onClick={() => { navBarButtonOnClick("about-button") }}>About</button>
@@ -88,8 +123,8 @@ function NavigationBar() {
       </div>
       {(isLoggedIn === true) &&
         <div className="navigationBar-userButtons">
-          <img className="navigationBar-profile-image" src={PictureIcon}></img>
-          <p className="navigationBar-profile-name" onClick={handleClick}>Manuel Quezada</p>
+          <img className="navigationBar-profile-image" src={file} alt="profile"></img>
+          <p className="navigationBar-profile-name" onClick={handleClick}>{userDisplayName}</p>
           <Menu
             anchorEl={anchorEl}
             id="account-menu"
@@ -125,19 +160,19 @@ function NavigationBar() {
             transformOrigin={{ horizontal: 'right', vertical: 'top' }}
             anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
           >
-            <MenuItem onClick={() => {navigate("/user-profile")}}>
+            <MenuItem onClick={() => { navigate("/user-profile") }}>
               <ListItemIcon>
                 <EditIcon fontSize="small" />
               </ListItemIcon>
               Profile
             </MenuItem>
-            <MenuItem onClick={() => {navigate("/schedule")}}>
+            <MenuItem onClick={() => { navigate("/schedule") }}>
               <ListItemIcon>
                 <CalendarMonthIcon fontSize="small" />
               </ListItemIcon>
               Schedule
             </MenuItem>
-            <MenuItem>
+            <MenuItem onClick={() => { logOut() }}>
               <ListItemIcon>
                 <Logout fontSize="small" />
               </ListItemIcon>
