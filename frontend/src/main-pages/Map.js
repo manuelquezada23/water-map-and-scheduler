@@ -4,12 +4,14 @@ import { useNavigate } from "react-router-dom";
 import PictureIcon from '../picture.png'
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
+import ReviewPopup from './ReviewPopup';
 
 function Map() {
   // Authentication:
   const auth = getAuth();
   const [isLoggedIn, setLogIn] = useState(false)
   const [wait, finishAwait] = useState(false)
+
   onAuthStateChanged(auth, (user) => {
     if (user) {
       setLogIn(true)
@@ -56,11 +58,14 @@ function MapPanel() {
   return (
       <div className='map-container'>
         <div className="controls">
-          <h1>Commute go here</h1>
+          <input type="text"
+            id="map-search"
+            placeholder="Search"></input>
         </div>
         <GoogleMap id="google-map" zoom={15} center={center} onLoad={onLoad}>
-        <Marker position={center} onClick={()=>setToggle(true)} />
         </GoogleMap>
+        <Marker position={{lat: 41.8268, lng: -71.4025}} onClick={()=>setToggle(true)} />
+        {toggleSeen ? <ReviewPopup toggle={setToggle()} /> : null}
       </div>
   );
 }
@@ -128,10 +133,6 @@ export default Map
 //                   ))
 //                 }
 //               </MarkerClusterer>
-
-//               <Circle center={office} radius={15000} options={closeOptions} />
-//               <Circle center={office} radius={30000} options={middleOptions} />
-//               <Circle center={office} radius={45000} options={farOptions} />
 //             </>
 //           )}
 //         </GoogleMap>
