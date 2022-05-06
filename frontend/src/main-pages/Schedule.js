@@ -14,6 +14,10 @@ const scheduleTimes = [
     "09:00PM", "10:00PM", "11:00PM"
 ]
 
+const locations = [
+    "Location 1", "Location 2", "Location 3"
+]
+
 let userScheduleData = [
     { id: 1, location: "Location 1", days: "Monday", startTime: "2020-01-01T12:00:00Z", endTime: "2020-01-01T12:50:00Z" },
     { id: 1, location: "Location 1", days: "Wednesday", startTime: "2020-01-01T12:00:00Z", endTime: "2020-01-01T12:50:00Z" },
@@ -30,9 +34,9 @@ function Schedule() {
     const [friday, setFriday] = useState(false)
     const [saturday, setSaturday] = useState(false)
     const [sunday, setSunday] = useState(false)
-    const [startTime, setStartTime] = useState('01:00 PM')
-    const [endTime, setEndTime] = useState('02:00 PM')
-    const [location, setLocation] = useState('')
+    const [startTime, setStartTime] = useState('12:00 AM')
+    const [endTime, setEndTime] = useState('12:00 AM')
+    const [location, setLocation] = useState(locations[0])
     const [data, setData] = useState(userScheduleData)
 
     function setEvents(data) {
@@ -193,6 +197,16 @@ function Schedule() {
                 newData.push({ id: 3, location: location, days: "Sunday", startTime: formattedStartTime, endTime: formattedEndTime })
             }
             setData(newData)
+            setMonday(false)
+            setTuesday(false)
+            setWednesday(false)
+            setThursday(false)
+            setFriday(false)
+            setSaturday(false)
+            setSunday(false)
+            setStartTime("12:00 AM")
+            setEndTime("12:00 AM")
+            setLocation(locations[0])
         } else {
             window.alert("Some fields were not selected.")
         }
@@ -205,9 +219,9 @@ function Schedule() {
                     <p className="schedule-header">Add To Schedule</p>
                     <p className="schedule-subtitle">Location</p>
                     <select name="locations" id="locations" className="schedule-dropdown" onChange={(e) => { setLocation(e.target.value) }}>
-                        <option value="Location 1">Location 1</option>
-                        <option value="Location 2">Location 2</option>
-                        <option value="Location 3">Location 3</option>
+                        {locations.map((location) => (
+                            <option value={location}>{location}</option>
+                        ))}
                     </select>
                     <p className="schedule-subtitle">Day of the Week</p>
                     <div style={{ marginBottom: "10px", marginTop: "-10px" }}>
@@ -228,7 +242,7 @@ function Schedule() {
                     <div className="row">
                         <div className="column">
                             <p className="schedule-subtitle-flex">Start Time</p>
-                            <select name="startTimes" id="startTimes" className="schedule-dropdown-time" value="01:00 PM" onChange={(e) => { setStartTime(e.target.value) }}>
+                            <select name="startTimes" id="startTimes" className="schedule-dropdown-time" onChange={(e) => { setStartTime(e.target.value) }}>
                                 {times.map((time) => (
                                     <option value={time}>{time}</option>
                                 ))}
@@ -236,7 +250,7 @@ function Schedule() {
                         </div>
                         <div className="column">
                             <p className="schedule-subtitle-flex">End Time</p>
-                            <select name="endTimes" id="endTimes" className="schedule-dropdown-time" value="02:00 PM" onChange={(e) => { setEndTime(e.target.value) }}>
+                            <select name="endTimes" id="endTimes" className="schedule-dropdown-time" onChange={(e) => { setEndTime(e.target.value) }}>
                                 {times.map((time) => (
                                     <option value={time}>{time}</option>
                                 ))}
