@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import PictureIconLarge from '../picture-large.png'
 import './main-pages.css'
-import { getAuth, updateProfile, signInWithEmailAndPassword, reauthenticateWithCredential, AuthCredential} from "firebase/auth";
+import { getAuth, updateProfile, signInWithEmailAndPassword, reauthenticateWithCredential, AuthCredential, onAuthStateChanged} from "firebase/auth";
 
 function UserProfile() {
     const auth = getAuth();
+    // const [wait, finishAwait] = useState(false)
+
     const user = auth.currentUser;
-    if (user == null) {
-        console.log("user in null????")
-    }
     const userEmail = user.email;
     const userDisplayName = user.displayName;
     const userProfileImage = user.photoURL
@@ -91,6 +90,10 @@ function UserProfile() {
 
     return (
         <div className="main-page-body">
+            {/* {(!wait) &&
+                <div></div>
+            }
+            {(wait) &&  */}
             <div className="user-profile-box">
                 <form className="user-profile">
                     <p className='profile-header'>My Profile</p>
@@ -105,10 +108,10 @@ function UserProfile() {
                     onChange= {(e) => {
                         setName(e.target.value)
                     }} required/>
-                    {/* <input className='user-input' placeholder="Email" type="text" disabled value={userEmail}></input> */}
+                    <input className='user-input' placeholder="Email" type="text" disabled value={userEmail}></input>
                     <button className="info-change-button" onClick={() => {
-                         uploadPicture()
-                         changeName()
+                        /** update photo */
+                        changeName()
                     }
                         }>Save</button>
                 </form>
@@ -142,8 +145,8 @@ function UserProfile() {
                     }  
                     }>Change</button>
                 </form>
-
             </div>
+            {/* } */}
         </div>
     );
 }

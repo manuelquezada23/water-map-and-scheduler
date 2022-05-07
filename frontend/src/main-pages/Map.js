@@ -3,8 +3,9 @@ import logo from '../logo.png'
 import { useNavigate } from "react-router-dom";
 import PictureIcon from '../picture.png'
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
+import { GoogleMap, useLoadScript, Marker, MarkerClusterer } from "@react-google-maps/api";
 import ReviewPopup from './ReviewPopup';
+import { Wrapper, Status } from "@googlemaps/react-wrapper";
 
 function Map() {
   // Authentication:
@@ -25,7 +26,7 @@ function Map() {
   const {isLoaded} = useLoadScript({
     googleMapsApiKey: "AIzaSyDErH86isLuYWxjCkmsE_bpyQ6f59PO2po"
   })
-  //loading still
+  // loading still
   if (!isLoaded) return <div>Loading...</div>;
   // map page:
   return (
@@ -44,6 +45,7 @@ function Map() {
       //map goes here:
         // <div className="map-loggedin">
         <MapPanel />
+        // </div>
       }
     </div>
   );
@@ -53,22 +55,51 @@ function MapPanel() {
   const center = useMemo(()=>({lat: 41.8268, lng: -71.4025}), [])
   const mapRef = useRef();
   const onLoad = useCallback((map) => (mapRef.current = map), []);
+  const houses = useMemo(() => generateBuildings(center), [center]);
   const [toggleSeen, setToggle] = useState(false)
 
   return (
       <div className='map-container'>
-        <div className="controls">
-          <input type="text"
-            id="map-search"
-            placeholder="Search"></input>
-        </div>
-        <GoogleMap id="google-map" zoom={15} center={center} onLoad={onLoad}>
-        </GoogleMap>
-        <Marker position={{lat: 41.8268, lng: -71.4025}} onClick={()=>setToggle(true)} />
-        {toggleSeen ? <ReviewPopup toggle={setToggle()} /> : null}
-      </div>
+          <div className="controls">
+            <input type="text"
+              id="map-search"
+              placeholder="Search"></input>
+          </div>
+          <GoogleMap id="google-map" zoom={15} center={center} onLoad={onLoad}>
+            <Marker 
+              position={{lat: 41.8268, lng: -71.4025}} 
+              onClick={()=>setToggle(true)} 
+            />
+            <MarkerClusterer>
+                {() =>
+                  houses.map((house) => (
+                    <Marker
+                      key={house.lat}
+                      position={house}
+                      // clusterer={clusterer}
+                    />
+                  ))
+                }
+             </MarkerClusterer>
+            {/* {toggleSeen ? <ReviewPopup toggle={setToggle()} /> : null} */}
+          </GoogleMap>
+    </div>
   );
 }
+
+const generateBuildings = (position: google.maps.LatLngLiteral) => {
+  const _houses: Array<LatLngLiteral> = [];
+  for (let i = 0; i < 10; i++) {
+    console.log("house")
+    const direction = Math.random() < 0.5 ? -2 : 2;
+    _houses.push({
+      lat: position.lat + Math.random() / direction,
+      lng: position.lng + Math.random() / direction,
+    });
+  }
+  return _houses;
+};
+
 export default Map
 //   let LatLngLiteral = google.maps.LatLngLiteral;
 //   let DirectionsResult = google.maps.DirectionsResult;
@@ -140,15 +171,3 @@ export default Map
 //     </div>
 //   );
 // }
-
-// // const generateHouses = (position: google.maps.LatLngLiteral) => {
-// //   const _houses: Array<LatLngLiteral> = [];
-// //   for (let i = 0; i < 100; i++) {
-// //     const direction = Math.random() < 0.5 ? -2 : 2;
-// //     _houses.push({
-// //       lat: position.lat + Math.random() / direction,
-// //       lng: position.lng + Math.random() / direction,
-// //     });
-// //   }
-// //   return _houses;
-// // };
