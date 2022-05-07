@@ -31,23 +31,6 @@ public final class Main {
   }
 
   private void run() {
-//    new Api(this.args, "..data/test-data.sqlite");
-    try {
-      System.out.println("running");
-      BuildingCommands buildingCommands = new BuildingCommands(new Database("../data/test-data.sqlite"));
-      List<Building> bl = buildingCommands.getBuildings();
-
-      NearestFountain nf = new NearestFountain(bl);
-      List<Fountain> fountainList = nf.findNearestFountains(bl.get(0));
-
-      for (Fountain f : fountainList) {
-        System.out.println(f.getBuildingName() + " " + f.getFloor() + " " + f.getId());
-      }
-
-    } catch (SQLException e) {
-      e.printStackTrace();
-    } catch (ClassNotFoundException e) {
-      e.printStackTrace();
-    }
+    new Api(this.args, "..data/test-data.sqlite");
   }
 }
