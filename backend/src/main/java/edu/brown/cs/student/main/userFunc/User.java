@@ -1,5 +1,6 @@
 package edu.brown.cs.student.main.userFunc;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class User {
@@ -12,6 +13,7 @@ public class User {
 
   public User(int userid) {
     this.userid = userid;
+    this.events = new ArrayList<Event>();
   }
 
   public String getEmail() {
@@ -48,5 +50,17 @@ public class User {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public List<Event> getEvents() {
+    return this.events;
+  }
+
+  public void setEvents(List<Event> events) {
+    this.events = events;
+  }
+
+  public void addEvents(Event event) {
+    this.events.add(event);
   }
 }
