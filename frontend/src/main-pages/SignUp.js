@@ -4,6 +4,24 @@ import './main-pages.css'
 import { useNavigate } from "react-router-dom";
 import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 
+function createUserInDatabase(id, name, email, key) {
+    const sqlCommand = "INSERT INTO users VALUES (" + "'" + id + "'" + "," + "'" + name + "'" + "," + "'" + email + "'" + "," + "'" + key + "'" + ",'unknown');"
+
+    const postParameters = {
+        sql: sqlCommand
+    }
+
+    fetch('http://localhost:4567/get-sql-rs', {
+        method: 'POST',
+        body: JSON.stringify(postParameters),
+        headers: { 'Access-Control-Allow-Origin': '*' },
+    })
+        .then((response) => response.json())
+        .then((data) => { })
+        // .then((data: tableInfo) => updateTable(data))
+        .catch((error) => console.error("Error:", error))
+}
+
 function SignUp() {
     const navigate = useNavigate();
     const auth = getAuth();
@@ -21,6 +39,7 @@ function SignUp() {
                     updateProfile(userCredential.user, {
                         displayName: name
                     }).then(() => {
+                        createUserInDatabase(userCredential.user.uid, name, userCredential.user.email, password)
                         navigate('/')
                     }).catch((error) => {
                         window.alert(error.message)

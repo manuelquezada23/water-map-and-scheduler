@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>User.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sprint3</a> &gt; <a href="index.source.html" class="el_package">edu.brown.cs.student.main.userFunc</a> &gt; <span class="el_source">User.java</span></div><h1>User.java</h1><pre class="source lang-java linenums">package edu.brown.cs.student.main.userFunc;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class User {
+  private int userid;
+  private String email;
+  private String key;
+  private String name;
+  private List&lt;Event&gt; events;
+  private double waterBottleSize;
+
+<span class="fc" id="L14">  public User(int userid) {</span>
+<span class="fc" id="L15">    this.userid = userid;</span>
+<span class="fc" id="L16">    this.events = new ArrayList&lt;Event&gt;();</span>
+<span class="fc" id="L17">  }</span>
+
+  public String getEmail() {
+<span class="fc" id="L20">    return this.email;</span>
+  }
+
+  public void setEmail(String email) {
+<span class="fc" id="L24">    this.email = email;</span>
+<span class="fc" id="L25">  }</span>
+
+  public String getKey() {
+<span class="fc" id="L28">    return this.key;</span>
+  }
+
+  public void setKey(String key) {
+<span class="fc" id="L32">    this.key = key;</span>
+<span class="fc" id="L33">  }</span>
+
+  public double getWaterBottleSize() {
+<span class="nc" id="L36">    return this.waterBottleSize;</span>
+  }
+
+  public void setWaterBottleSize(double waterBottleSize) {
+<span class="fc" id="L40">    this.waterBottleSize = waterBottleSize;</span>
+<span class="fc" id="L41">  }</span>
+
+  public int getUserid() {
+<span class="fc" id="L44">    return this.userid;</span>
+  }
+
+  public String getName() {
+<span class="fc" id="L48">    return this.name;</span>
+  }
+
+  public void setName(String name) {
+<span class="fc" id="L52">    this.name = name;</span>
+<span class="fc" id="L53">  }</span>
+
+  public List&lt;Event&gt; getEvents() {
+<span class="fc" id="L56">    return this.events;</span>
+  }
+
+  public void setEvents(List&lt;Event&gt; events) {
+<span class="nc" id="L60">    this.events = events;</span>
+<span class="nc" id="L61">  }</span>
+
+  public void addEvents(Event event) {
+<span class="fc" id="L64">    this.events.add(event);</span>
+<span class="fc" id="L65">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

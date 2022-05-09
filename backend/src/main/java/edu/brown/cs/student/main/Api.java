@@ -12,6 +12,7 @@ import spark.Response;
 import spark.Route;
 import spark.Spark;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 
@@ -67,16 +68,15 @@ public class Api {
 
     Spark.before((request, response) -> response.header("Access-Control-Allow-Origin", "*"));
 
-    //put Routes Here
+    // put Routes Here
     Spark.post("/get-sql-rs", new getSQLResultSetHandler());
     Spark.post("/get-users", new getUsersHandler());
     Spark.post("/get-review", new getReviewsHandler());
     Spark.post("/get-buildings-fountains", new getBuildingsFountainHandler());
-    //not sure about primary condition
-    //update needs form "column1 = value1, column2 = value2, ..."
+    // not sure about primary condition
+    // update needs form "column1 = value1, column2 = value2, ..."
     Spark.init();
   }
-
 
   private class getSQLResultSetHandler implements Route {
     @Override
@@ -85,9 +85,13 @@ public class Api {
       String command = obj.getString("sql");
 
       Gson gson = new Gson();
-      Map dataToJson = ImmutableMap.of("rs", Api.this.db.executeCommand(command));
-      String json = gson.toJson(dataToJson);
-      return json;
+      ResultSet rs = Api.this.db.executeCommand(command);
+      if (rs != null) {
+        Map dataToJson = ImmutableMap.of("rs", Api.this.db.executeCommand(command));
+        String json = gson.toJson(dataToJson);
+        return json;
+      }
+      return "";
     }
   }
 
@@ -154,4 +158,4 @@ public class Api {
     }
   }
 
-}    
+}
