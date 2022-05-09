@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import './main-pages.css'
 import HomePagePicture from '../home-page-picture.png'
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 
 function Home() {
+  const navigate = useNavigate();
   const auth = getAuth();
   const [isLoggedIn, setLogIn] = useState(false)
   const [wait, finishAwait] = useState(false)
@@ -27,10 +29,10 @@ function Home() {
             <p className="home-content-title">Water Map & Scheduler</p>
             <p className="home-content-subtitle">slogan here slogan here slogan here slogan here slogan here slogan here slogan here slogan here slogan here slogan here slogan here </p>
             {(!isLoggedIn) &&
-              <button className="home-get-started-button">Get Started</button>
+              <button className="home-get-started-button" onClick={() => {navigate('/login')}}>Get Started</button>
             }
             {(isLoggedIn) &&
-              <button className="home-get-started-button">Map</button>
+              <button className="home-get-started-button" onClick={() => {navigate('/map')}}>Map</button>
             }
           </div>
           <div className="split right">

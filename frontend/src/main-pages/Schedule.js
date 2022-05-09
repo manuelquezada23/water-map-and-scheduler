@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import Popup from 'reactjs-popup';
+import { IoCloseCircleSharp } from "react-icons/io5";
 
 const times = [
     "12:00 AM", "12:30 AM", "01:00 AM", "01:30 AM", "02:00 AM", "02:30 AM", "03:00 AM", "03:30 AM", "04:00 AM", "04:30 AM", "05:00 AM", "05:30 AM", "06:00 AM",
@@ -26,6 +28,19 @@ let userScheduleData = [
     { id: 2, location: "Location 2", days: "Thursday", startTime: "2020-01-01T14:30:00Z", endTime: "2020-01-01T15:50:00Z" },
 ]
 
+function convertTime(timeStr) {
+    const [time, modifier] = timeStr.split(' ');
+    let [hours, minutes] = time.split(':');
+    if (hours === '12') {
+        hours = '00';
+    }
+    if (modifier === 'PM') {
+        hours = parseInt(hours, 10) + 12;
+    }
+
+    return hours + ":" + minutes
+}
+
 function Schedule() {
     const [monday, setMonday] = useState(false)
     const [tuesday, setTuesday] = useState(false)
@@ -39,16 +54,47 @@ function Schedule() {
     const [location, setLocation] = useState(locations[0])
     const [data, setData] = useState(userScheduleData)
 
+    function PopUpDelete(props) {
+        const location = props.location;
+        const ID = props.id
+
+        function closePopUp(close) {
+            let newData = []
+            for (let i = 0; i < data.length; i++) {
+                if (data[i].id !== ID) {
+                    newData.push(data[i])
+                }
+            }
+            setData(newData)
+            close()
+        }
+
+        return (
+            <Popup trigger={<div>{location}</div>} arrow={false} position="top left">
+                {close => (
+                    <div className="editSchedulePopUpView">
+                        <div className="editSchedulePopUp">
+                            <p className="schedulePopUpHeaderText">Delete from your schedule?</p>
+                            <div className="schedulePopUpButtons">
+                                <div className="schedulePopUpButton" onClick={() => { closePopUp(close) }} >Confirm</div>
+                            </div>
+                            <a className="close" onClick={close}>
+                                <IoCloseCircleSharp size={30} />
+                            </a>
+                        </div>
+                    </div>
+                )}
+            </Popup>
+        );
+    }
+
     function setEvents(data) {
+
         const location = data.location;
         const day = data.days;
         const startTime = data.startTime;
         const endTime = data.endTime;
-
-        const pixelsMap = new Map();
-        for (let i = 0; i < 24; i++) {
-            pixelsMap.set(i, i * 60);
-        }
+        const ID = data.id;
 
         var startDate = Date.parse(startTime)
         var endDate = Date.parse(endTime)
@@ -89,11 +135,16 @@ function Schedule() {
                 fontFamily: "Playfair Display",
                 color: "#5393C6",
                 textAlign: "center",
-                backgroundColor: "white"
+                backgroundColor: "white",
+                cursor: "pointer"
             }
         }
         return (
-            <div style={styles.scheduleViewEvent}>{location}</div>
+            <div style={styles.scheduleViewEvent}>
+                <PopUpDelete
+                    location={location} id={ID}
+                />
+            </div>
         );
     }
 
@@ -153,19 +204,6 @@ function Schedule() {
             default:
                 break;
         }
-    }
-
-    function convertTime(timeStr) {
-        const [time, modifier] = timeStr.split(' ');
-        let [hours, minutes] = time.split(':');
-        if (hours === '12') {
-            hours = '00';
-        }
-        if (modifier === 'PM') {
-            hours = parseInt(hours, 10) + 12;
-        }
-
-        return hours + ":" + minutes
     }
 
     function addToSchedule() {
