@@ -4,13 +4,14 @@ import './main-pages.css'
 import { useNavigate } from "react-router-dom";
 import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 
-function createUserInDatabase(id) {
-    console.log(id)
+function createUserInDatabase(id, name, email, key) {
+    const sqlCommand = "INSERT INTO users VALUES (" + "'" + id + "'" + "," + "'" + name + "'" + "," + "'" + email + "'" + "," + "'" + key + "'" + ",'unknown');"
+
     const postParameters = {
-        userID: id
+        sql: sqlCommand
     }
 
-    fetch('http://localhost:4567/insert-user', {
+    fetch('http://localhost:4567/get-sql-rs', {
         method: 'POST',
         body: JSON.stringify(postParameters),
         headers: { 'Access-Control-Allow-Origin': '*' },
@@ -32,26 +33,25 @@ function SignUp() {
     function signUp(event) {
         event.preventDefault();
         if ((name.length !== 0 && email.length !== 0 && password.length !== 0 && confirmPassword !== 0) && (password === confirmPassword)) {
-            createUserInDatabase("f32412313")
-            // createUserWithEmailAndPassword(auth, email, password)
-            //     .then((userCredential) => {
-            //         // Signed in 
-            //         updateProfile(userCredential.user, {
-            //             displayName: name
-            //         }).then(() => {
-            //             createUserInDatabase(userCredential.uid)
-            //             navigate('/')
-            //         }).catch((error) => {
-            //             window.alert(error.message)
-            //         });
-            //     })
-            //     .catch((error) => {
-            //         // Not signed in
-            //         window.alert(error.message)
-            //         setEmail('')
-            //         setPassword('')
-            //         setConfirmPassword('')
-            //     });
+            createUserWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    // Signed in 
+                    updateProfile(userCredential.user, {
+                        displayName: name
+                    }).then(() => {
+                        createUserInDatabase(userCredential.user.uid, name, userCredential.user.email, password)
+                        navigate('/')
+                    }).catch((error) => {
+                        window.alert(error.message)
+                    });
+                })
+                .catch((error) => {
+                    // Not signed in
+                    window.alert(error.message)
+                    setEmail('')
+                    setPassword('')
+                    setConfirmPassword('')
+                });
         } else if ((email.length !== 0 && password.length !== 0 && confirmPassword !== 0) && (password !== confirmPassword)) {
             window.alert("Passwords provided do not match.")
             setPassword('')
