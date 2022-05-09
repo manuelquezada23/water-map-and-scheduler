@@ -16,12 +16,13 @@ public class Api {
   private Database db;
   private static final int DEFAULT_PORT = 4567;
 
-  public Api(String[] args, String dataasepath) {
+  public Api(String[] args, String dataasepath) throws ClassNotFoundException, SQLException {
     OptionParser parser = new OptionParser();
     parser.accepts("gui");
     parser.accepts("port").withRequiredArg().ofType(Integer.class).defaultsTo(Api.DEFAULT_PORT);
 
     OptionSet options = parser.parse(args);
+    this.setDb(new Database(dataasepath));
 
     if (options.has("gui")) {
       runSparkServer((int) options.valueOf("port"));
@@ -80,7 +81,7 @@ public class Api {
       String userID = obj.getString("userID");
       String json = "";
       System.out.println(Api.this.db);
-      Api.this.db.executeCommand("INSERT INTO users VALUES (" + userID + ");");
+      Api.this.db.executeCommand("INSERT INTO users (UserID) VALUES (" + userID + ");");
       return json;
     }
   }
