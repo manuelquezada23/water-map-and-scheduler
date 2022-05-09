@@ -879,12 +879,33 @@ input[type='file'] {
 .controls {
   width: 30%;
   height:100%;
-  display: flex;
-  flex-flow: column wrap;
-  align-content: flex-start;
+  /* display: flex;
+  flex-flow: column wrap; */
+  /* background-color: green; */
 }
 
 #google-map{
   height: 100%;
   width: 70%;
+}
+
+.search-box{
+  padding-top: 2px;
+  cursor: pointer;
+}
+
+.search-input{
+  font-family: 'Playfair Display';
+}
+
+.selected-bldg {
+  font-weight: bold;
+  font-size: 30px;
+  color: #5393C6;
+  font-family: 'Playfair Display';
+}
+
+#map-search {
+  width: 70%;
+  padding-bottom: 3px;
 }

@@ -78,14 +78,16 @@ function UserProfile() {
     }
 
     function changeName() {
-        updateProfile(user, {
-            displayName: newName,
-            photoURL: newImage ? newImage : null
-        }).then(()=>{
-            alert("Information saved!")
-        }).catch((error) => {
-            alert(error)
-        });
+        console.log(user)
+        console.log(newName)
+        // updateProfile(user, {
+        //     displayName: newName,
+        //     photoURL: newImage ? newImage : null
+        // }).then(()=>{
+        //     alert("Information saved!")
+        // }).catch((error) => {
+        //     alert(error)
+        // });
     }
 
     return (

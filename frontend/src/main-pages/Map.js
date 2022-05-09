@@ -1,11 +1,11 @@
 import React, { useMemo, useState, useRef, useCallback } from 'react';
 import logo from '../logo.png'
 import { useNavigate } from "react-router-dom";
-import PictureIcon from '../picture.png'
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { GoogleMap, useLoadScript, Marker, MarkerClusterer } from "@react-google-maps/api";
+import { GoogleMap, useLoadScript, Marker, MarkerClusterer, LatLngLiteral, InfoWindow } from "@react-google-maps/api";
 import ReviewPopup from './ReviewPopup';
-import { Wrapper, Status } from "@googlemaps/react-wrapper";
+import Data from "/Users/mayafleischer/Desktop/cs32/term-project-cpelling-ehinds3-mfleisc1-mquezad1/frontend/src/mock-data.json"
+/**This needs to be db of all the buildings */
 
 function Map() {
   // Authentication:
@@ -43,9 +43,7 @@ function Map() {
       }
       {(wait === true && isLoggedIn === true) &&
       //map goes here:
-        // <div className="map-loggedin">
         <MapPanel />
-        // </div>
       }
     </div>
   );
@@ -56,27 +54,71 @@ function MapPanel() {
   const mapRef = useRef();
   const onLoad = useCallback((map) => (mapRef.current = map), []);
   const houses = useMemo(() => generateBuildings(center), [center]);
-  const [toggleSeen, setToggle] = useState(false)
+  const [toggleSelected, setSelected] = useState(false)
+  const [query, setQuery] = useState("")
+  const [currentBldg, setBldg] = useState("")
 
   return (
       <div className='map-container'>
           <div className="controls">
-            <input type="text"
+            {(toggleSelected === false) && 
+              <input type="text"
               id="map-search"
-              placeholder="Search"></input>
+              placeholder="Search" onChange={event => setQuery(event.target.value)}/>
+
+            }{(toggleSelected === false) && Data.filter(bldg => {
+                if (query === "") {
+                  return bldg;
+                } else if (bldg.name.toLowerCase().includes(query.toLowerCase())) {
+                  return bldg;
+                }}).map((bldg, index) => (
+                  /**
+                   * correct action when click on search input
+                   */
+                  <div className="search-box" key={index} onClick={()=>{
+                    setBldg(bldg.name)
+                    setSelected(true)
+                  }}>
+                    <p className='search-input'>{bldg.name}</p>
+                  </div>
+                )) }
+              {(toggleSelected === true) &&
+                <div>
+                  <p className="selected-bldg" onClick={()=>{
+                    setSelected(false)
+                  }}>{currentBldg}</p>
+                  {Data.filter(bldg => {if (bldg.name === currentBldg){
+                    return bldg
+                  }}).map((bldg, index) => (
+                      <div key={index} onClick={()=>{
+                        setBldg(bldg.name)
+                        setSelected(true)
+                        // figure out how to zoom to that pin on the map
+                      }}>
+                        <select>
+                          <option>Choose an option:</option>
+                          {/* this here will iterate through the different 
+                            water fountains at the building and they will be options
+                            It will also then set the onClick?? */}
+                          <option>{bldg.name}</option>
+                        </select>
+                      </div>
+                    )) }
+                </div>
+              }
           </div>
           <GoogleMap id="google-map" zoom={15} center={center} onLoad={onLoad}>
-            <Marker 
-              position={{lat: 41.8268, lng: -71.4025}} 
-              onClick={()=>setToggle(true)} 
-            />
             <MarkerClusterer>
                 {() =>
                   houses.map((house) => (
                     <Marker
                       key={house.lat}
                       position={house}
-                      // clusterer={clusterer}
+                      onClick={()=>{         
+                        // <InfoWindow content="hello"/>
+                        //pop up of the building list (on the left ??)
+                        console.log(house.lat)
+                      }}
                     />
                   ))
                 }
@@ -85,16 +127,18 @@ function MapPanel() {
           </GoogleMap>
     </div>
   );
+  
 }
 
-const generateBuildings = (position: google.maps.LatLngLiteral) => {
-  const _houses: Array<LatLngLiteral> = [];
+const generateBuildings = (position) => {
+  const _houses = [];
   for (let i = 0; i < 10; i++) {
-    console.log("house")
-    const direction = Math.random() < 0.5 ? -2 : 2;
+    const direction = Math.random() < 0.5 ? -75 : 75;
     _houses.push({
       lat: position.lat + Math.random() / direction,
       lng: position.lng + Math.random() / direction,
+      bldg: "building name",
+      //other info that we need for the building
     });
   }
   return _houses;
