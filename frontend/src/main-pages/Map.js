@@ -42,7 +42,7 @@ function Map() {
         </div>
       }
       {(wait === true && isLoggedIn === true) &&
-      //map goes here:
+      // map goes here:
         <MapPanel />
       }
     </div>
@@ -50,13 +50,24 @@ function Map() {
 }
 
 function MapPanel() {
-  const center = useMemo(()=>({lat: 41.8268, lng: -71.4025}), [])
+  const [currCenter, setCenter] = useState({lat: 41.8268, lng: -71.4025})
+  const [currZoom, setZoom] = useState(17)
+  const center = useMemo(()=>currCenter, [currCenter])
+  const zoom = useMemo(()=>currZoom, [currZoom])
   const mapRef = useRef();
   const onLoad = useCallback((map) => (mapRef.current = map), []);
-  const houses = useMemo(() => generateBuildings(center), [center]);
   const [toggleSelected, setSelected] = useState(false)
   const [query, setQuery] = useState("")
+  const [justClicked, setJustClicked] = useState("false")
   const [currentBldg, setBldg] = useState("")
+
+  function toBuilding(bldg) {
+    setCenter({lat: bldg.lat, lng: bldg.lng});   
+    setZoom(20)  //a bit buggy once zoom is changed?
+    // set up the left panel to correspond
+    setBldg(bldg.building_name) 
+    setSelected(true)
+  }
 
   return (
       <div className='map-container'>
@@ -67,81 +78,100 @@ function MapPanel() {
               placeholder="Search" onChange={event => setQuery(event.target.value)}/>
 
             }{(toggleSelected === false) && Data.filter(bldg => {
+                if (justClicked) {
+                  setQuery("")
+                  setJustClicked(false)
+                }
                 if (query === "") {
                   return bldg;
-                } else if (bldg.name.toLowerCase().includes(query.toLowerCase())) {
+                } else if (bldg.building_name.toLowerCase().includes(query.toLowerCase())) {
                   return bldg;
                 }}).map((bldg, index) => (
                   /**
                    * correct action when click on search input
                    */
                   <div className="search-box" key={index} onClick={()=>{
-                    setBldg(bldg.name)
-                    setSelected(true)
+                    toBuilding(bldg)
+                    // setBldg(bldg.name)
+                    // setSelected(true)
                   }}>
-                    <p className='search-input'>{bldg.name}</p>
+                    <p className='search-input'>{bldg.building_name}</p>
                   </div>
                 )) }
               {(toggleSelected === true) &&
                 <div>
                   <p className="selected-bldg" onClick={()=>{
                     setSelected(false)
+                    setJustClicked(true)
                   }}>{currentBldg}</p>
-                  {Data.filter(bldg => {if (bldg.name === currentBldg){
+                  {Data.filter(bldg => {if (bldg.building_name === currentBldg){
                     return bldg
                   }}).map((bldg, index) => (
-                      <div key={index} onClick={()=>{
-                        setBldg(bldg.name)
-                        setSelected(true)
-                        // figure out how to zoom to that pin on the map
-                      }}>
+                      <div key={index}>
                         <select>
                           <option>Choose an option:</option>
                           {/* this here will iterate through the different 
                             water fountains at the building and they will be options
                             It will also then set the onClick?? */}
-                          <option>{bldg.name}</option>
+                          <option>{bldg.building_name}</option>
                         </select>
                       </div>
                     )) }
                 </div>
               }
           </div>
-          <GoogleMap id="google-map" zoom={15} center={center} onLoad={onLoad}>
+          <GoogleMap id="google-map" zoom={zoom} center={center} onLoad={onLoad}>
             <MarkerClusterer>
                 {() =>
-                  houses.map((house) => (
+                  Data.map((bldg) => (
                     <Marker
-                      key={house.lat}
-                      position={house}
-                      onClick={()=>{         
+                      key={bldg.id}
+                      position={bldg}
+                      onClick={()=>{    
+                        toBuilding(bldg)       
                         // <InfoWindow content="hello"/>
                         //pop up of the building list (on the left ??)
-                        console.log(house.lat)
                       }}
                     />
                   ))
                 }
              </MarkerClusterer>
-            {/* {toggleSeen ? <ReviewPopup toggle={setToggle()} /> : null} */}
           </GoogleMap>
     </div>
   );
   
 }
 
-const generateBuildings = (position) => {
-  const _houses = [];
-  for (let i = 0; i < 10; i++) {
-    const direction = Math.random() < 0.5 ? -75 : 75;
-    _houses.push({
-      lat: position.lat + Math.random() / direction,
-      lng: position.lng + Math.random() / direction,
-      bldg: "building name",
-      //other info that we need for the building
-    });
-  }
-  return _houses;
-};
+
+// function getData() {
+//   fetch('http://localhost:4567/', {
+//         method: 'POST',
+//         body: JSON.stringify(postParameters),
+//         headers: {
+//             "Access-Control-Allow-Origin": "*"
+//         },
+//     })
+//         .then((response) => response.json())
+//         .then(data => generateBuildings(data))
+// }
+
 
 export default Map
+
+
+
+//obsolete
+// const generateBuildings2 = (position) => {
+//   const _houses = [];
+//   for (let i = 0; i < 10; i++) {
+//     const direction = Math.random() < 0.5 ? -75 : 75;
+//     _houses.push({
+//       lat: position.lat + Math.random() / direction,
+//       lng: position.lng + Math.random() / direction,
+//       bldg: "building name",
+//       //other info that we need for the building
+//     });
+//   }
+//   // const _houses = 
+//   return _houses;
+// };

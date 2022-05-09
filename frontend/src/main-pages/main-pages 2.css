@@ -1,0 +1,911 @@
+.main-page-body {
+  text-align: center;
+  width: 100%;
+  height: calc(100vh - 150px);
+  margin-top: 150px;
+  justify-content: center;
+}
+
+/* Split the screen in half */
+.split {
+  /* height: 100%; */
+  height: calc(100vh - 150px);
+  margin-top: 150px;
+  width: 50%;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  overflow-x: hidden;
+  padding-top: 20px;
+}
+
+/* Control the left side */
+.left {
+  left: 0;
+}
+
+/* Control the right side */
+.right {
+  right: 0;
+  max-width: 600px;
+}
+
+/* If you want the content centered horizontally and vertically */
+.centered {
+  position: absolute;
+  left: 0;
+}
+
+/* Style the image inside the centered container, if needed */
+.centered img {
+  width: 475px;
+}
+
+.home-content-title {
+  font-family: 'Playfair Display';
+  font-weight: bold;
+  font-size: 80px;
+  text-align: left;
+  margin-left: 100px;
+  margin-top: 10px;
+}
+
+.home-content-subtitle {
+  font-family: 'Playfair Display';
+  font-size: 25px;
+  text-align: left;
+  margin-left: 100px;
+  margin-top: -70px;
+}
+
+.home-get-started-button {
+  height: 50px;
+  width: 200px;
+  background-color: #5393C6;
+  border-radius: 50px;
+  color: white;
+  font-family: 'Playfair Display';
+  font-size: 20px;
+  position: absolute;
+  left: 0;
+  margin-left: 100px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/*
+Login page & Sign up page:  
+    change the please fill in box color,
+    verify email/password - valid email & password the same for signup
+*/
+
+.login {
+  width: 100%;
+  background-color: white;
+  position: absolute;
+  margin: 0;
+  z-index: 2;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  flex-direction: column;
+  column-gap: 0px;
+}
+
+.login-logo {
+  height: 150px;
+  cursor: pointer;
+}
+
+.pagenotfound-logo {
+  height: 300px;
+  cursor: pointer;
+}
+
+.pagenotfound-text {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-size: 30px;
+  margin-top: 0px;
+}
+
+.login-header {
+  color: #5393C6;
+  width: 100%;
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 60px;
+  line-height: 67px;
+  text-align: center;
+  margin-top: -2px;
+  margin-bottom: -1px;
+  padding-top: 10px;
+}
+
+.login-input-boxes {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  padding-top: 20px;
+  height: auto;
+}
+
+.login-input {
+  width: 450px;
+  height: 57.5px;
+  left: 506px;
+  top: 441px;
+  background: #FFFFFF;
+  border: 1px solid #5393C6;
+  box-sizing: border-box;
+  border-radius: 20px;
+  margin-bottom: 20px;
+}
+
+.login-input[type="text"] {
+  font-size: 18px;
+  text-indent: 15px;
+}
+
+.login-input[type="password"] {
+  font-size: 18px;
+  text-indent: 15px;
+}
+
+.login-input[type="password"] {
+  font-size: 18px;
+  text-indent: 15px;
+  /* margin-left: 2px; */
+}
+
+.login-submit-button {
+  padding: 8px 63px;
+  background: #5393C6;
+  border: none;
+  border-radius: 50px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  font-family: 'Playfair Display';
+  font-style: normal;
+  width: 50%;
+  height: 45px;
+  margin-left: auto;
+  margin-right: auto;
+  cursor: pointer;
+}
+
+.forgot-password {
+  margin-top: -30px;
+  font-family: 'Playfair Display';
+  font-style: normal;
+  color: #5393C6;
+  height: 45px;
+  margin-left: auto;
+  text-align: right;
+  vertical-align: top;
+  cursor: pointer;
+}
+
+.forgot-password-text:hover {
+  border-bottom: 1px solid #5393C6;
+}
+
+.sign-up-from-login {
+  color: #5393C6;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.sign-up-from-login:hover {
+  border-bottom: 1px solid #5393C6;
+}
+
+/*
+Contact Page
+*/
+
+.contact-display-message {
+  font-size: 20px;
+  font-family: 'Playfair Display';
+  font-style: normal;
+}
+
+.contact-input-boxes {
+  display: flex;
+  flex-flow: column wrap;
+  align-content: space-between;
+  margin: 0 auto;
+  width: 60%;
+  height: 80px;
+}
+
+.contact-input[type="text"] {
+  font-size: 18px;
+  text-indent: 15px;
+}
+
+.contact-input {
+  width: 45%;
+  height: 57.5px;
+  left: 506px;
+  top: 441px;
+  background: #FFFFFF;
+  border: 1px solid #5393C6;
+  box-sizing: border-box;
+  border-radius: 20px;
+  margin-bottom: 20px;
+}
+
+.contact-message {
+  width: 60%;
+  height: 100%;
+  left: 506px;
+  top: 441px;
+  background: #FFFFFF;
+  border: 1px solid #5393C6;
+  box-sizing: border-box;
+  border-radius: 20px;
+  margin-bottom: 20px;
+  padding-right: 20px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.contact-message[type="text"] {
+  font-size: 18px;
+  text-indent: 15px;
+  padding-top: 16px;
+  font-family: 'Playfair Display';
+  font-style: normal;
+  vertical-align: top;
+  font-family: 'Serif';
+  resize: none;
+}
+
+.contact-submit {
+  margin-left: 20%;
+  width: 60%;
+  display: flex;
+  flex-flow: column wrap;
+  align-content: flex-end;
+}
+
+.contact-submit-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 63px;
+  background: #5393C6;
+  border: none;
+  border-radius: 50px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  font-family: 'Playfair Display';
+  font-style: normal;
+  text-align: center;
+  width: 20%;
+  height: 45px;
+  cursor: pointer;
+}
+
+/*
+  About styles
+*/
+.about-title {
+  color: #5393C6;
+  font-weight: bold;
+  font-size: 40px;
+}
+
+.about-middle-text {
+  font-size: 20px;
+  max-width: 60%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: -20px;
+  padding-bottom: 70px;
+}
+
+.about-diagrams {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  text-align: center;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 50px;
+  margin-top: -20px;
+}
+
+.about-drop-logo {
+  width: 150px;
+  height: 150px;
+}
+
+.about-diagram-text {
+  width: 60%;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 20px;
+}
+
+.map-not-loggedin {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.map-not-loggedin-logo {
+  height: 150px;
+  margin-top: 50px;
+}
+
+.map-not-loggedin-text {
+  color: #5393C6;
+  width: 80%;
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 40px;
+  margin-top: 0px;
+  text-align: center;
+}
+
+.map-not-loggedin-button {
+  background-color: #5393C6;
+  border-radius: 50px;
+  border: none;
+  font-family: 'Playfair Display';
+  font-size: 16px;
+  font-weight: bold;
+  width: 200px;
+  height: 50px;
+  color: white;
+  cursor: pointer;
+}
+
+/*
+  User profile
+*/
+
+.user-profile-box {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  text-align: center;
+  width: 75%;
+  height: 75%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 50px;
+  min-width: 900px;
+  min-height: 450px;
+}
+
+.profile-edit-save-button {
+  background: #5393C6;
+  border: none;
+  border-radius: 50px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  font-family: 'Playfair Display';
+  font-style: normal;
+  width: 16%;
+  height: 45px;
+  margin-left: auto;
+  margin-right: auto;
+  cursor: pointer;
+  margin-top: -20px;
+}
+
+.info-change-button {
+  background: #5393C6;
+  border: none;
+  border-radius: 50px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  font-family: 'Playfair Display';
+  font-style: normal;
+  width: 32%;
+  height: 45px;
+  margin-left: auto;
+  margin-right: auto;
+  cursor: pointer;
+}
+
+.profile-header {
+  color: #5393C6;
+  font-weight: bold;
+  font-size: 35px;
+  display: flex;
+  flex-flow: column wrap;
+  text-align: left;
+  margin-left: 5%;
+  margin-top: 15px;
+}
+
+.user-profile {
+  border-color: #5393C6;
+  border-style: solid;
+  border-radius: 30px;
+  width: 400px;
+}
+
+.user-input {
+  width: 90%;
+  height: 57.5px;
+  background: #FFFFFF;
+  border: 1px solid #5393C6;
+  box-sizing: border-box;
+  border-radius: 20px;
+  margin-bottom: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 16px;
+  font-family: 'Playfair Display';
+  font-style: normal;
+}
+
+.user-input[type="text"] {
+  font-size: 18px;
+  text-indent: 15px;
+}
+
+.user-input[type="password"] {
+  font-size: 18px;
+  text-indent: 15px;
+}
+
+.profile-image-box {
+  margin-top: -10px;
+  margin-bottom: 10px;
+  height: 125px;
+  width: 150px;
+  max-height: 125px;
+  max-width: 150px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.profile-image {
+  width: 30%;
+  margin-top: -10px;
+  margin-bottom: 10px;
+  height: 125px;
+  width: 125px;
+  min-height: 125px;
+  min-width: 125px;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 50%;
+  border: 1px solid black;
+}
+
+.schedule {
+  display: flex;
+  flex-direction: row;
+  margin-left: 100px;
+}
+
+.schedule-addtoschedule-box {
+  width: calc(25% - 50px);
+  min-width: 220px;
+  min-height: 70%;
+  border: 1px solid #5393C6;
+  border-radius: 20px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  height: 500px;
+  margin-top: 20px;
+  text-align: left;
+}
+
+.schedule-box {
+  width: calc(75% - 50px);
+  min-width: 600px;
+  max-height: 70%;
+  border: 1px solid #5393C6;
+  border-radius: 20px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  margin-top: 20px;
+  margin-left: 20px;
+  text-align: left;
+}
+
+.schedule-header {
+  color: #5393C6;
+  font-family: "Playfair Display";
+  font-weight: bold;
+  font-size: 25px;
+  margin-left: 20px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.schedule-subtitle {
+  color: black;
+  font-weight: bold;
+  font-family: "Playfair Display";
+  font-size: 20px;
+  margin-left: 20px;
+  margin-top: 0px;
+}
+
+.schedule-subtitle-flex {
+  color: black;
+  font-weight: bold;
+  font-family: "Playfair Display";
+  font-size: 20px;
+  margin-top: 0px;
+}
+
+.schedule-dropdown {
+  border-radius: 8px;
+  margin-left: 20px;
+  border: 1px solid lightgrey;
+  color: #5393C6;
+  height: 35px;
+  width: 150px;
+  font-family: "Playfair Display";
+  margin-top: -15px;
+  margin-bottom: 15px;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.schedule-day-button {
+  border: 1px solid #5393C6;
+  color: #5393C6;
+  font-weight: bold;
+  border-radius: 10px;
+  height: 35px;
+  width: 90px;
+  margin-bottom: 5px;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  line-height: 35px;
+  cursor: pointer;
+}
+
+.schedule-day-button-selected {
+  border: 1px solid #5393C6;
+  color: white;
+  background-color: #5393C6;
+  font-weight: bold;
+  border-radius: 10px;
+  height: 35px;
+  width: 90px;
+  margin-bottom: 5px;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  line-height: 35px;
+  cursor: pointer;
+}
+
+.schedule-add-button {
+  height: 35px;
+  font-family: "Playfair Display";
+  background-color: #5393C6;
+  border-radius: 50px;
+  width: 100px;
+  line-height: 35px;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 5px;
+  cursor: pointer;
+}
+
+.schedule-view-content {
+  display: flex;
+  flex-direction: column;
+  max-height: 440px;
+  margin-right: 10px;
+}
+
+.schedule-view-days {
+  height: 50px;
+  width: calc(100% - 107px);
+  display: flex;
+  flex-direction: row;
+  margin-left: 100px;
+  align-items: center;
+  margin-right: 5px;
+}
+
+.schedule-view-day {
+  flex-grow: 1;
+  height: 35px;
+  background-color: #5393C6;
+  color: white;
+  font-family: "Playfair Display";
+  font-weight: bold;
+  border-radius: 10px;
+  line-height: 35px;
+  width: 100px;
+  text-align: center;
+  justify-content: space-between;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.schedule-view-body {
+  margin-top: 10px;
+  width: calc(100% - 10px);
+  max-height: calc(100% - 65px);
+  margin-left: 10px;
+  overflow: auto;
+  display: flex;
+  flex-direction: row;
+}
+
+.schedule-view-line {
+  border-bottom: 1px solid #E5E5E5;
+  border-right: 1px solid #E5E5E5;
+}
+
+.schedule-view-body::-webkit-scrollbar {
+  display: none;
+  /* Safari and Chrome */
+}
+
+.schedule-view-time {
+  display: flex;
+  flex-direction: column;
+  row-gap: 12px;
+  text-align: center;
+  margin-top: 0px;
+}
+
+.schedule-time-style {
+  line-height: 15px;
+  border-bottom: 1px solid white;
+}
+
+/* Each line is 60 pixels, thus the full height is (60 * 24) = 1440px */
+.schedule-view-grid {
+  margin-left: 30px;
+  height: 1440px;
+  width: calc(100% - 100px);
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-template-rows: repeat(24, 60px);
+  border: 1px solid #5393C6;
+  margin-left: 28px;
+  margin-top: 20px;
+}
+
+.row {
+  margin-left: 20px;
+}
+
+.column {
+  float: left;
+  width: 50%;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.schedule-dropdown-time {
+  border-radius: 8px;
+  border: 1px solid lightgrey;
+  color: #5393C6;
+  height: 35px;
+  width: 90px;
+  font-family: "Playfair Display";
+  margin-top: -15px;
+  margin-bottom: 15px;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+/*
+  Review popup
+*/
+
+.review-popup {
+  border-color: #5393C6;
+  border-style: solid;
+  border-radius: 30px;
+  width: 50%;
+}
+
+.popup-box {
+  display: flex;
+  justify-content: center;
+  height: 75%;
+  width: 100%;
+}
+
+.building-name {
+  display: flex;
+  justify-content: left;
+  margin-left: 10%;
+  font-size: 25px;
+  font-weight: bold;
+  font-family: 'Playfair Display';
+  font-style: normal;
+}
+
+.review-image {
+  width: 10%;
+  height: 10%;
+  margin-left: 5%;
+  margin-top: -5px;
+  margin-bottom: 20px;
+  margin-right: 20px;
+}
+
+.author-box {
+  margin-left: 5%;
+  display: flex;
+  flex-direction: row;
+}
+
+.review-box {
+  width: 80%;
+  height: 40%;
+  left: 506px;
+  top: 441px;
+  background: #FFFFFF;
+  border: 1px solid #5393C6;
+  box-sizing: border-box;
+  border-radius: 20px;
+  margin-bottom: 20px;
+  padding-right: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  resize: none;
+}
+
+.review-box[type="text"] {
+  font-size: 18px;
+  text-indent: 15px;
+  padding-top: 16px;
+  font-family: 'Playfair Display';
+  font-style: normal;
+  vertical-align: top;
+  font-family: 'Serif';
+  resize: none;
+}
+
+.review-submit {
+  display: flex;
+  flex-flow: column wrap;
+  align-content: flex-end;
+  margin-right: 10%;
+}
+
+.review-submit-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 63px;
+  background: #5393C6;
+  border: none;
+  border-radius: 50px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  font-family: 'Playfair Display';
+  font-style: normal;
+  text-align: center;
+  width: 17%;
+  height: 40px;
+  cursor: pointer;
+}
+
+.stars {
+  display: flex;
+  flex-flow: column wrap;
+  align-content: flex-start;
+  justify-content: left;
+  width: 50%;
+  margin-top: -15px;
+}
+
+.author {
+  color: #5393C6;
+  margin-left: 2%;
+  font-size: 16px;
+  font-weight: bold;
+  font-family: 'Playfair Display';
+  font-style: normal;
+}
+
+.user-image-buttons {
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+}
+
+.upload-button {
+  background: #5393C6;
+  border: none;
+  border-radius: 50px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  font-family: 'Playfair Display';
+  font-style: normal;
+  /* height: 30px; */
+  cursor: pointer;
+  margin-left: 10px;
+  margin-top: 10px;
+  width: 100px;
+}
+
+#upload-photo {
+  opacity: 0;
+  position: absolute;
+  z-index: -1;
+}
+
+input[type='file'] {
+  color: transparent;
+}
+
+/*Map*/
+
+.map-container{
+  width: 100%;
+  height:100%;
+  display: flex;;
+  flex-flow: column wrap;
+  align-content: flex-end;
+}
+
+.controls {
+  width: 30%;
+  height:100%;
+  /* display: flex;
+  flex-flow: column wrap; */
+  /* background-color: green; */
+}
+
+#google-map{
+  height: 100%;
+  width: 70%;
+}
+
+.search-box{
+  padding-top: 2px;
+  cursor: pointer;
+}
+
+.search-input{
+  font-family: 'Playfair Display';
+}
+
+.selected-bldg {
+  font-weight: bold;
+  font-size: 30px;
+  color: #5393C6;
+  font-family: 'Playfair Display';
+}
+
+#map-search {
+  width: 70%;
+  padding-bottom: 3px;
+}
