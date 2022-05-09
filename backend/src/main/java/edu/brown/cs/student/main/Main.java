@@ -19,10 +19,8 @@ public final class Main {
    * The initial method called when execution begins.
    *
    * @param args An array of command line arguments
-   * @throws SQLException
-   * @throws ClassNotFoundException
    */
-  public static void main(String[] args) throws ClassNotFoundException, SQLException {
+  public static void main(String[] args) {
     new Main(args).run();
   }
 
@@ -32,7 +30,7 @@ public final class Main {
     this.args = args;
   }
 
-  private void run() throws ClassNotFoundException, SQLException {
-    new Api(this.args, "/Users/manuelquezada/Desktop/browncs/course/cs0320/projects/term-project-cpelling-ehinds3-mfleisc1-mquezad1/data/data.sqlite");
+  private void run() {
+    Api api = new Api(this.args, "..data/test-data.sqlite");
   }
 }

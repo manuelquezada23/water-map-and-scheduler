@@ -1,5 +1,7 @@
 package edu.brown.cs.student.main;
 
+import com.google.common.collect.ImmutableMap;
+import com.google.gson.Gson;
 import edu.brown.cs.student.main.database.Database;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
@@ -11,21 +13,27 @@ import spark.Route;
 import spark.Spark;
 
 import java.sql.SQLException;
+import java.util.Map;
 
 public class Api {
   private Database db;
   private static final int DEFAULT_PORT = 4567;
 
-  public Api(String[] args, String dataasepath) throws ClassNotFoundException, SQLException {
+  public Api(String[] args, String dataasepath) {
     OptionParser parser = new OptionParser();
     parser.accepts("gui");
     parser.accepts("port").withRequiredArg().ofType(Integer.class).defaultsTo(Api.DEFAULT_PORT);
 
     OptionSet options = parser.parse(args);
-    this.setDb(new Database(dataasepath));
 
     if (options.has("gui")) {
       runSparkServer((int) options.valueOf("port"));
+    }
+
+    try {
+      this.db = new Database(dataasepath);
+    } catch (SQLException | ClassNotFoundException e) {
+      e.printStackTrace();
     }
   }
 
@@ -60,28 +68,25 @@ public class Api {
     Spark.before((request, response) -> response.header("Access-Control-Allow-Origin", "*"));
 
     //put Routes Here
+    Spark.post("/get-sql-rs", new getSQLResultSetHandler());
     Spark.post("/get-users", new getUsersHandler());
     Spark.post("/get-review", new getReviewsHandler());
     Spark.post("/get-buildings-fountains", new getBuildingsFountainHandler());
-    Spark.post("/insert-user", new insertUserHandler());
     //not sure about primary condition
     //update needs form "column1 = value1, column2 = value2, ..."
     Spark.init();
   }
 
-    /**
-   * Handles requests for inserting a new user
-   *
-   * @return GSON which contains the updated table; returns null if any error.
-   */
-  private class insertUserHandler implements Route {
+
+  private class getSQLResultSetHandler implements Route {
     @Override
     public String handle(Request req, Response res) throws JSONException {
       JSONObject obj = new JSONObject(req.body());
-      String userID = obj.getString("userID");
-      String json = "";
-      System.out.println(Api.this.db);
-      Api.this.db.executeCommand("INSERT INTO users (UserID) VALUES (" + userID + ");");
+      String command = obj.getString("sql");
+
+      Gson gson = new Gson();
+      Map dataToJson = ImmutableMap.of("rs", Api.this.db.executeCommand(command));
+      String json = gson.toJson(dataToJson);
       return json;
     }
   }

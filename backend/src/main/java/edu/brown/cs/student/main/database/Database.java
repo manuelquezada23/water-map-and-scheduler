@@ -1,10 +1,13 @@
 package edu.brown.cs.student.main.database;
 
 
+import edu.brown.cs.student.main.buildings.BuildingCommands;
+
 import java.sql.*;
 
 public class Database {
   private static Connection conn = null;
+  private BuildingCommands buildingCommands;
 
   public Database(String filename) throws SQLException, ClassNotFoundException {
 
@@ -20,6 +23,8 @@ public class Database {
     // and should be present
     Statement stat = Database.conn.createStatement();
     stat.executeUpdate("PRAGMA foreign_keys=ON;");
+
+    this.buildingCommands = new BuildingCommands(this);
   }
 
   /**
@@ -46,6 +51,11 @@ public class Database {
     }
   }
 
+  /**
+   *
+   * @return
+   * @throws SQLException
+   */
   public String getUsers() throws SQLException {
     return null;
   }
