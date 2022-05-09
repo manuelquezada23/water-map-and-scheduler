@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { GoogleMap, useLoadScript, Marker, MarkerClusterer, LatLngLiteral, InfoWindow } from "@react-google-maps/api";
 import ReviewPopup from './ReviewPopup';
-import Data from "/Users/mayafleischer/Desktop/cs32/term-project-cpelling-ehinds3-mfleisc1-mquezad1/frontend/src/mock-data.json"
+import Data from "../mock-data.json"
 /**This needs to be db of all the buildings */
 
 function Map() {
