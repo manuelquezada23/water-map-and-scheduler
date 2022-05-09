@@ -1,5 +1,7 @@
 package edu.brown.cs.student.main;
 
+import com.google.common.collect.ImmutableMap;
+import com.google.gson.Gson;
 import edu.brown.cs.student.main.database.Database;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
@@ -11,6 +13,7 @@ import spark.Route;
 import spark.Spark;
 
 import java.sql.SQLException;
+import java.util.Map;
 
 public class Api {
   private Database db;
@@ -25,6 +28,12 @@ public class Api {
 
     if (options.has("gui")) {
       runSparkServer((int) options.valueOf("port"));
+    }
+
+    try {
+      this.db = new Database(dataasepath);
+    } catch (SQLException | ClassNotFoundException e) {
+      e.printStackTrace();
     }
   }
 
@@ -59,12 +68,27 @@ public class Api {
     Spark.before((request, response) -> response.header("Access-Control-Allow-Origin", "*"));
 
     //put Routes Here
+    Spark.post("/get-sql-rs", new getSQLResultSetHandler());
     Spark.post("/get-users", new getUsersHandler());
     Spark.post("/get-review", new getReviewsHandler());
     Spark.post("/get-buildings-fountains", new getBuildingsFountainHandler());
     //not sure about primary condition
     //update needs form "column1 = value1, column2 = value2, ..."
     Spark.init();
+  }
+
+
+  private class getSQLResultSetHandler implements Route {
+    @Override
+    public String handle(Request req, Response res) throws JSONException {
+      JSONObject obj = new JSONObject(req.body());
+      String command = obj.getString("sql");
+
+      Gson gson = new Gson();
+      Map dataToJson = ImmutableMap.of("rs", Api.this.db.executeCommand(command));
+      String json = gson.toJson(dataToJson);
+      return json;
+    }
   }
 
   /**
