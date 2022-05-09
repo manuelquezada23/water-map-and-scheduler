@@ -81,6 +81,7 @@ public class Api {
   private class getSQLResultSetHandler implements Route {
     @Override
     public String handle(Request req, Response res) throws JSONException {
+      System.out.println(req.body());
       JSONObject obj = new JSONObject(req.body());
       String command = obj.getString("sql");
 
@@ -88,7 +89,9 @@ public class Api {
       ResultSet rs = Api.this.db.executeCommand(command);
       if (rs != null) {
         Map dataToJson = ImmutableMap.of("rs", Api.this.db.executeCommand(command));
+        System.out.println(dataToJson);
         String json = gson.toJson(dataToJson);
+        System.out.println("after json");
         return json;
       }
       return "";

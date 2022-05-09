@@ -107,7 +107,7 @@ function MapPanel() {
                   {Data.filter(bldg => {if (bldg.building_name === currentBldg){
                     return bldg
                   }}).map((bldg, index) => (
-                      <div key={index}>
+                      <div key={index} onClick={()=>getData()}>
                         <select>
                           <option>Choose an option:</option>
                           {/* this here will iterate through the different 
@@ -143,17 +143,17 @@ function MapPanel() {
 }
 
 
-// function getData() {
-//   fetch('http://localhost:4567/', {
-//         method: 'POST',
-//         body: JSON.stringify(postParameters),
-//         headers: {
-//             "Access-Control-Allow-Origin": "*"
-//         },
-//     })
-//         .then((response) => response.json())
-//         .then(data => generateBuildings(data))
-// }
+function getData() {
+  fetch('http://localhost:4567/get-sql-rs', {
+        method: 'POST',
+        body: JSON.stringify({sql: "SELECT * FROM buildings"}),
+        headers: {
+            "Access-Control-Allow-Origin": "*"
+        },
+    })
+        .then((response) => console.log("response"))
+        .then(data => console.log(data))
+}
 
 
 export default Map
