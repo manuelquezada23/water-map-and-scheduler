@@ -1,5 +1,14 @@
 package edu.brown.cs.student.main;
 
+import edu.brown.cs.student.main.buildings.Building;
+import edu.brown.cs.student.main.buildings.BuildingCommands;
+import edu.brown.cs.student.main.buildings.Fountain;
+import edu.brown.cs.student.main.buildings.NearestFountain;
+import edu.brown.cs.student.main.database.Database;
+
+import java.sql.SQLException;
+import java.util.List;
+
 /**
  * The Main class of our project. This is where execution begins.
  */
@@ -22,6 +31,6 @@ public final class Main {
   }
 
   private void run() {
-    new Api(this.args, "..data/data.sqlite");
+    new Api(this.args, "..data/test-data.sqlite");
   }
 }
