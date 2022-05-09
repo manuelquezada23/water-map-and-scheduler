@@ -62,9 +62,27 @@ public class Api {
     Spark.post("/get-users", new getUsersHandler());
     Spark.post("/get-review", new getReviewsHandler());
     Spark.post("/get-buildings-fountains", new getBuildingsFountainHandler());
+    Spark.post("/insert-user", new insertUserHandler());
     //not sure about primary condition
     //update needs form "column1 = value1, column2 = value2, ..."
     Spark.init();
+  }
+
+    /**
+   * Handles requests for inserting a new user
+   *
+   * @return GSON which contains the updated table; returns null if any error.
+   */
+  private class insertUserHandler implements Route {
+    @Override
+    public String handle(Request req, Response res) throws JSONException {
+      JSONObject obj = new JSONObject(req.body());
+      String userID = obj.getString("userID");
+      String json = "";
+      System.out.println(Api.this.db);
+      Api.this.db.executeCommand("INSERT INTO users VALUES (" + userID + ");");
+      return json;
+    }
   }
 
   /**

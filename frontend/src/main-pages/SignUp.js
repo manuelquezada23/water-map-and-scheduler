@@ -4,6 +4,23 @@ import './main-pages.css'
 import { useNavigate } from "react-router-dom";
 import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 
+function createUserInDatabase(id) {
+    console.log(id)
+    const postParameters = {
+        userID: id
+    }
+
+    fetch('http://localhost:4567/insert-user', {
+        method: 'POST',
+        body: JSON.stringify(postParameters),
+        headers: { 'Access-Control-Allow-Origin': '*' },
+    })
+        .then((response) => response.json())
+        .then((data) => { })
+        // .then((data: tableInfo) => updateTable(data))
+        .catch((error) => console.error("Error:", error))
+}
+
 function SignUp() {
     const navigate = useNavigate();
     const auth = getAuth();
@@ -15,24 +32,26 @@ function SignUp() {
     function signUp(event) {
         event.preventDefault();
         if ((name.length !== 0 && email.length !== 0 && password.length !== 0 && confirmPassword !== 0) && (password === confirmPassword)) {
-            createUserWithEmailAndPassword(auth, email, password)
-                .then((userCredential) => {
-                    // Signed in 
-                    updateProfile(userCredential.user, {
-                        displayName: name
-                    }).then(() => {
-                        navigate('/')
-                    }).catch((error) => {
-                        window.alert(error.message)
-                    });
-                })
-                .catch((error) => {
-                    // Not signed in
-                    window.alert(error.message)
-                    setEmail('')
-                    setPassword('')
-                    setConfirmPassword('')
-                });
+            createUserInDatabase("f32412313")
+            // createUserWithEmailAndPassword(auth, email, password)
+            //     .then((userCredential) => {
+            //         // Signed in 
+            //         updateProfile(userCredential.user, {
+            //             displayName: name
+            //         }).then(() => {
+            //             createUserInDatabase(userCredential.uid)
+            //             navigate('/')
+            //         }).catch((error) => {
+            //             window.alert(error.message)
+            //         });
+            //     })
+            //     .catch((error) => {
+            //         // Not signed in
+            //         window.alert(error.message)
+            //         setEmail('')
+            //         setPassword('')
+            //         setConfirmPassword('')
+            //     });
         } else if ((email.length !== 0 && password.length !== 0 && confirmPassword !== 0) && (password !== confirmPassword)) {
             window.alert("Passwords provided do not match.")
             setPassword('')

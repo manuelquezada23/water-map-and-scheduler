@@ -31,6 +31,6 @@ public final class Main {
   }
 
   private void run() {
-    new Api(this.args, "..data/test-data.sqlite");
+    new Api(this.args, "..data/data.sqlite");
   }
 }

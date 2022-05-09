@@ -12,7 +12,7 @@ public class userCommandTest {
 
   @Test
   public void userExtractTest() throws SQLException, ClassNotFoundException {
-    Database data = new Database("/Users/chrispellinger/cs32/term-project-cpelling-ehinds3-mfleisc1-mquezad1/data/test-data.sqlite");
+    Database data = new Database("../data/test-data.sqlite");
     userCommands users = new userCommands(data);
     users.getData();
     assertEquals(3, users.getUsers().size());
@@ -20,7 +20,7 @@ public class userCommandTest {
 
   @Test
   public void correctData() throws SQLException, ClassNotFoundException {
-    Database data = new Database("/Users/chrispellinger/cs32/term-project-cpelling-ehinds3-mfleisc1-mquezad1/data/test-data.sqlite");
+    Database data = new Database("../data/test-data.sqlite");
     userCommands users = new userCommands(data);
     users.getData();
     assertEquals("stephen", users.getUsers().get(2).getName());
@@ -32,7 +32,7 @@ public class userCommandTest {
 
   @Test
   public void correctEvents() throws SQLException, ClassNotFoundException {
-    Database data = new Database("/Users/chrispellinger/cs32/term-project-cpelling-ehinds3-mfleisc1-mquezad1/data/test-data.sqlite");
+    Database data = new Database("../data/test-data.sqlite");
     userCommands users = new userCommands(data);
     users.getData();
     assertEquals(1, users.getUsers().get(2).getEvents().size());
