@@ -5,6 +5,8 @@ import com.google.gson.Gson;
 import edu.brown.cs.student.main.database.Database;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import spark.Request;
@@ -13,6 +15,7 @@ import spark.Route;
 import spark.Spark;
 
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.Map;
 
@@ -78,17 +81,32 @@ public class Api {
     Spark.init();
   }
 
+  public JSONArray turnRSIntoString(ResultSet rs) throws SQLException, JSONException {
+    JSONArray json = new JSONArray();
+    ResultSetMetaData rsmd = rs.getMetaData();
+    while (rs.next()) {
+      int numColumns = rsmd.getColumnCount();
+      JSONObject obj = new JSONObject();
+      for (int i = 1; i <= numColumns; i++) {
+        String column_name = rsmd.getColumnName(i);
+        obj.put(column_name, rs.getObject(column_name));
+      }
+      json.put(obj);
+    }
+    return json;
+  }
+
   private class getSQLResultSetHandler implements Route {
     @Override
-    public String handle(Request req, Response res) throws JSONException {
+    public String handle(Request req, Response res) throws JSONException, SQLException {
       JSONObject obj = new JSONObject(req.body());
       String command = obj.getString("sql");
 
       Gson gson = new Gson();
       ResultSet rs = Api.this.db.executeCommand(command);
+
       if (rs != null) {
-        Map dataToJson = ImmutableMap.of("rs", Api.this.db.executeCommand(command));
-        String json = gson.toJson(dataToJson);
+        String json = gson.toJson(turnRSIntoString(rs));
         return json;
       }
       return "";

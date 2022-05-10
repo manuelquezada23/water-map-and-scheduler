@@ -22,8 +22,8 @@ function Map() {
     }
   });
   const navigate = useNavigate()
-  
-  const {isLoaded} = useLoadScript({
+
+  const { isLoaded } = useLoadScript({
     googleMapsApiKey: "AIzaSyDErH86isLuYWxjCkmsE_bpyQ6f59PO2po"
   })
   // loading still
@@ -42,7 +42,7 @@ function Map() {
         </div>
       }
       {(wait === true && isLoggedIn === true) &&
-      //map goes here:
+        //map goes here:
         <MapPanel />
       }
     </div>
@@ -50,7 +50,7 @@ function Map() {
 }
 
 function MapPanel() {
-  const center = useMemo(()=>({lat: 41.8268, lng: -71.4025}), [])
+  const center = useMemo(() => ({ lat: 41.8268, lng: -71.4025 }), [])
   const mapRef = useRef();
   const onLoad = useCallback((map) => (mapRef.current = map), []);
   const houses = useMemo(() => generateBuildings(center), [center]);
@@ -59,75 +59,78 @@ function MapPanel() {
   const [currentBldg, setBldg] = useState("")
 
   return (
-      <div className='map-container'>
-          <div className="controls">
-            {(toggleSelected === false) && 
-              <input type="text"
-              id="map-search"
-              placeholder="Search" onChange={event => setQuery(event.target.value)}/>
+    <div className='map-container'>
+      <div className="controls">
+        {(toggleSelected === false) &&
+          <input type="text"
+            id="map-search"
+            placeholder="Search" onChange={event => setQuery(event.target.value)} />
 
-            }{(toggleSelected === false) && Data.filter(bldg => {
-                if (query === "") {
-                  return bldg;
-                } else if (bldg.name.toLowerCase().includes(query.toLowerCase())) {
-                  return bldg;
-                }}).map((bldg, index) => (
-                  /**
-                   * correct action when click on search input
-                   */
-                  <div className="search-box" key={index} onClick={()=>{
-                    setBldg(bldg.name)
-                    setSelected(true)
-                  }}>
-                    <p className='search-input'>{bldg.name}</p>
-                  </div>
-                )) }
-              {(toggleSelected === true) &&
-                <div>
-                  <p className="selected-bldg" onClick={()=>{
-                    setSelected(false)
-                  }}>{currentBldg}</p>
-                  {Data.filter(bldg => {if (bldg.name === currentBldg){
-                    return bldg
-                  }}).map((bldg, index) => (
-                      <div key={index} onClick={()=>{
-                        setBldg(bldg.name)
-                        setSelected(true)
-                        // figure out how to zoom to that pin on the map
-                      }}>
-                        <select>
-                          <option>Choose an option:</option>
-                          {/* this here will iterate through the different 
+        }{(toggleSelected === false) && Data.filter(bldg => {
+          if (query === "") {
+            return bldg;
+          } else if (bldg.name.toLowerCase().includes(query.toLowerCase())) {
+            return bldg;
+          }
+        }).map((bldg, index) => (
+          /**
+           * correct action when click on search input
+           */
+          <div className="search-box" key={index} onClick={() => {
+            setBldg(bldg.name)
+            setSelected(true)
+          }}>
+            <p className='search-input'>{bldg.name}</p>
+          </div>
+        ))}
+        {(toggleSelected === true) &&
+          <div>
+            <p className="selected-bldg" onClick={() => {
+              setSelected(false)
+            }}>{currentBldg}</p>
+            {Data.filter(bldg => {
+              if (bldg.name === currentBldg) {
+                return bldg
+              }
+            }).map((bldg, index) => (
+              <div key={index} onClick={() => {
+                setBldg(bldg.name)
+                setSelected(true)
+                // figure out how to zoom to that pin on the map
+              }}>
+                <select>
+                  <option>Choose an option:</option>
+                  {/* this here will iterate through the different 
                             water fountains at the building and they will be options
                             It will also then set the onClick?? */}
-                          <option>{bldg.name}</option>
-                        </select>
-                      </div>
-                    )) }
-                </div>
-              }
+                  <option>{bldg.name}</option>
+                </select>
+              </div>
+            ))}
           </div>
-          <GoogleMap id="google-map" zoom={15} center={center} onLoad={onLoad}>
-            <MarkerClusterer>
-                {() =>
-                  houses.map((house) => (
-                    <Marker
-                      key={house.lat}
-                      position={house}
-                      onClick={()=>{         
-                        // <InfoWindow content="hello"/>
-                        //pop up of the building list (on the left ??)
-                        console.log(house.lat)
-                      }}
-                    />
-                  ))
-                }
-             </MarkerClusterer>
-            {/* {toggleSeen ? <ReviewPopup toggle={setToggle()} /> : null} */}
-          </GoogleMap>
+        }
+      </div>
+      <GoogleMap id="google-map" zoom={15} center={center} onLoad={onLoad}>
+        <MarkerClusterer>
+          {() =>
+            houses.map((house) => (
+              <Marker
+                key={house.lat}
+                position={house}
+                onClick={() => {
+                  // <InfoWindow content="hello"/>
+                  //pop up of the building list (on the left ??)
+                  console.log(house.lat)
+                }}
+              />
+            ))
+          }
+        </MarkerClusterer>
+        {/* {toggleSeen ? <ReviewPopup toggle={setToggle()} /> : null} */}
+      </GoogleMap>
     </div>
   );
-  
+
 }
 
 const generateBuildings = (position) => {
