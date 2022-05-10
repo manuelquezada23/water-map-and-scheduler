@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { GoogleMap, useLoadScript, Marker, MarkerClusterer, LatLngLiteral, InfoWindow } from "@react-google-maps/api";
 import ReviewPopup from './ReviewPopup';
-import Data from "../mock-data.json"
+// import Data from "../mock-data.json"
 /**This needs to be db of all the buildings */
 
 function Map() {
@@ -60,6 +60,9 @@ function MapPanel() {
   const [query, setQuery] = useState("")
   const [justClicked, setJustClicked] = useState("false")
   const [currentBldg, setBldg] = useState("")
+  // const [currData, setData] = useState(getData())
+  const data = getData()
+  console.log(data)
 
   function toBuilding(bldg) {
     setCenter({lat: bldg.lat, lng: bldg.lng});   
@@ -69,22 +72,48 @@ function MapPanel() {
     setSelected(true)
   }
 
+  function getData() {
+    console.log("fetching")
+    fetch('http://localhost:4567/get-sql-rs', {
+      method: 'POST',
+      body: JSON.stringify({ sql: "SELECT * FROM buildings" }),
+      headers: {
+        "Access-Control-Allow-Origin": "*"
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("logging")
+        console.log(processData(data["values"]))})
+  }
+  
+  function processData(data) {
+    const _data = [];
+    for (var i = 0; i < data.length; i++) {
+      // console.log(data[i].nameValuePairs)
+      _data.push(data[i].nameValuePairs)
+    }
+    // setData(_data)
+    return _data
+  }
+
   return (
       <div className='map-container'>
+        {(data === "") && <div>NOTHING TO SHOW</div>}
           <div className="controls">
-            {(toggleSelected === false) && 
+            {(data !== "") && (toggleSelected === false) && 
               <input type="text"
               id="map-search"
               placeholder="Search" onChange={event => setQuery(event.target.value)}/>
 
-            }{(toggleSelected === false) && Data.filter(bldg => {
+            }{(data !== "") && (toggleSelected === false) && data.filter(bldg => {
                 if (justClicked) {
                   setQuery("")
                   setJustClicked(false)
                 }
                 if (query === "") {
                   return bldg;
-                } else if (bldg.building_name.toLowerCase().includes(query.toLowerCase())) {
+                } else if (bldg.BuildingName.toLowerCase().includes(query.toLowerCase())) {
                   return bldg;
                 }}).map((bldg, index) => (
                   /**
@@ -92,19 +121,17 @@ function MapPanel() {
                    */
                   <div className="search-box" key={index} onClick={()=>{
                     toBuilding(bldg)
-                    // setBldg(bldg.name)
-                    // setSelected(true)
                   }}>
-                    <p className='search-input'>{bldg.building_name}</p>
+                    <p className='search-input'>{bldg.BuildingName}</p>
                   </div>
                 )) }
-              {(toggleSelected === true) &&
+              {(data !== "") && (toggleSelected === true) &&
                 <div>
                   <p className="selected-bldg" onClick={()=>{
                     setSelected(false)
                     setJustClicked(true)
                   }}>{currentBldg}</p>
-                  {Data.filter(bldg => {if (bldg.building_name === currentBldg){
+                  {data?.filter(bldg => {if (bldg.BuildingName === currentBldg){
                     return bldg
                   }}).map((bldg, index) => (
                       <div key={index}>
@@ -113,17 +140,18 @@ function MapPanel() {
                           {/* this here will iterate through the different 
                             water fountains at the building and they will be options
                             It will also then set the onClick?? */}
-                          <option>{bldg.building_name}</option>
+                          <option>{bldg.BuildingName}</option>
                         </select>
                       </div>
                     )) }
                 </div>
               }
           </div>
+          {/* {(data !== "") && 
           <GoogleMap id="google-map" zoom={zoom} center={center} onLoad={onLoad}>
             <MarkerClusterer>
                 {() =>
-                  Data.map((bldg) => (
+                  data.map((bldg) => (
                     <Marker
                       key={bldg.id}
                       position={bldg}
@@ -137,30 +165,17 @@ function MapPanel() {
                 }
              </MarkerClusterer>
           </GoogleMap>
+          }        */}
     </div>
   );
   
 }
 
-
-// function getData() {
-//   fetch('http://localhost:4567/', {
-//         method: 'POST',
-//         body: JSON.stringify(postParameters),
-//         headers: {
-//             "Access-Control-Allow-Origin": "*"
-//         },
-//     })
-//         .then((response) => response.json())
-//         .then(data => generateBuildings(data))
-// }
-
-
 export default Map
 
 
 
-//obsolete
+// //obsolete
 // const generateBuildings2 = (position) => {
 //   const _houses = [];
 //   for (let i = 0; i < 10; i++) {
@@ -172,6 +187,7 @@ export default Map
 //       //other info that we need for the building
 //     });
 //   }
+//   console.log(_houses)
 //   // const _houses = 
 //   return _houses;
 // };

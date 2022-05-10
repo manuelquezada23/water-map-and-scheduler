@@ -3,12 +3,9 @@ edu/brown/cs/student/main/Api.class
 edu/brown/cs/student/main/database/Database.class
 edu/brown/cs/student/main/Api$getBuildingsFountainHandler.class
 edu/brown/cs/student/main/Api$getReviewsHandler.class
-<<<<<<< HEAD
-=======
 edu/brown/cs/student/main/buildings/Fountain.class
 edu/brown/cs/student/main/buildings/BuildingCommands.class
 edu/brown/cs/student/main/buildings/Building.class
 edu/brown/cs/student/main/userFunc/Event.class
 edu/brown/cs/student/main/userFunc/userCommands.class
->>>>>>> maya
 edu/brown/cs/student/main/Api$getUsersHandler.class
