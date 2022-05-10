@@ -255,7 +255,6 @@ function Schedule() {
 
     function addToSchedule() {
         let newData = data.slice()
-
         if (location.length !== 0 && startTime.length !== 0 && endTime.length !== 0) {
             let formattedStartTime = "2020-01-01T" + convertTime(startTime) + "Z";
             let formattedEndTime = "2020-01-01T" + convertTime(endTime) + "Z";
@@ -300,7 +299,7 @@ function Schedule() {
                     body: JSON.stringify(postParameters),
                     headers: { 'Access-Control-Allow-Origin': '*' },
                 }).then(() => {
-                    
+
                 }).catch((error) => console.error("Error:", error))
             }
             setData(newData)
