@@ -60,8 +60,10 @@ function MapPanel() {
   const [query, setQuery] = useState("")
   const [justClicked, setJustClicked] = useState("false")
   const [currentBldg, setBldg] = useState("")
-  // const [currData, setData] = useState(getData())
-  const data = getData()
+  const [wait, setAwait] = useState(false)
+  const [currData, setData] = useState("")
+
+  const data = useRef(getData())
   console.log(data)
 
   function toBuilding(bldg) {
@@ -80,11 +82,15 @@ function MapPanel() {
       headers: {
         "Access-Control-Allow-Origin": "*"
       },
-    })
-      .then((response) => response.json())
+    }).then((response) => response.json())
       .then((data) => {
+        setAwait(false)
         console.log("logging")
-        console.log(processData(data["values"]))})
+        console.log(data)
+        data =  processData(data["values"])
+        setAwait(true)
+        return data
+    })
   }
   
   function processData(data) {
@@ -99,14 +105,14 @@ function MapPanel() {
 
   return (
       <div className='map-container'>
-        {(data === "") && <div>NOTHING TO SHOW</div>}
+        {(!wait) && (wait === "") && <div>NOTHING TO SHOW</div>}
           <div className="controls">
             {(data !== "") && (toggleSelected === false) && 
               <input type="text"
               id="map-search"
               placeholder="Search" onChange={event => setQuery(event.target.value)}/>
 
-            }{(data !== "") && (toggleSelected === false) && data.filter(bldg => {
+            }{(wait) && (data !== "") && (toggleSelected === false) && data.filter(bldg => {
                 if (justClicked) {
                   setQuery("")
                   setJustClicked(false)
@@ -125,7 +131,7 @@ function MapPanel() {
                     <p className='search-input'>{bldg.BuildingName}</p>
                   </div>
                 )) }
-              {(data !== "") && (toggleSelected === true) &&
+              {(wait) && (data !== "") && (toggleSelected === true) &&
                 <div>
                   <p className="selected-bldg" onClick={()=>{
                     setSelected(false)
@@ -147,7 +153,7 @@ function MapPanel() {
                 </div>
               }
           </div>
-          {/* {(data !== "") && 
+          {(wait) && (data !== "") && 
           <GoogleMap id="google-map" zoom={zoom} center={center} onLoad={onLoad}>
             <MarkerClusterer>
                 {() =>
@@ -165,7 +171,7 @@ function MapPanel() {
                 }
              </MarkerClusterer>
           </GoogleMap>
-          }        */}
+          }       
     </div>
   );
   
