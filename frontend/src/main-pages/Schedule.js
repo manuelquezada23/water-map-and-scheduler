@@ -55,6 +55,7 @@ function Schedule() {
     const [location, setLocation] = useState(locations[0])
     const [data, setData] = useState([])
     const [wait, setAwait] = useState(false)
+    const [currentUserID, setCurrentUserID] = useState('')
 
     function convertDataIntoArray(data) {
         let newData = []
@@ -80,29 +81,40 @@ function Schedule() {
                     body: JSON.stringify(postParameters),
                     headers: { 'Access-Control-Allow-Origin': '*' },
                 }).then((response) => response.json()).then((data) => {
-                        setAwait(false)
-                        // convertDataIntoArray(data.values)
-                        setData(convertDataIntoArray(data.values))
-                        setAwait(true)
-                    })
+                    setAwait(false)
+                    setCurrentUserID(user.uid);
+                    setData(convertDataIntoArray(data.values))
+                    setAwait(true)
+                })
                     .catch((error) => console.error("Error:", error))
             }
         });
     }, []);
 
     function PopUpDelete(props) {
-        const location = props.location;
         const ID = props.id
-
+        const location = props.location
         function closePopUp(close) {
-            let newData = []
-            for (let i = 0; i < data.length; i++) {
-                if (data[i].id !== ID) {
-                    newData.push(data[i])
-                } 
+            const sqlCommand = "DELETE FROM events WHERE EventID = '" + ID + "'";
+
+            const postParameters = {
+                sql: sqlCommand
             }
-            setData(newData)
-            close()
+
+            fetch('http://localhost:4567/get-sql-rs', {
+                method: 'POST',
+                body: JSON.stringify(postParameters),
+                headers: { 'Access-Control-Allow-Origin': '*' },
+            }).then(() => {
+                let newData = []
+                for (let i = 0; i < data.length; i++) {
+                    if (data[i].EventID !== ID) {
+                        newData.push(data[i])
+                    }
+                }
+                setData(newData);
+                close();
+            }).catch((error) => console.error("Error:", error))
         }
 
         return (
@@ -129,7 +141,7 @@ function Schedule() {
         const day = data.DaysOfWeek;
         var startTime = data.StartTime;
         const endTime = data.EndTime;
-        const ID = data.id;
+        const eventID = data.EventID;
 
         var startDate = Date.parse(startTime)
         var endDate = Date.parse(endTime)
@@ -177,7 +189,7 @@ function Schedule() {
         return (
             <div style={styles.scheduleViewEvent}>
                 <PopUpDelete
-                    location={location} id={ID}
+                    location={location} id={eventID}
                 />
             </div>
         );
@@ -247,27 +259,48 @@ function Schedule() {
         if (location.length !== 0 && startTime.length !== 0 && endTime.length !== 0) {
             let formattedStartTime = "2020-01-01T" + convertTime(startTime) + "Z";
             let formattedEndTime = "2020-01-01T" + convertTime(endTime) + "Z";
+            let sqlCommands = []
+            const eventIDNow = Date.now()
 
             if (monday) {
-                newData.push({ id: 3, location: location, days: "Monday", startTime: formattedStartTime, endTime: formattedEndTime })
+                newData.push({ BuildingName: location, DaysOfWeek: "Monday", EndTime: formattedEndTime, EventID: eventIDNow, StartTime: formattedStartTime, UserID: currentUserID })
+                sqlCommands.push("INSERT INTO events VALUES (" + "'" + currentUserID + "','" + location + "','" + formattedStartTime + "','" + formattedEndTime + "','" + "Monday" + "','" + eventIDNow + "');")
             }
             if (tuesday) {
-                newData.push({ id: 3, location: location, days: "Tuesday", startTime: formattedStartTime, endTime: formattedEndTime })
+                newData.push({ BuildingName: location, DaysOfWeek: "Tuesday", EndTime: formattedEndTime, EventID: eventIDNow, StartTime: formattedStartTime, UserID: currentUserID })
+                sqlCommands.push("INSERT INTO events VALUES (" + "'" + currentUserID + "','" + location + "','" + formattedStartTime + "','" + formattedEndTime + "','" + "Tuesday" + "','" + eventIDNow + "');")
             }
             if (wednesday) {
-                newData.push({ id: 3, location: location, days: "Wednesday", startTime: formattedStartTime, endTime: formattedEndTime })
+                newData.push({ BuildingName: location, DaysOfWeek: "Wednesday", EndTime: formattedEndTime, EventID: eventIDNow, StartTime: formattedStartTime, UserID: currentUserID })
+                sqlCommands.push("INSERT INTO events VALUES (" + "'" + currentUserID + "','" + location + "','" + formattedStartTime + "','" + formattedEndTime + "','" + "Wednesday" + "','" + eventIDNow + "');")
             }
             if (thursday) {
-                newData.push({ id: 3, location: location, days: "Thursday", startTime: formattedStartTime, endTime: formattedEndTime })
+                newData.push({ BuildingName: location, DaysOfWeek: "Thursday", EndTime: formattedEndTime, EventID: eventIDNow, StartTime: formattedStartTime, UserID: currentUserID })
+                sqlCommands.push("INSERT INTO events VALUES (" + "'" + currentUserID + "','" + location + "','" + formattedStartTime + "','" + formattedEndTime + "','" + "Thursday" + "','" + eventIDNow + "');")
             }
             if (friday) {
-                newData.push({ id: 3, location: location, days: "Friday", startTime: formattedStartTime, endTime: formattedEndTime })
+                newData.push({ BuildingName: location, DaysOfWeek: "Friday", EndTime: formattedEndTime, EventID: eventIDNow, StartTime: formattedStartTime, UserID: currentUserID })
+                sqlCommands.push("INSERT INTO events VALUES (" + "'" + currentUserID + "','" + location + "','" + formattedStartTime + "','" + formattedEndTime + "','" + "Friday" + "','" + eventIDNow + "');")
             }
             if (saturday) {
-                newData.push({ id: 3, location: location, days: "Saturday", startTime: formattedStartTime, endTime: formattedEndTime })
+                newData.push({ BuildingName: location, DaysOfWeek: "Saturday", EndTime: formattedEndTime, EventID: eventIDNow, StartTime: formattedStartTime, UserID: currentUserID })
+                sqlCommands.push("INSERT INTO events VALUES (" + "'" + currentUserID + "','" + location + "','" + formattedStartTime + "','" + formattedEndTime + "','" + "Saturday" + "','" + eventIDNow + "');")
             }
             if (sunday) {
-                newData.push({ id: 3, location: location, days: "Sunday", startTime: formattedStartTime, endTime: formattedEndTime })
+                newData.push({ BuildingName: location, DaysOfWeek: "Sunday", EndTime: formattedEndTime, EventID: eventIDNow, StartTime: formattedStartTime, UserID: currentUserID })
+                sqlCommands.push("INSERT INTO events VALUES (" + "'" + currentUserID + "','" + location + "','" + formattedStartTime + "','" + formattedEndTime + "','" + "Sunday" + "','" + eventIDNow + "');")
+            }
+
+            for (let i = 0; i < sqlCommands.length; i++) {
+                const postParameters = {
+                    sql: sqlCommands[i]
+                }
+                fetch('http://localhost:4567/get-sql-rs', {
+                    method: 'POST',
+                    body: JSON.stringify(postParameters),
+                    headers: { 'Access-Control-Allow-Origin': '*' },
+                }).then(() => {
+                }).catch((error) => console.error("Error:", error))
             }
             setData(newData)
             setMonday(false)
