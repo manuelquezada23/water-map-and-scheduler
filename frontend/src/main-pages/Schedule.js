@@ -300,6 +300,7 @@ function Schedule() {
                     body: JSON.stringify(postParameters),
                     headers: { 'Access-Control-Allow-Origin': '*' },
                 }).then(() => {
+                    
                 }).catch((error) => console.error("Error:", error))
             }
             setData(newData)
