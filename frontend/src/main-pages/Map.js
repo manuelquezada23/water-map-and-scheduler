@@ -54,6 +54,7 @@ function MapPanel() {
   //data
   const [buildingData, setBuildingData] = useState([])
   const [fountainData, setFountainData] = useState([])
+  const [reviewData, setReviewData] = useState([])
   const [currentBldg, setBldg] = useState("")
   const [currentFnt, setFnt] = useState("")
   //map states
@@ -64,10 +65,16 @@ function MapPanel() {
   const mapRef = useRef();
   const onLoad = useCallback((map) => (mapRef.current = map), []);
   //search/toggle
-  const [toggleSelected, setSelected] = useState(false)
+  const [toggleSelected, setSelected] = useState(false) //building selected
+  const [toggleFntSelected, setFntSelected] = useState(false) //fountain selected
   const [query, setQuery] = useState("")
   const [justClicked, setJustClicked] = useState(false)
   const [wait, setAwait] = useState(false)
+
+  //set a review toggle
+  const [toggleReview, setReviewToggle] = useState(false) //building selected
+
+  //search or schedule
   const [search, setSearch] = useState(0)
 
   function toBuilding(bldg) {
@@ -82,36 +89,48 @@ function MapPanel() {
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
         if (user) {
-              console.log("fetching")
-              //loads the buildings
-              fetch('http://localhost:4567/get-sql-rs', {
-                method: 'POST',
-                body: JSON.stringify({ sql: "SELECT * FROM buildings" }),
-                headers: {
-                  "Access-Control-Allow-Origin": "*"
-                },
-              }).then((response) => response.json())
-                .then((data) => {
-                  setAwait(false)
-                  setBuildingData(processData(data["values"]))
-                  setAwait(true)
-                  // return data
-              })
-              //loads fountains
-              fetch('http://localhost:4567/get-sql-rs', {
-                method: 'POST',
-                body: JSON.stringify({ sql: "SELECT * FROM fountains" }),
-                headers: {
-                  "Access-Control-Allow-Origin": "*"
-                },
-              }).then((response) => response.json())
-                .then((data) => {
-                  setAwait(false)
-                  setFountainData(processData(data["values"]))
-                  setAwait(true)
-                  // return data
-              })
-        }
+          console.log("fetching")
+          //loads the buildings
+          fetch('http://localhost:4567/get-sql-rs', {
+            method: 'POST',
+            body: JSON.stringify({ sql: "SELECT * FROM buildings" }),
+            headers: {
+              "Access-Control-Allow-Origin": "*"
+            },
+          }).then((response) => response.json())
+            .then((data) => {
+              setAwait(false)
+              setBuildingData(processData(data["values"]))
+              setAwait(true)
+              // return data
+          })
+          //loads fountains
+          fetch('http://localhost:4567/get-sql-rs', {
+            method: 'POST',
+            body: JSON.stringify({ sql: "SELECT * FROM fountains" }),
+            headers: {
+              "Access-Control-Allow-Origin": "*"
+            },
+          }).then((response) => response.json())
+            .then((data) => {
+              setAwait(false)
+              setFountainData(processData(data["values"]))
+              setAwait(true)
+          })
+          //loads reviews
+          fetch('http://localhost:4567/get-sql-rs', {
+            method: 'POST',
+            body: JSON.stringify({ sql: "SELECT * FROM reviews" }),
+            headers: {
+              "Access-Control-Allow-Origin": "*"
+            },
+          }).then((response) => response.json())
+            .then((data) => {
+              setAwait(false)
+              setReviewData(processData(data["values"]))
+              setAwait(true)
+            })
+          }
     });
   }, []);
   
@@ -124,7 +143,8 @@ function MapPanel() {
   }
 
   const loadReviews = (event) => {
-    setFnt(event.target.value)
+    setFnt(event.target.value) //fountain id
+    setFntSelected(true)
     //load reviews for that fountain id
   }
 
@@ -159,8 +179,10 @@ function MapPanel() {
               {(wait) && (toggleSelected === true) &&
                 <div>
                   <p className="selected-bldg" onClick={()=>{
+                    //i.e. if they x out (should make a button) -- not intuitive
                     setSelected(false)
                     setJustClicked(true)
+                    setFntSelected(false) 
                   }}>{currentBldg}</p>
                   {buildingData.filter(bldg => {if (bldg.BuildingName === currentBldg){
                     return bldg
@@ -176,10 +198,26 @@ function MapPanel() {
                         </select>
                       </div>
                     )) }
+                  {(toggleFntSelected) && <div>
+                    {reviewData.filter(review => {
+                      if (review.FountainID === parseFloat(currentFnt)) {
+                        return review
+                      }
+                    }).map((review, index) => (
+                      <p key={index}>{review.Review} by {review.UserID}</p>
+                    ))}
+                  </div>}
+                  {/* {this.state.seenD ? <PopupDelete toggle={this.togglePopD} /> : null} */}
+                  <button onClick={() => {
+                    setReviewToggle(true)
+                  }}>Add a review</button>
+                  {toggleReview && 
+                  <ReviewPopup/>
+                  }
                 </div>
               }
           </div>
-          {(wait) && (buildingData !== "") && 
+          {(wait) && 
           <GoogleMap id="google-map" zoom={zoom} center={center} onLoad={onLoad}>
             <MarkerClusterer>
                 {() =>
