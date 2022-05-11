@@ -1,4 +1,12 @@
 -------------------------------------------------------------------------------
 Test set: edu.brown.cs.student.main.NearestFountainTest
 -------------------------------------------------------------------------------
+<<<<<<< HEAD
 Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.847 s - in edu.brown.cs.student.main.NearestFountainTest
+=======
+<<<<<<< HEAD
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.429 s - in edu.brown.cs.student.main.NearestFountainTest
+=======
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.847 s - in edu.brown.cs.student.main.NearestFountainTest
+>>>>>>> cb2d56ff (reviews addinggit add -A)
+>>>>>>> d787c21e91e2f7760e8a84bf01a587ae04c61983
