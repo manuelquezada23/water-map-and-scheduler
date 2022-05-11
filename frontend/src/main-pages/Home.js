@@ -27,7 +27,7 @@ function Home() {
         <div className="home-content">
           <div className="split left">
             <p className="home-content-title">Water Map & Scheduler</p>
-            <p className="home-content-subtitle">slogan here slogan here slogan here slogan here slogan here slogan here slogan here slogan here slogan here slogan here slogan here </p>
+            <p className="home-content-subtitle">Find water fountain locations, schedule your week's events, and enjoy fresh water! </p>
             {(!isLoggedIn) &&
               <button className="home-get-started-button" onClick={() => {navigate('/login')}}>Get Started</button>
             }
