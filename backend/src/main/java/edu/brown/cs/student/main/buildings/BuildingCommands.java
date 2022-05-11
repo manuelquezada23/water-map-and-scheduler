@@ -76,4 +76,24 @@ public class BuildingCommands {
     public List<Building> getBuildings() {
         return this.buildings;
     }
+
+    public Building idToBuilding(int buildingID) {
+        for (Building building : this.buildings) {
+            if (building.getCode() == buildingID) {
+                return building;
+            }
+        }
+        return null;
+    }
+
+    public Fountain idToFountain(int fountainID) {
+        for (Building building : this.buildings) {
+            for (Fountain fountain : building.getFountainList()) {
+                if (fountain.getId() == fountainID) {
+                    return fountain;
+                }
+            }
+        }
+        return null;
+    }
 }

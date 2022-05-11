@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.PriorityQueue;
 
 public class NearestFountain {
-    private List<Building> buildingList;
+    private final List<Building> buildingList;
     private static final int NUM_RETURNED_FOUNTAINS = 3;
 
     public NearestFountain(List<Building> buildingList) {

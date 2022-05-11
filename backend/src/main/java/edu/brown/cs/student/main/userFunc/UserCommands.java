@@ -8,17 +8,22 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class userCommands {
+public class UserCommands {
   private Database database;
   private List<User> users;
 
-  public userCommands(Database database) {
+  public UserCommands(Database database) {
     this.database = database;
-    this.users = new ArrayList<User>();
+    this.users = new ArrayList<>();
+    try {
+      this.getData();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
   }
 
   public void getData() throws SQLException {
-    this.users = new ArrayList<User>();
+    this.users = new ArrayList<>();
     ResultSet rs = this.database.executeCommand("SELECT UserID FROM users");
     while (rs.next()) {
       this.users.add(new User(rs.getInt(1)));
@@ -32,10 +37,10 @@ public class userCommands {
         this.users.get(i).setKey(rs.getString("Key"));
         this.users.get(i).setWaterBottleSize(rs.getDouble("WaterBottleSize"));
       }
-      List<Event> events = new ArrayList<Event>();
+      List<Event> events = new ArrayList<>();
       rs = this.database.executeCommand("SELECT * FROM events WHERE UserID = " + id);
       while (rs.next()) {
-        String location = rs.getString("BuildingName");
+        int location = rs.getInt("ProperyCode");
         int startTime = rs.getInt("StartTime");
         int endTime = rs.getInt("EndTime");
         List<String> days = Arrays.asList((rs.getString("DaysOfWeek").split(",")));
@@ -46,5 +51,14 @@ public class userCommands {
 
   public List<User> getUsers() {
     return this.users;
+  }
+
+  public User idToUser(int userID) {
+    for (User user : this.users) {
+      if (user.getUserid() == userID) {
+        return user;
+      }
+    }
+    return null;
   }
 }

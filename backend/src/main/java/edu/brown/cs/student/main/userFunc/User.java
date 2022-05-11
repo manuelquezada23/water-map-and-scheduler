@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class User {
-  private int userid;
+  private final int userid;
   private String email;
   private String key;
   private String name;
@@ -14,6 +14,15 @@ public class User {
   public User(int userid) {
     this.userid = userid;
     this.events = new ArrayList<Event>();
+  }
+
+  public int checkEvent(){
+    for (Event event : this.events) {
+      if (event.isHappening()) {
+        return event.getBuildingId();
+      }
+    }
+    return -1;
   }
 
   public String getEmail() {
