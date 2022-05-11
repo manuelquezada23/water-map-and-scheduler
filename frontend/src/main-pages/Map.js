@@ -69,15 +69,13 @@ function MapPanel() {
   //search/toggle
   const [toggleSelected, setSelected] = useState(false) //building selected
   const [toggleFntSelected, setFntSelected] = useState(false) //fountain selected
+  const [toggleReview, setReviewToggle] = useState(false) //review input or not
   const [query, setQuery] = useState("")
   const [justClicked, setJustClicked] = useState(false)
   const [wait, setAwait] = useState(false)
 
-  //set a review toggle
-  const [toggleReview, setReviewToggle] = useState(false) //building selected
-
   //search or schedule
-  const [search, setSearch] = useState(0)
+  const [search, setSearch] = useState(0) //0 means not chosen, 1 is by schedule, 2 is by search
 
   function toBuilding(bldg) {
     setCenter({ lat: parseFloat(bldg.Latitude), lng: parseFloat(bldg.Longitude) });
@@ -159,7 +157,19 @@ function MapPanel() {
     })
   }
 
-  function findUsername(id) {
+  function findUsername() {
+    return (
+      reviewData.filter(review => {
+        if (review.FountainID === parseFloat(currentFnt)) {
+          return review
+        }
+      }).map((review, index) => (
+        <p key={index}>{review.Review} by {findUsername1(review.UserID)}</p>
+      ))
+    );
+  }
+
+  function findUsername1(id) {
     fetch('http://localhost:4567/get-sql-rs', {
       method: 'POST',
       body: JSON.stringify({ sql: "SELECT Name FROM users WHERE UserID='"+id+"'"}),
@@ -177,6 +187,7 @@ function MapPanel() {
   const loadReviews = (event) => {
     setFnt(event.target.value) //fountain id
     setFntSelected(true)
+    // setFnt(event.target.id);
     //load reviews for that fountain id
   }
 
@@ -184,7 +195,7 @@ function MapPanel() {
     <div className='map-container'>
       {(!wait) && (wait === "") && <div>NOTHING TO SHOW</div>}
       <div className="map-leftSide">
-        {(buildingData !== "") && (toggleSelected === false) &&
+        {(search === 1) && (toggleSelected === false) &&
           <input type="text"
             className="map-searchBar"
             id="map-search"
@@ -192,7 +203,16 @@ function MapPanel() {
 
         }
         <div className="controls">
-          {(wait) && (toggleSelected === false) && buildingData.filter(bldg => {
+          {(search === 0) && 
+            <div>
+              <button onClick={()=>setSearch(2)}>Find fountain by schedule</button> 
+              {/*what happens if they want to fill up by schedule?
+                  somehow the correct fountain should be found and it should jump to there 
+                  (should be easy enough) */}
+              <button onClick={()=>setSearch(1)}>Search for a fountain</button>
+            </div>
+          }
+          {(search === 1) && (wait) && (toggleSelected === false) && buildingData.filter(bldg => {
             if (justClicked) {
               setQuery("")
               setJustClicked(false)
@@ -239,13 +259,14 @@ function MapPanel() {
                 </div>
               ))}
               {(toggleFntSelected) && <div>
-                {reviewData.filter(review => {
+                {findUsername}
+                {/* {reviewData.filter(review => {
                   if (review.FountainID === parseFloat(currentFnt)) {
                     return review
                   }
                 }).map((review, index) => (
                   <p key={index}>{review.Review} by {findUsername(review.UserID)}</p>
-                ))}
+                ))} */}
                 <button className="map-review-button" onClick={() => {
                 setReviewToggle(true)
                 }}>Add a review</button>
