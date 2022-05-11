@@ -909,6 +909,7 @@ input[type='file'] {
   margin-left: auto;
   margin-right: auto;
   display: flex;
+  position: relative;
   flex-flow: column wrap;
   align-content: flex-end;
 }
@@ -1109,4 +1110,5 @@ input[type='file'] {
 
 .map-searchBar:focus {
   outline: none;
+  position: relative;
 }

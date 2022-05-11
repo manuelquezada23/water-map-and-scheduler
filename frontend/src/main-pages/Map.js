@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { GoogleMap, useLoadScript, Marker, MarkerClusterer, LatLngLiteral, InfoWindow } from "@react-google-maps/api";
 import ReviewPopup from './ReviewPopup';
+import PictureIcon from '../picture.png'
 import { flushSync } from 'react-dom';
 // import Data from "../mock-data.json"
 /**This needs to be db of all the buildings */
@@ -57,6 +58,7 @@ function MapPanel() {
   const [reviewData, setReviewData] = useState([])
   const [currentBldg, setBldg] = useState("")
   const [currentFnt, setFnt] = useState("")
+  const [review, setReview] = useState("")
   //map states
   const [currCenter, setCenter] = useState({ lat: 41.8268, lng: -71.4025 })
   const [currZoom, setZoom] = useState(17)
@@ -142,6 +144,19 @@ function MapPanel() {
     return _data
   }
 
+  function sendReview() {
+    //loads reviews
+    fetch('http://localhost:4567/get-sql-rs', {
+      method: 'POST',
+      body: JSON.stringify({ sql: "INSERT INTO reviews VALUES ('1', '" + currentFnt + "', '" + review + "', '5')"}),
+      headers: {
+        "Access-Control-Allow-Origin": "*"
+      },
+    }).then((data) => {
+      console.log("added: ",data)
+    })
+  }
+
   const loadReviews = (event) => {
     setFnt(event.target.value) //fountain id
     setFntSelected(true)
@@ -219,9 +234,30 @@ function MapPanel() {
               <button className="map-review-button" onClick={() => {
                 setReviewToggle(true)
               }}>Add a review</button>
-              {toggleReview &&
-                <ReviewPopup />
-              }
+              {toggleReview && 
+                  <div className="popup">
+                    <div className='review-popup'>
+                      <p className="building-name">Sciences Library</p>
+                      <div className='author-box'>
+                        <img className="review-image" src={PictureIcon}></img>
+                        <div className="stars">
+                          <p className="author">Jane Doe</p>
+                          {/* <p className="author">stars</p> */}
+                          <p>star rating</p>
+                        </div>
+                      </div>
+                      <textarea className="review-box" placeholder="What did you think?" type="text" onChange={(e)=>{setReview(e.target.value)}}required />
+                      <div className="review-submit">
+                        <button className="review-submit-button" onClick={(e)=>{
+                          e.preventDefault()
+                          sendReview();
+
+                        }}>Post</button>
+                      </div>
+                    </div>
+                  </div>
+                    //paste code here maybe? - add exit button, figure out how to overlay
+                  }
             </div>
           }
         </div>
@@ -245,7 +281,6 @@ function MapPanel() {
       }
     </div>
   );
-
 }
 
 export default Map
