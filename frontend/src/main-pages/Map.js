@@ -159,6 +159,21 @@ function MapPanel() {
     })
   }
 
+  function findUsername(id) {
+    fetch('http://localhost:4567/get-sql-rs', {
+      method: 'POST',
+      body: JSON.stringify({ sql: "SELECT Name FROM users WHERE UserID='"+id+"'"}),
+      headers: {
+        "Access-Control-Allow-Origin": "*"
+      },
+    }).then((response) => response.json())
+    .then((data) => {
+      const d = processData(data["values"])
+      console.log(d["0"].Name)
+      return(d["0"].Name)
+    })
+  }
+
   const loadReviews = (event) => {
     setFnt(event.target.value) //fountain id
     setFntSelected(true)
@@ -229,17 +244,17 @@ function MapPanel() {
                     return review
                   }
                 }).map((review, index) => (
-                  <p key={index}>{review.Review} by {review.UserID}</p>
+                  <p key={index}>{review.Review} by {findUsername(review.UserID)}</p>
                 ))}
-              </div>}
-              {/* {this.state.seenD ? <PopupDelete toggle={this.togglePopD} /> : null} */}
-              <button className="map-review-button" onClick={() => {
+                <button className="map-review-button" onClick={() => {
                 setReviewToggle(true)
-              }}>Add a review</button>
+                }}>Add a review</button>
+              </div>}
+             
               {toggleReview && 
                   <div className="popup">
                     <div className='review-popup'>
-                      <p className="building-name">Sciences Library</p>
+                      <p className="building-name">{currentBldg}</p>
                       <div className='author-box'>
                         <img className="review-image" src={PictureIcon}></img>
                         <div className="stars">
@@ -253,18 +268,18 @@ function MapPanel() {
                         <button className="review-submit-button" onClick={(e)=>{
                           e.preventDefault()
                           sendReview();
-
                         }}>Post</button>
                       </div>
                     </div>
                   </div>
-                    //paste code here maybe? - add exit button, figure out how to overlay
+                    // add exit button, figure out how to overlay
                   }
             </div>
           }
         </div>
       </div>
       {(wait) &&
+        //Map
         <GoogleMap id="google-map" zoom={zoom} center={center} onLoad={onLoad}>
           <MarkerClusterer>
             {() =>
