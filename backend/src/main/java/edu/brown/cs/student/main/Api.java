@@ -109,6 +109,7 @@ public class Api {
       }
       if (rs != null) {
         String json = gson.toJson(turnRSIntoString(rs));
+        System.out.println(json);
         return json;
       }
       return "";

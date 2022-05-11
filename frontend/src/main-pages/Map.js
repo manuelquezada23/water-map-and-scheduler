@@ -102,10 +102,9 @@ function MapPanel() {
         }).then((response) => response.json())
           .then((data) => {
             setAwait(false)
-            console.log(data)
+            console.log("buildings",data)
             setBuildingData(processData(data["values"]))
             setAwait(true)
-            // return data
           })
         //loads fountains
         fetch('http://localhost:4567/get-sql-rs', {
@@ -117,6 +116,7 @@ function MapPanel() {
         }).then((response) => response.json())
           .then((data) => {
             setAwait(false)
+            console.log("fountains",data)
             setFountainData(processData(data["values"]))
             setAwait(true)
           })
@@ -130,7 +130,7 @@ function MapPanel() {
         }).then((response) => response.json())
           .then((data) => {
             setAwait(false)
-            console.log(data)
+            console.log("reviews",data)
             setReviewData(processData(data["values"]))
             setAwait(true)
           })
