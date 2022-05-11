@@ -337,6 +337,14 @@ Contact Page
   margin-top: -20px;
 }
 
+.about-diagram-left {
+  width: 50%;
+}
+
+.about-diagram-right {
+  width: 50%;
+}
+
 .about-drop-logo {
   width: 150px;
   height: 150px;
