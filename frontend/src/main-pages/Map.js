@@ -102,6 +102,7 @@ function MapPanel() {
         }).then((response) => response.json())
           .then((data) => {
             setAwait(false)
+            console.log(data)
             setBuildingData(processData(data["values"]))
             setAwait(true)
             // return data
@@ -129,6 +130,7 @@ function MapPanel() {
         }).then((response) => response.json())
           .then((data) => {
             setAwait(false)
+            console.log(data)
             setReviewData(processData(data["values"]))
             setAwait(true)
           })

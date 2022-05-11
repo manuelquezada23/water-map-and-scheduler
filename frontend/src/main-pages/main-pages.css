@@ -1096,8 +1096,6 @@ input[type='file'] {
 
 .popup {
   z-index: 9;
-<<<<<<< HEAD
-=======
 }
 
 .map-searchBar {
@@ -1112,6 +1110,5 @@ input[type='file'] {
 
 .map-searchBar:focus {
   outline: none;
->>>>>>> d787c21e91e2f7760e8a84bf01a587ae04c61983
   position: relative;
 }
