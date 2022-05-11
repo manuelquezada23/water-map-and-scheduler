@@ -9,11 +9,10 @@ public class User {
   private String key;
   private String name;
   private List<Event> events;
-  private double waterBottleSize;
 
   public User(int userid) {
     this.userid = userid;
-    this.events = new ArrayList<Event>();
+    this.events = new ArrayList<>();
   }
 
   public int checkEvent(){
@@ -39,14 +38,6 @@ public class User {
 
   public void setKey(String key) {
     this.key = key;
-  }
-
-  public double getWaterBottleSize() {
-    return this.waterBottleSize;
-  }
-
-  public void setWaterBottleSize(double waterBottleSize) {
-    this.waterBottleSize = waterBottleSize;
   }
 
   public int getUserid() {

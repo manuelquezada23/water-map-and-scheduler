@@ -84,7 +84,6 @@ public class Api {
     Spark.post("/get-fountains-location", new getNearestFountainLocationHandler());
     Spark.post("/get-average-rating", new getAverageRatingHandler());
 
-
     Spark.init();
   }
 
@@ -149,12 +148,10 @@ public class Api {
         json.put("first", fountainList.get(0).getId());
         json.put("second", fountainList.get(1).getId());
         json.put("third", fountainList.get(2).getId());
-
+        return gson.toJson(json);
       } else {
-        json = null;
+        return "Failed";
       }
-
-      return gson.toJson(json);
     }
   }
 

@@ -3,20 +3,19 @@ package edu.brown.cs.student.main.userFunc;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
-import java.util.List;
 
 public class Event {
   private int building;
-  private int startTime;
-  private int endTime;
-  private final List<String> daysOfWeek;
+  private final int startTime;
+  private final int endTime;
+  private final String dayOfWeek;
   private static final int MARGIN_OF_ERROR = 10;
 
-  public Event(int building, int startTime, int endTime, List<String> daysOfWeek) {
+  public Event(int building, int startTime, int endTime, String dayOfWeek) {
     this.building = building;
     this.startTime = startTime;
     this.endTime = endTime;
-    this.daysOfWeek = daysOfWeek;
+    this.dayOfWeek = dayOfWeek;
   }
 
   public boolean isHappening() {
@@ -30,16 +29,7 @@ public class Event {
 
     // check if correct day of the week and within time range
     return (hourMinCombinedInt >= this.startTime - MARGIN_OF_ERROR)
-            && (hourMinCombinedInt <= this.endTime + MARGIN_OF_ERROR) && (this.correctDay(day));
-  }
-
-  private boolean correctDay(String day) {
-    for (String dayHappening : this.daysOfWeek) {
-      if (day.equals(dayHappening)) {
-        return true;
-      }
-    }
-    return false;
+            && (hourMinCombinedInt <= this.endTime + MARGIN_OF_ERROR) && (day.equals(this.dayOfWeek));
   }
 
   public int getBuildingId() {
