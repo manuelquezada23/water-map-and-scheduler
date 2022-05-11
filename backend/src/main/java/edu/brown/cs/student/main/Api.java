@@ -104,10 +104,11 @@ public class Api {
 
       Gson gson = new Gson();
       ResultSet rs = Api.this.db.executeCommand(command);
-
+      if (rs == null && command.contains("INSERT")) {
+        return "success";
+      }
       if (rs != null) {
         String json = gson.toJson(turnRSIntoString(rs));
-        System.out.println(json);
         return json;
       }
       return "";
