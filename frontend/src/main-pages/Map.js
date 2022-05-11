@@ -253,7 +253,7 @@ function MapPanel() {
                     return review
                   }
                 }).map((review, index) => (
-                  <p key={index}>{review.Review} by {review.userID}</p>
+                  <p key={index}>{review.Review} by {review.UserID}</p>
                 ))}
                 <button className="map-review-button" onClick={() => {
                 setReviewToggle(true)

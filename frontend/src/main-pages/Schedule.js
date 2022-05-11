@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Popup from 'reactjs-popup';
 import { IoCloseCircleSharp } from "react-icons/io5";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 const times = [
     "12:00 AM", "12:30 AM", "01:00 AM", "01:30 AM", "02:00 AM", "02:30 AM", "03:00 AM", "03:30 AM", "04:00 AM", "04:30 AM", "05:00 AM", "05:30 AM", "06:00 AM",
@@ -14,18 +15,6 @@ const scheduleTimes = [
     "07:00AM", "08:00AM", "09:00AM", "10:00AM", "11:00AM", "12:00PM", "01:00PM",
     "02:00PM", "03:00PM", "04:00PM", "05:00PM", "06:00PM", "07:00PM", "08:00PM",
     "09:00PM", "10:00PM", "11:00PM"
-]
-
-const locations = [
-    "Location 1", "Location 2", "Location 3"
-]
-
-let userScheduleData = [
-    { id: 1, location: "Location 1", days: "Monday", startTime: "2020-01-01T12:00:00Z", endTime: "2020-01-01T12:50:00Z" },
-    { id: 1, location: "Location 1", days: "Wednesday", startTime: "2020-01-01T12:00:00Z", endTime: "2020-01-01T12:50:00Z" },
-    { id: 1, location: "Location 1", days: "Friday", startTime: "2020-01-01T12:00:00Z", endTime: "2020-01-01T12:50:00Z" },
-    { id: 2, location: "Location 2", days: "Tuesday", startTime: "2020-01-01T14:30:00Z", endTime: "2020-01-01T15:50:00Z" },
-    { id: 2, location: "Location 2", days: "Thursday", startTime: "2020-01-01T14:30:00Z", endTime: "2020-01-01T15:50:00Z" },
 ]
 
 function convertTime(timeStr) {
@@ -51,22 +40,92 @@ function Schedule() {
     const [sunday, setSunday] = useState(false)
     const [startTime, setStartTime] = useState('12:00 AM')
     const [endTime, setEndTime] = useState('12:00 AM')
-    const [location, setLocation] = useState(locations[0])
-    const [data, setData] = useState(userScheduleData)
+    const [location, setLocation] = useState()
+    const [locations, setLocations] = useState([])
+    const [firstLocation, setFirstLocation] = useState()
+    const [data, setData] = useState([])
+    const [wait, setAwait] = useState(false)
+    const [currentUserID, setCurrentUserID] = useState('')
+
+    function convertDataIntoArray(data) {
+        let newData = []
+        for (let i = 0; i < data.length; i++) {
+            newData.push(data[i].nameValuePairs);
+        }
+        return newData;
+    }
+
+
+    useEffect(() => {
+        const auth = getAuth();
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                const sqlCommand = "SELECT * FROM events WHERE UserID = '" + user.uid + "'";
+                const sqlCommandTwo = "SELECT * FROM buildings";
+
+                const postParameters = {
+                    sql: sqlCommand
+                }
+
+                const postParametersTwo = {
+                    sql: sqlCommandTwo
+                }
+
+                fetch('http://localhost:4567/get-sql-rs', {
+                    method: 'POST',
+                    body: JSON.stringify(postParameters),
+                    headers: { 'Access-Control-Allow-Origin': '*' },
+                }).then((response) => response.json()).then((data) => {
+                    setAwait(false)
+                    setCurrentUserID(user.uid);
+                    setData(convertDataIntoArray(data.values))
+                })
+
+                fetch('http://localhost:4567/get-sql-rs', {
+                    method: 'POST',
+                    body: JSON.stringify(postParametersTwo),
+                    headers: { 'Access-Control-Allow-Origin': '*' },
+                }).then((response) => response.json()).then((data) => {
+                    const processed_data = convertDataIntoArray(data.values)
+                    setLocations(processed_data)
+                    setLocation(processed_data[0])
+                    setFirstLocation(processed_data[0])
+                    setAwait(true)
+                    // setAwait(false)
+                    // setCurrentUserID(user.uid);
+                    // setData(convertDataIntoArray(data.values))
+                    // setAwait(true)
+                })
+                
+                .catch((error) => console.error("Error:", error))
+            }
+        });
+    }, []);
 
     function PopUpDelete(props) {
-        const location = props.location;
         const ID = props.id
-
+        const location = props.location
         function closePopUp(close) {
-            let newData = []
-            for (let i = 0; i < data.length; i++) {
-                if (data[i].id !== ID) {
-                    newData.push(data[i])
-                }
+            const sqlCommand = "DELETE FROM events WHERE EventID = '" + ID + "'";
+
+            const postParameters = {
+                sql: sqlCommand
             }
-            setData(newData)
-            close()
+
+            fetch('http://localhost:4567/get-sql-rs', {
+                method: 'POST',
+                body: JSON.stringify(postParameters),
+                headers: { 'Access-Control-Allow-Origin': '*' },
+            }).then(() => {
+                let newData = []
+                for (let i = 0; i < data.length; i++) {
+                    if (data[i].EventID !== ID) {
+                        newData.push(data[i])
+                    }
+                }
+                setData(newData);
+                close();
+            }).catch((error) => console.error("Error:", error))
         }
 
         return (
@@ -89,12 +148,11 @@ function Schedule() {
     }
 
     function setEvents(data) {
-
-        const location = data.location;
-        const day = data.days;
-        const startTime = data.startTime;
-        const endTime = data.endTime;
-        const ID = data.id;
+        const location = data.BuildingName;
+        const day = data.DaysOfWeek;
+        const startTime = data.StartTime;
+        const endTime = data.EndTime;
+        const eventID = data.EventID;
 
         var startDate = Date.parse(startTime)
         var endDate = Date.parse(endTime)
@@ -142,7 +200,7 @@ function Schedule() {
         return (
             <div style={styles.scheduleViewEvent}>
                 <PopUpDelete
-                    location={location} id={ID}
+                    location={location} id={eventID}
                 />
             </div>
         );
@@ -208,31 +266,52 @@ function Schedule() {
 
     function addToSchedule() {
         let newData = data.slice()
-
         if (location.length !== 0 && startTime.length !== 0 && endTime.length !== 0) {
             let formattedStartTime = "2020-01-01T" + convertTime(startTime) + "Z";
             let formattedEndTime = "2020-01-01T" + convertTime(endTime) + "Z";
+            let sqlCommands = []
+            const eventIDNow = Date.now()
 
             if (monday) {
-                newData.push({ id: 3, location: location, days: "Monday", startTime: formattedStartTime, endTime: formattedEndTime })
+                newData.push({ BuildingName: location, DaysOfWeek: "Monday", EndTime: formattedEndTime, EventID: eventIDNow, StartTime: formattedStartTime, UserID: currentUserID })
+                sqlCommands.push("INSERT INTO events VALUES (" + "'" + currentUserID + "','" + location + "','" + formattedStartTime + "','" + formattedEndTime + "','" + "Monday" + "','" + eventIDNow + "');")
             }
             if (tuesday) {
-                newData.push({ id: 3, location: location, days: "Tuesday", startTime: formattedStartTime, endTime: formattedEndTime })
+                newData.push({ BuildingName: location, DaysOfWeek: "Tuesday", EndTime: formattedEndTime, EventID: eventIDNow, StartTime: formattedStartTime, UserID: currentUserID })
+                sqlCommands.push("INSERT INTO events VALUES (" + "'" + currentUserID + "','" + location + "','" + formattedStartTime + "','" + formattedEndTime + "','" + "Tuesday" + "','" + eventIDNow + "');")
             }
             if (wednesday) {
-                newData.push({ id: 3, location: location, days: "Wednesday", startTime: formattedStartTime, endTime: formattedEndTime })
+                newData.push({ BuildingName: location, DaysOfWeek: "Wednesday", EndTime: formattedEndTime, EventID: eventIDNow, StartTime: formattedStartTime, UserID: currentUserID })
+                sqlCommands.push("INSERT INTO events VALUES (" + "'" + currentUserID + "','" + location + "','" + formattedStartTime + "','" + formattedEndTime + "','" + "Wednesday" + "','" + eventIDNow + "');")
             }
             if (thursday) {
-                newData.push({ id: 3, location: location, days: "Thursday", startTime: formattedStartTime, endTime: formattedEndTime })
+                newData.push({ BuildingName: location, DaysOfWeek: "Thursday", EndTime: formattedEndTime, EventID: eventIDNow, StartTime: formattedStartTime, UserID: currentUserID })
+                sqlCommands.push("INSERT INTO events VALUES (" + "'" + currentUserID + "','" + location + "','" + formattedStartTime + "','" + formattedEndTime + "','" + "Thursday" + "','" + eventIDNow + "');")
             }
             if (friday) {
-                newData.push({ id: 3, location: location, days: "Friday", startTime: formattedStartTime, endTime: formattedEndTime })
+                newData.push({ BuildingName: location, DaysOfWeek: "Friday", EndTime: formattedEndTime, EventID: eventIDNow, StartTime: formattedStartTime, UserID: currentUserID })
+                sqlCommands.push("INSERT INTO events VALUES (" + "'" + currentUserID + "','" + location + "','" + formattedStartTime + "','" + formattedEndTime + "','" + "Friday" + "','" + eventIDNow + "');")
             }
             if (saturday) {
-                newData.push({ id: 3, location: location, days: "Saturday", startTime: formattedStartTime, endTime: formattedEndTime })
+                newData.push({ BuildingName: location, DaysOfWeek: "Saturday", EndTime: formattedEndTime, EventID: eventIDNow, StartTime: formattedStartTime, UserID: currentUserID })
+                sqlCommands.push("INSERT INTO events VALUES (" + "'" + currentUserID + "','" + location + "','" + formattedStartTime + "','" + formattedEndTime + "','" + "Saturday" + "','" + eventIDNow + "');")
             }
             if (sunday) {
-                newData.push({ id: 3, location: location, days: "Sunday", startTime: formattedStartTime, endTime: formattedEndTime })
+                newData.push({ BuildingName: location, DaysOfWeek: "Sunday", EndTime: formattedEndTime, EventID: eventIDNow, StartTime: formattedStartTime, UserID: currentUserID })
+                sqlCommands.push("INSERT INTO events VALUES (" + "'" + currentUserID + "','" + location + "','" + formattedStartTime + "','" + formattedEndTime + "','" + "Sunday" + "','" + eventIDNow + "');")
+            }
+
+            for (let i = 0; i < sqlCommands.length; i++) {
+                const postParameters = {
+                    sql: sqlCommands[i]
+                }
+                fetch('http://localhost:4567/get-sql-rs', {
+                    method: 'POST',
+                    body: JSON.stringify(postParameters),
+                    headers: { 'Access-Control-Allow-Origin': '*' },
+                }).then(() => {
+
+                }).catch((error) => console.error("Error:", error))
             }
             setData(newData)
             setMonday(false)
@@ -244,90 +323,97 @@ function Schedule() {
             setSunday(false)
             setStartTime("12:00 AM")
             setEndTime("12:00 AM")
-            setLocation(locations[0])
+            setLocation(firstLocation)
         } else {
             window.alert("Some fields were not selected.")
         }
     }
 
     return (
+
         <div className="main-page-body">
-            <div className="schedule">
-                <div className="schedule-addtoschedule-box">
-                    <p className="schedule-header">Add To Schedule</p>
-                    <p className="schedule-subtitle">Location</p>
-                    <select name="locations" id="locations" className="schedule-dropdown" onChange={(e) => { setLocation(e.target.value) }}>
-                        {locations.map((location) => (
-                            <option value={location}>{location}</option>
-                        ))}
-                    </select>
-                    <p className="schedule-subtitle">Day of the Week</p>
-                    <div style={{ marginBottom: "10px", marginTop: "-10px" }}>
+            {!wait &&
+                <div></div>
+            }
+            {wait &&
+
+                <div className="schedule">
+                    <div className="schedule-addtoschedule-box">
+                        <p className="schedule-header">Add To Schedule</p>
+                        <p className="schedule-subtitle">Location</p>
+                        <select name="locations" id="locations" className="schedule-dropdown" onChange={(e) => { setLocation(e.target.value) }}>
+                            {locations.map((location) => (
+                                <option key={location.PropertyCode} value={location.BuildingName}>{location.BuildingName}</option>
+                            ))}
+                        </select>
+                        <p className="schedule-subtitle">Day of the Week</p>
+                        <div style={{ marginBottom: "10px", marginTop: "-10px" }}>
+                            <div className="row">
+                                <div className="column">
+                                    <div className={monday ? "schedule-day-button-selected" : "schedule-day-button"} onClick={(e) => { selectDay(e) }}>Monday</div>
+                                    <div className={tuesday ? "schedule-day-button-selected" : "schedule-day-button"} onClick={(e) => { selectDay(e) }}>Tuesday</div>
+                                    <div className={wednesday ? "schedule-day-button-selected" : "schedule-day-button"} onClick={(e) => { selectDay(e) }}>Wednesday</div>
+                                    <div className={thursday ? "schedule-day-button-selected" : "schedule-day-button"} onClick={(e) => { selectDay(e) }}>Thursday</div>
+                                </div>
+                                <div className="column">
+                                    <div className={friday ? "schedule-day-button-selected" : "schedule-day-button"} onClick={(e) => { selectDay(e) }}>Friday</div>
+                                    <div className={saturday ? "schedule-day-button-selected" : "schedule-day-button"} onClick={(e) => { selectDay(e) }}>Saturday</div>
+                                    <div className={sunday ? "schedule-day-button-selected" : "schedule-day-button"} onClick={(e) => { selectDay(e) }}>Sunday</div>
+                                </div>
+                            </div>
+                        </div>
                         <div className="row">
                             <div className="column">
-                                <div className={monday ? "schedule-day-button-selected" : "schedule-day-button"} onClick={(e) => { selectDay(e) }}>Monday</div>
-                                <div className={tuesday ? "schedule-day-button-selected" : "schedule-day-button"} onClick={(e) => { selectDay(e) }}>Tuesday</div>
-                                <div className={wednesday ? "schedule-day-button-selected" : "schedule-day-button"} onClick={(e) => { selectDay(e) }}>Wednesday</div>
-                                <div className={thursday ? "schedule-day-button-selected" : "schedule-day-button"} onClick={(e) => { selectDay(e) }}>Thursday</div>
+                                <p className="schedule-subtitle-flex">Start Time</p>
+                                <select name="startTimes" id="startTimes" className="schedule-dropdown-time" onChange={(e) => { setStartTime(e.target.value) }}>
+                                    {times.map((time) => (
+                                        <option key={time} value={time}>{time}</option>
+                                    ))}
+                                </select>
                             </div>
                             <div className="column">
-                                <div className={friday ? "schedule-day-button-selected" : "schedule-day-button"} onClick={(e) => { selectDay(e) }}>Friday</div>
-                                <div className={saturday ? "schedule-day-button-selected" : "schedule-day-button"} onClick={(e) => { selectDay(e) }}>Saturday</div>
-                                <div className={sunday ? "schedule-day-button-selected" : "schedule-day-button"} onClick={(e) => { selectDay(e) }}>Sunday</div>
+                                <p className="schedule-subtitle-flex">End Time</p>
+                                <select name="endTimes" id="endTimes" className="schedule-dropdown-time" onChange={(e) => { setEndTime(e.target.value) }}>
+                                    {times.map((time) => (
+                                        <option key={time} value={time}>{time}</option>
+                                    ))}
+                                </select>
                             </div>
                         </div>
+                        <div className="schedule-add-button" onClick={() => { addToSchedule() }}>Add</div>
                     </div>
-                    <div className="row">
-                        <div className="column">
-                            <p className="schedule-subtitle-flex">Start Time</p>
-                            <select name="startTimes" id="startTimes" className="schedule-dropdown-time" onChange={(e) => { setStartTime(e.target.value) }}>
-                                {times.map((time) => (
-                                    <option value={time}>{time}</option>
-                                ))}
-                            </select>
-                        </div>
-                        <div className="column">
-                            <p className="schedule-subtitle-flex">End Time</p>
-                            <select name="endTimes" id="endTimes" className="schedule-dropdown-time" onChange={(e) => { setEndTime(e.target.value) }}>
-                                {times.map((time) => (
-                                    <option value={time}>{time}</option>
-                                ))}
-                            </select>
-                        </div>
-                    </div>
-                    <div className="schedule-add-button" onClick={() => { addToSchedule() }}>Add</div>
-                </div>
-                <div className="schedule-box">
-                    <p className="schedule-header">My Schedule</p>
-                    <div className="schedule-view-content">
-                        <div className="schedule-view-days">
-                            <div className="schedule-view-day">Sunday</div>
-                            <div className="schedule-view-day">Monday</div>
-                            <div className="schedule-view-day">Tuesday</div>
-                            <div className="schedule-view-day">Wednesday</div>
-                            <div className="schedule-view-day">Thursday</div>
-                            <div className="schedule-view-day">Friday</div>
-                            <div className="schedule-view-day">Saturday</div>
-                        </div>
-                        <div className="schedule-view-body">
-                            <div className="schedule-view-time">
-                                {scheduleTimes.map((time) => (
-                                    <p className="schedule-time-style">{time}</p>
-                                ))}
+                    <div className="schedule-box">
+                        <p className="schedule-header">My Schedule</p>
+                        <div className="schedule-view-content">
+                            <div className="schedule-view-days">
+                                <div className="schedule-view-day">Sunday</div>
+                                <div className="schedule-view-day">Monday</div>
+                                <div className="schedule-view-day">Tuesday</div>
+                                <div className="schedule-view-day">Wednesday</div>
+                                <div className="schedule-view-day">Thursday</div>
+                                <div className="schedule-view-day">Friday</div>
+                                <div className="schedule-view-day">Saturday</div>
                             </div>
-                            <div className="schedule-view-grid" id="grid">
-                                {Array.from({ length: 168 }, (_, i) => <div className="schedule-view-line"></div>)}
-                            </div>
-                            <div className="schedule-view-inputs">
-                                {data.map(function (item) {
-                                    return (setEvents(item))
-                                })}
+                            <div className="schedule-view-body">
+                                <div className="schedule-view-time">
+                                    {scheduleTimes.map((time) => (
+                                        <p key={time} className="schedule-time-style">{time}</p>
+                                    ))}
+                                </div>
+                                <div className="schedule-view-grid" id="grid">
+                                    {Array.from({ length: 168 }, (_, i) => <div className="schedule-view-line"></div>)}
+                                </div>
+                                <div className="schedule-view-inputs">
+                                    {data.map(function (item) {
+                                        return (setEvents(item))
+                                    })}
+                                </div>
                             </div>
                         </div>
-                    </div>
 
+                    </div>
                 </div>
-            </div>
+            }
         </div>
     );
 }

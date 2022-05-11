@@ -227,6 +227,13 @@ Contact Page
 .contact-input[type="text"] {
   font-size: 18px;
   text-indent: 15px;
+  font-family: "Playfair Display";
+}
+
+.contact-input[type="email"] {
+  font-size: 18px;
+  text-indent: 15px;
+  font-family: "Playfair Display";
 }
 
 .contact-input {
@@ -301,6 +308,12 @@ Contact Page
   color: #5393C6;
   font-weight: bold;
   font-size: 40px;
+}
+
+.about-sub-title {
+  color: #5393C6;
+  font-weight: bold;
+  font-size: 25px;
 }
 
 .about-middle-text {

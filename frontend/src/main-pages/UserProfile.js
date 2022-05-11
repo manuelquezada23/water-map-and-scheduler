@@ -17,7 +17,6 @@ function UserProfile() {
     useEffect(() => {
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                //   setLogIn(true)
                 setEmail(user.email)
                 setDisplayName(user.displayName)
                 finishAwait(true)
@@ -35,24 +34,36 @@ function UserProfile() {
 
         reauthenticateWithCredential(user, credential).then(() => {
             if (confirmPassword !== newPassword) {
-                alert("Password do not match.")
-            } else { 
+                alert("New passwords do not match.")
+                setConfirmPassword('');
+            } else {
                 updatePassword(user, newPassword).then(() => {
-                    // Update successful.
-                    alert("Password updated");
+                    const sqlCommand = "UPDATE users SET Key = '" + newPassword + "' WHERE UserID = '" + user.uid + "';";
+
+                    const postParameters = {
+                        sql: sqlCommand
+                    }
+
+                    fetch('http://localhost:4567/get-sql-rs', {
+                        method: 'POST',
+                        body: JSON.stringify(postParameters),
+                        headers: { 'Access-Control-Allow-Origin': '*' },
+                    }).then(() => {
+                        alert("New password has been set!")
+                        setOldPassword('');
+                        setNewPassword('');
+                        setConfirmPassword('');
+                    }).catch((error) => console.error("Error:", error))
                 }).catch((error) => {
-                    // An error ocurred
-                    // ...
                     alert("failed to update: " + error)
                 });
-                setOldPassword('');
-                setNewPassword('');
-                setConfirmPassword('');
             }
 
         }).catch((error) => {
-            alert("Incorrect password.")
-            console.log(error)
+            alert("Current password is incorrect.")
+            setOldPassword('');
+            setNewPassword('');
+            setConfirmPassword('');
         });
     }
 
@@ -62,8 +73,20 @@ function UserProfile() {
             displayName: newName,
             // photoURL: newImage ? newImage : null
         }).then(() => {
-            alert("Information saved!")
-            window.location.reload(false);
+            const sqlCommand = "UPDATE users SET Name = '" + newName + "' WHERE UserID = '" + user.uid + "';";
+
+            const postParameters = {
+                sql: sqlCommand
+            }
+
+            fetch('http://localhost:4567/get-sql-rs', {
+                method: 'POST',
+                body: JSON.stringify(postParameters),
+                headers: { 'Access-Control-Allow-Origin': '*' },
+            }).then(() => {
+                alert("Information saved!")
+                window.location.reload(false);
+            }).catch((error) => console.error("Error:", error))
         }).catch((error) => {
             alert(error)
         });
@@ -80,7 +103,6 @@ function UserProfile() {
                         <p className='profile-header'>My Profile</p>
                         <input className='user-input' placeholder="Name" type="text" defaultValue={userDisplayName}
                             onChange={(e) => {
-                                console.log(e.target.value)
                                 setNewName(e.target.value)
                             }} required />
                         <input className='user-input' placeholder="Email" type="text" disabled value={userEmail}></input>

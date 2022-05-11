@@ -8,43 +8,55 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class userCommands {
+public class UserCommands {
   private Database database;
   private List<User> users;
 
-  public userCommands(Database database) {
+  public UserCommands(Database database) {
     this.database = database;
-    this.users = new ArrayList<User>();
+    this.users = new ArrayList<>();
+    try {
+      this.getData();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
   }
 
   public void getData() throws SQLException {
-    this.users = new ArrayList<User>();
+    this.users = new ArrayList<>();
     ResultSet rs = this.database.executeCommand("SELECT UserID FROM users");
     while (rs.next()) {
       this.users.add(new User(rs.getInt(1)));
     }
-    for (int i = 0; i < this.users.size(); i++) {
-      int id = this.users.get(i).getUserid();
+    for (User user : this.users) {
+      int id = user.getUserid();
       rs = this.database.executeCommand("SELECT * FROM users WHERE UserID = " + id);
       while (rs.next()) {
-        this.users.get(i).setName(rs.getString("Name"));
-        this.users.get(i).setEmail(rs.getString("Email"));
-        this.users.get(i).setKey(rs.getString("Key"));
-        this.users.get(i).setWaterBottleSize(rs.getDouble("WaterBottleSize"));
+        user.setName(rs.getString("Name"));
+        user.setEmail(rs.getString("Email"));
+        user.setKey(rs.getString("Key"));
       }
-      List<Event> events = new ArrayList<Event>();
       rs = this.database.executeCommand("SELECT * FROM events WHERE UserID = " + id);
       while (rs.next()) {
-        String location = rs.getString("BuildingName");
+        int location = rs.getInt("ProperyCode");
         int startTime = rs.getInt("StartTime");
         int endTime = rs.getInt("EndTime");
-        List<String> days = Arrays.asList((rs.getString("DaysOfWeek").split(",")));
-        this.users.get(i).addEvents(new Event(location, startTime, endTime, days));
+        String day = rs.getString("DaysOfWeek");
+        user.addEvents(new Event(location, startTime, endTime, day));
       }
     }
   }
 
   public List<User> getUsers() {
     return this.users;
+  }
+
+  public User idToUser(int userID) {
+    for (User user : this.users) {
+      if (user.getUserid() == userID) {
+        return user;
+      }
+    }
+    return null;
   }
 }
