@@ -157,19 +157,7 @@ function MapPanel() {
     })
   }
 
-  function findUsername() {
-    return (
-      reviewData.filter(review => {
-        if (review.FountainID === parseFloat(currentFnt)) {
-          return review
-        }
-      }).map((review, index) => (
-        <p key={index}>{review.Review} by {findUsername1(review.UserID)}</p>
-      ))
-    );
-  }
-
-  function findUsername1(id) {
+  function findUsername(id) {
     fetch('http://localhost:4567/get-sql-rs', {
       method: 'POST',
       body: JSON.stringify({ sql: "SELECT Name FROM users WHERE UserID='"+id+"'"}),
@@ -259,14 +247,14 @@ function MapPanel() {
                 </div>
               ))}
               {(toggleFntSelected) && <div>
-                {findUsername}
-                {/* {reviewData.filter(review => {
+                {/* {findUsername} */}
+                {reviewData.filter(review => {
                   if (review.FountainID === parseFloat(currentFnt)) {
                     return review
                   }
                 }).map((review, index) => (
-                  <p key={index}>{review.Review} by {findUsername(review.UserID)}</p>
-                ))} */}
+                  <p key={index}>{review.Review} by {review.userID}</p>
+                ))}
                 <button className="map-review-button" onClick={() => {
                 setReviewToggle(true)
                 }}>Add a review</button>
