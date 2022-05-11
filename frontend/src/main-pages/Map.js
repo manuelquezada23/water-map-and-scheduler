@@ -54,7 +54,8 @@ function MapPanel() {
   const mapRef = useRef();
   const onLoad = useCallback((map) => (mapRef.current = map), []);
   const houses = useMemo(() => generateBuildings(center), [center]);
-  const [toggleSelected, setSelected] = useState(false)
+  // console.log(houses)
+  const [toggleSelected, setSelected] = useState(false) 
   const [query, setQuery] = useState("")
   const [currentBldg, setBldg] = useState("")
 
