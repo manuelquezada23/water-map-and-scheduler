@@ -17,18 +17,6 @@ const scheduleTimes = [
     "09:00PM", "10:00PM", "11:00PM"
 ]
 
-const locations = [
-    "Location 1", "Location 2", "Location 3"
-]
-
-let userScheduleData = [
-    { id: 1, location: "Location 1", days: "Monday", startTime: "2020-01-01T12:00:00Z", endTime: "2020-01-01T12:50:00Z" },
-    { id: 1, location: "Location 1", days: "Wednesday", startTime: "2020-01-01T12:00:00Z", endTime: "2020-01-01T12:50:00Z" },
-    { id: 1, location: "Location 1", days: "Friday", startTime: "2020-01-01T12:00:00Z", endTime: "2020-01-01T12:50:00Z" },
-    { id: 2, location: "Location 2", days: "Tuesday", startTime: "2020-01-01T14:30:00Z", endTime: "2020-01-01T15:50:00Z" },
-    { id: 2, location: "Location 2", days: "Thursday", startTime: "2020-01-01T14:30:00Z", endTime: "2020-01-01T15:50:00Z" },
-]
-
 function convertTime(timeStr) {
     const [time, modifier] = timeStr.split(' ');
     let [hours, minutes] = time.split(':');
@@ -52,7 +40,9 @@ function Schedule() {
     const [sunday, setSunday] = useState(false)
     const [startTime, setStartTime] = useState('12:00 AM')
     const [endTime, setEndTime] = useState('12:00 AM')
-    const [location, setLocation] = useState(locations[0])
+    const [location, setLocation] = useState()
+    const [locations, setLocations] = useState([])
+    const [firstLocation, setFirstLocation] = useState()
     const [data, setData] = useState([])
     const [wait, setAwait] = useState(false)
     const [currentUserID, setCurrentUserID] = useState('')
@@ -71,9 +61,14 @@ function Schedule() {
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 const sqlCommand = "SELECT * FROM events WHERE UserID = '" + user.uid + "'";
+                const sqlCommandTwo = "SELECT * FROM buildings";
 
                 const postParameters = {
                     sql: sqlCommand
+                }
+
+                const postParametersTwo = {
+                    sql: sqlCommandTwo
                 }
 
                 fetch('http://localhost:4567/get-sql-rs', {
@@ -84,9 +79,25 @@ function Schedule() {
                     setAwait(false)
                     setCurrentUserID(user.uid);
                     setData(convertDataIntoArray(data.values))
-                    setAwait(true)
                 })
-                    .catch((error) => console.error("Error:", error))
+
+                fetch('http://localhost:4567/get-sql-rs', {
+                    method: 'POST',
+                    body: JSON.stringify(postParametersTwo),
+                    headers: { 'Access-Control-Allow-Origin': '*' },
+                }).then((response) => response.json()).then((data) => {
+                    const processed_data = convertDataIntoArray(data.values)
+                    setLocations(processed_data)
+                    setLocation(processed_data[0])
+                    setFirstLocation(processed_data[0])
+                    setAwait(true)
+                    // setAwait(false)
+                    // setCurrentUserID(user.uid);
+                    // setData(convertDataIntoArray(data.values))
+                    // setAwait(true)
+                })
+                
+                .catch((error) => console.error("Error:", error))
             }
         });
     }, []);
@@ -139,7 +150,7 @@ function Schedule() {
     function setEvents(data) {
         const location = data.BuildingName;
         const day = data.DaysOfWeek;
-        var startTime = data.StartTime;
+        const startTime = data.StartTime;
         const endTime = data.EndTime;
         const eventID = data.EventID;
 
@@ -312,7 +323,7 @@ function Schedule() {
             setSunday(false)
             setStartTime("12:00 AM")
             setEndTime("12:00 AM")
-            setLocation(locations[0])
+            setLocation(firstLocation)
         } else {
             window.alert("Some fields were not selected.")
         }
@@ -332,7 +343,7 @@ function Schedule() {
                         <p className="schedule-subtitle">Location</p>
                         <select name="locations" id="locations" className="schedule-dropdown" onChange={(e) => { setLocation(e.target.value) }}>
                             {locations.map((location) => (
-                                <option value={location}>{location}</option>
+                                <option key={location.PropertyCode} value={location.BuildingName}>{location.BuildingName}</option>
                             ))}
                         </select>
                         <p className="schedule-subtitle">Day of the Week</p>
@@ -356,7 +367,7 @@ function Schedule() {
                                 <p className="schedule-subtitle-flex">Start Time</p>
                                 <select name="startTimes" id="startTimes" className="schedule-dropdown-time" onChange={(e) => { setStartTime(e.target.value) }}>
                                     {times.map((time) => (
-                                        <option value={time}>{time}</option>
+                                        <option key={time} value={time}>{time}</option>
                                     ))}
                                 </select>
                             </div>
@@ -364,7 +375,7 @@ function Schedule() {
                                 <p className="schedule-subtitle-flex">End Time</p>
                                 <select name="endTimes" id="endTimes" className="schedule-dropdown-time" onChange={(e) => { setEndTime(e.target.value) }}>
                                     {times.map((time) => (
-                                        <option value={time}>{time}</option>
+                                        <option key={time} value={time}>{time}</option>
                                     ))}
                                 </select>
                             </div>
@@ -386,7 +397,7 @@ function Schedule() {
                             <div className="schedule-view-body">
                                 <div className="schedule-view-time">
                                     {scheduleTimes.map((time) => (
-                                        <p className="schedule-time-style">{time}</p>
+                                        <p key={time} className="schedule-time-style">{time}</p>
                                     ))}
                                 </div>
                                 <div className="schedule-view-grid" id="grid">
