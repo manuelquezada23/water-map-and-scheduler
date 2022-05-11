@@ -23,8 +23,8 @@ function Map() {
     }
   });
   const navigate = useNavigate()
-  
-  const {isLoaded} = useLoadScript({
+
+  const { isLoaded } = useLoadScript({
     googleMapsApiKey: "AIzaSyDErH86isLuYWxjCkmsE_bpyQ6f59PO2po"
   })
   // loading still
@@ -43,7 +43,7 @@ function Map() {
         </div>
       }
       {(wait === true && isLoggedIn === true) &&
-      // map goes here:
+        // map goes here:
         <MapPanel />
       }
     </div>
@@ -58,10 +58,10 @@ function MapPanel() {
   const [currentBldg, setBldg] = useState("")
   const [currentFnt, setFnt] = useState("")
   //map states
-  const [currCenter, setCenter] = useState({lat: 41.8268, lng: -71.4025})
+  const [currCenter, setCenter] = useState({ lat: 41.8268, lng: -71.4025 })
   const [currZoom, setZoom] = useState(17)
-  const center = useMemo(()=>currCenter, [currCenter])
-  const zoom = useMemo(()=>currZoom, [currZoom])
+  const center = useMemo(() => currCenter, [currCenter])
+  const zoom = useMemo(() => currZoom, [currZoom])
   const mapRef = useRef();
   const onLoad = useCallback((map) => (mapRef.current = map), []);
   //search/toggle
@@ -78,62 +78,62 @@ function MapPanel() {
   const [search, setSearch] = useState(0)
 
   function toBuilding(bldg) {
-    setCenter({lat: parseFloat(bldg.Latitude), lng: parseFloat(bldg.Longitude)}); 
+    setCenter({ lat: parseFloat(bldg.Latitude), lng: parseFloat(bldg.Longitude) });
     setZoom(20)  //a bit buggy once zoom is changed?
     // set up the left panel to correspond
-    setBldg(bldg.BuildingName) 
+    setBldg(bldg.BuildingName)
     setSelected(true)
   }
 
   useEffect(() => {
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
-        if (user) {
-          console.log("fetching")
-          //loads the buildings
-          fetch('http://localhost:4567/get-sql-rs', {
-            method: 'POST',
-            body: JSON.stringify({ sql: "SELECT * FROM buildings" }),
-            headers: {
-              "Access-Control-Allow-Origin": "*"
-            },
-          }).then((response) => response.json())
-            .then((data) => {
-              setAwait(false)
-              setBuildingData(processData(data["values"]))
-              setAwait(true)
-              // return data
+      if (user) {
+        console.log("fetching")
+        //loads the buildings
+        fetch('http://localhost:4567/get-sql-rs', {
+          method: 'POST',
+          body: JSON.stringify({ sql: "SELECT * FROM buildings" }),
+          headers: {
+            "Access-Control-Allow-Origin": "*"
+          },
+        }).then((response) => response.json())
+          .then((data) => {
+            setAwait(false)
+            setBuildingData(processData(data["values"]))
+            setAwait(true)
+            // return data
           })
-          //loads fountains
-          fetch('http://localhost:4567/get-sql-rs', {
-            method: 'POST',
-            body: JSON.stringify({ sql: "SELECT * FROM fountains" }),
-            headers: {
-              "Access-Control-Allow-Origin": "*"
-            },
-          }).then((response) => response.json())
-            .then((data) => {
-              setAwait(false)
-              setFountainData(processData(data["values"]))
-              setAwait(true)
+        //loads fountains
+        fetch('http://localhost:4567/get-sql-rs', {
+          method: 'POST',
+          body: JSON.stringify({ sql: "SELECT * FROM fountains" }),
+          headers: {
+            "Access-Control-Allow-Origin": "*"
+          },
+        }).then((response) => response.json())
+          .then((data) => {
+            setAwait(false)
+            setFountainData(processData(data["values"]))
+            setAwait(true)
           })
-          //loads reviews
-          fetch('http://localhost:4567/get-sql-rs', {
-            method: 'POST',
-            body: JSON.stringify({ sql: "SELECT * FROM reviews" }),
-            headers: {
-              "Access-Control-Allow-Origin": "*"
-            },
-          }).then((response) => response.json())
-            .then((data) => {
-              setAwait(false)
-              setReviewData(processData(data["values"]))
-              setAwait(true)
-            })
-          }
+        //loads reviews
+        fetch('http://localhost:4567/get-sql-rs', {
+          method: 'POST',
+          body: JSON.stringify({ sql: "SELECT * FROM reviews" }),
+          headers: {
+            "Access-Control-Allow-Origin": "*"
+          },
+        }).then((response) => response.json())
+          .then((data) => {
+            setAwait(false)
+            setReviewData(processData(data["values"]))
+            setAwait(true)
+          })
+      }
     });
   }, []);
-  
+
   function processData(data) {
     const _data = [];
     for (var i = 0; i < data.length; i++) {
@@ -149,94 +149,103 @@ function MapPanel() {
   }
 
   return (
-      <div className='map-container'>
-        {(!wait) && (wait === "") && <div>NOTHING TO SHOW</div>}
-          <div className="controls">
-            {(buildingData !== "") && (toggleSelected === false) && 
-              <input type="text"
-              id="map-search"
-              placeholder="Search" onChange={event => setQuery(event.target.value)}/>
+    <div className='map-container'>
+      {(!wait) && (wait === "") && <div>NOTHING TO SHOW</div>}
+      <div className="map-leftSide">
+        {(buildingData !== "") && (toggleSelected === false) &&
+          <input type="text"
+            className="map-searchBar"
+            id="map-search"
+            placeholder="Search" onChange={event => setQuery(event.target.value)} />
 
-            }{(wait) && (toggleSelected === false) && buildingData.filter(bldg => {
-                if (justClicked) {
-                  setQuery("")
-                  setJustClicked(false)
+        }
+        <div className="controls">
+          {(wait) && (toggleSelected === false) && buildingData.filter(bldg => {
+            if (justClicked) {
+              setQuery("")
+              setJustClicked(false)
+            }
+            if (query === "") {
+              return bldg;
+            } else if (bldg.BuildingName.toLowerCase().includes(query.toLowerCase())) {
+              return bldg;
+            }
+          }).map((bldg) => (
+            /**
+             * correct action when click on search input
+             */
+            <div className="search-box" key={bldg.PropertyCode} onClick={() => {
+              toBuilding(bldg)
+            }}>
+              <p className='search-input'>{bldg.BuildingName}</p>
+            </div>
+          ))}
+          {(wait) && (toggleSelected === true) &&
+            <div className="building-info">
+              <p className="selected-bldg" onClick={() => {
+                //i.e. if they x out (should make a button) -- not intuitive
+                setSelected(false)
+                setJustClicked(true)
+                setFntSelected(false)
+              }}>{currentBldg}</p>
+              {buildingData.filter(bldg => {
+                if (bldg.BuildingName === currentBldg) {
+                  return bldg
                 }
-                if (query === "") {
-                  return bldg;
-                } else if (bldg.BuildingName.toLowerCase().includes(query.toLowerCase())) {
-                  return bldg;
-                }}).map((bldg) => (
-                  /**
-                   * correct action when click on search input
-                   */
-                  <div className="search-box" key={bldg.PropertyCode} onClick={()=>{
-                    toBuilding(bldg)
-                  }}>
-                    <p className='search-input'>{bldg.BuildingName}</p>
-                  </div>
-                )) }
-              {(wait) && (toggleSelected === true) &&
-                <div>
-                  <p className="selected-bldg" onClick={()=>{
-                    //i.e. if they x out (should make a button) -- not intuitive
-                    setSelected(false)
-                    setJustClicked(true)
-                    setFntSelected(false) 
-                  }}>{currentBldg}</p>
-                  {buildingData.filter(bldg => {if (bldg.BuildingName === currentBldg){
-                    return bldg
-                  }}).map((bldg) => (
-                      <div key={bldg.PropertyCode}> {/*they key of selected building */}
-                        <select value={currentFnt} onChange={loadReviews}>
-                          <option>Choose an option by nearest room:</option>
-                          {fountainData.filter(fnt => {if (fnt.BuildingName === currentBldg){
-                            return fnt
-                          }}).map((fnt) => (
-                            <option key={fnt.FountainID} value={fnt.FountainID}>{fnt.NearestRoom}</option>
-                            )) }
-                        </select>
-                      </div>
-                    )) }
-                  {(toggleFntSelected) && <div>
-                    {reviewData.filter(review => {
-                      if (review.FountainID === parseFloat(currentFnt)) {
-                        return review
+              }).map((bldg) => (
+                <div key={bldg.PropertyCode}> {/*they key of selected building */}
+                  <select className="map-dropdown" value={currentFnt} onChange={loadReviews}>
+                    <option>Choose an option by nearest room:</option>
+                    {fountainData.filter(fnt => {
+                      if (fnt.BuildingName === currentBldg) {
+                        return fnt
                       }
-                    }).map((review, index) => (
-                      <p key={index}>{review.Review} by {review.UserID}</p>
+                    }).map((fnt) => (
+                      <option key={fnt.FountainID} value={fnt.FountainID}>{fnt.NearestRoom}</option>
                     ))}
-                  </div>}
-                  {/* {this.state.seenD ? <PopupDelete toggle={this.togglePopD} /> : null} */}
-                  <button onClick={() => {
-                    setReviewToggle(true)
-                  }}>Add a review</button>
-                  {toggleReview && 
-                  <ReviewPopup/>
-                  }
+                  </select>
                 </div>
+              ))}
+              {(toggleFntSelected) && <div>
+                {reviewData.filter(review => {
+                  if (review.FountainID === parseFloat(currentFnt)) {
+                    return review
+                  }
+                }).map((review, index) => (
+                  <p key={index}>{review.Review} by {review.UserID}</p>
+                ))}
+              </div>}
+              {/* {this.state.seenD ? <PopupDelete toggle={this.togglePopD} /> : null} */}
+              <button className="map-review-button" onClick={() => {
+                setReviewToggle(true)
+              }}>Add a review</button>
+              {toggleReview &&
+                <ReviewPopup />
               }
-          </div>
-          {(wait) && 
-          <GoogleMap id="google-map" zoom={zoom} center={center} onLoad={onLoad}>
-            <MarkerClusterer>
-                {() =>
-                  buildingData.map((bldg, index) => (
-                    <Marker
-                      key={index}
-                      position={{lat: parseFloat(bldg.Latitude), lng: parseFloat(bldg.Longitude)}}
-                      onClick={()=>{    
-                        toBuilding(bldg)       
-                      }}
-                    />
-                  ))
-                }
-             </MarkerClusterer>
-          </GoogleMap>
-          }       
+            </div>
+          }
+        </div>
+      </div>
+      {(wait) &&
+        <GoogleMap id="google-map" zoom={zoom} center={center} onLoad={onLoad}>
+          <MarkerClusterer>
+            {() =>
+              buildingData.map((bldg, index) => (
+                <Marker
+                  key={index}
+                  position={{ lat: parseFloat(bldg.Latitude), lng: parseFloat(bldg.Longitude) }}
+                  onClick={() => {
+                    toBuilding(bldg)
+                  }}
+                />
+              ))
+            }
+          </MarkerClusterer>
+        </GoogleMap>
+      }
     </div>
   );
-  
+
 }
 
 export default Map
