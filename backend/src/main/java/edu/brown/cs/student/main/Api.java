@@ -102,6 +102,16 @@ public class Api {
     return json;
   }
 
+  public JSONObject createInnerJSON(Fountain fountain) throws JSONException {
+    JSONObject json = new JSONObject();
+    json.put("id", fountain.getId());
+    json.put("building", fountain.getBuildingName());
+    json.put("room", fountain.getNearestRoom());
+    json.put("rating", fountain.getAverageRating());
+
+    return json;
+  }
+
   private class getSQLResultSetHandler implements Route {
     @Override
     public String handle(Request req, Response res) throws JSONException, SQLException {
@@ -145,9 +155,9 @@ public class Api {
       if (buildingID != -1) {
         Building currBuilding = buildingCommands.idToBuilding(buildingID);
         List<Fountain> fountainList = nearestFountain.findNearestFountains(currBuilding);
-        json.put("first", fountainList.get(0).getId());
-        json.put("second", fountainList.get(1).getId());
-        json.put("third", fountainList.get(2).getId());
+        json.put("first", Api.this.createInnerJSON(fountainList.get(0)));
+        json.put("second", Api.this.createInnerJSON(fountainList.get(1)));
+        json.put("third", Api.this.createInnerJSON(fountainList.get(2)));
         return gson.toJson(json);
       } else {
         return "Failed";
@@ -176,9 +186,9 @@ public class Api {
       Gson gson = new Gson();
 
       List<Fountain> fountainList = nearestFountain.findNearestFountains(currBuilding);
-      json.put("first", fountainList.get(0).getId());
-      json.put("second", fountainList.get(1).getId());
-      json.put("third", fountainList.get(2).getId());
+      json.put("first", Api.this.createInnerJSON(fountainList.get(0)));
+      json.put("second", Api.this.createInnerJSON(fountainList.get(1)));
+      json.put("third", Api.this.createInnerJSON(fountainList.get(2)));
 
       return gson.toJson(json);
     }
