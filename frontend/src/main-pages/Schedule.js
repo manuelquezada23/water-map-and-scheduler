@@ -141,7 +141,7 @@ function Schedule() {
         }
 
         return (
-            <Popup trigger={<div>{location}</div>} arrow={false} position="top left">
+            <Popup trigger={<div className="pop-up-location">{location}</div>} arrow={false} position="top left">
                 {close => (
                     <div className="editSchedulePopUpView">
                         <div className="editSchedulePopUp">
@@ -229,7 +229,9 @@ function Schedule() {
                 textAlign: "center",
                 backgroundColor: "white",
                 cursor: "pointer",
-                overflow: "auto"
+                overflow: "hidden",
+                display: "block",
+                textOverflow: "ellipsis"
             }
         }
         return (

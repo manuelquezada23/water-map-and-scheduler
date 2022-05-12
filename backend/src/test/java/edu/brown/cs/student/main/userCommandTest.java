@@ -1,7 +1,7 @@
 // package edu.brown.cs.student.main;
 
 // import edu.brown.cs.student.main.database.Database;
-// import edu.brown.cs.student.main.userFunc.userCommands;
+// import edu.brown.cs.student.main.userFunc.UserCommands;
 // import org.junit.Test;
 
 // import java.sql.SQLException;
@@ -13,7 +13,7 @@
 //   @Test
 //   public void userExtractTest() throws SQLException, ClassNotFoundException {
 //     Database data = new Database("../data/test-data.sqlite");
-//     userCommands users = new userCommands(data);
+//     UserCommands users = new UserCommands(data);
 //     users.getData();
 //     assertEquals(3, users.getUsers().size());
 //   }
@@ -21,7 +21,7 @@
 //   @Test
 //   public void correctData() throws SQLException, ClassNotFoundException {
 //     Database data = new Database("../data/test-data.sqlite");
-//     userCommands users = new userCommands(data);
+//     UserCommands users = new UserCommands(data);
 //     users.getData();
 //     assertEquals("stephen", users.getUsers().get(2).getName());
 //     assertEquals("stephen_hinds@gmail.com", users.getUsers().get(2).getEmail());
@@ -33,7 +33,7 @@
 //   @Test
 //   public void correctEvents() throws SQLException, ClassNotFoundException {
 //     Database data = new Database("../data/test-data.sqlite");
-//     userCommands users = new userCommands(data);
+//     UserCommands users = new UserCommands(data);
 //     users.getData();
 //     assertEquals(1, users.getUsers().get(2).getEvents().size());
 //     assertEquals(2, users.getUsers().get(1).getEvents().size());

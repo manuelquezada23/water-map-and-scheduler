@@ -1,8 +1,16 @@
 -------------------------------------------------------------------------------
 Test set: edu.brown.cs.student.main.userCommandTest
 -------------------------------------------------------------------------------
-Tests run: 3, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.454 s <<< FAILURE! - in edu.brown.cs.student.main.userCommandTest
-edu.brown.cs.student.main.userCommandTest.userExtractTest  Time elapsed: 0.021 s  <<< FAILURE!
-java.lang.AssertionError: expected:<3> but was:<4>
-	at edu.brown.cs.student.main.userCommandTest.userExtractTest(userCommandTest.java:18)
+Tests run: 3, Failures: 0, Errors: 3, Skipped: 0, Time elapsed: 0.41 s <<< FAILURE! - in edu.brown.cs.student.main.userCommandTest
+edu.brown.cs.student.main.userCommandTest.correctEvents  Time elapsed: 0.341 s  <<< ERROR!
+java.lang.StringIndexOutOfBoundsException: begin 11, end 16, length 4
+	at edu.brown.cs.student.main.userCommandTest.correctEvents(userCommandTest.java:36)
+
+edu.brown.cs.student.main.userCommandTest.userExtractTest  Time elapsed: 0.001 s  <<< ERROR!
+java.lang.StringIndexOutOfBoundsException: begin 11, end 16, length 4
+	at edu.brown.cs.student.main.userCommandTest.userExtractTest(userCommandTest.java:16)
+
+edu.brown.cs.student.main.userCommandTest.correctData  Time elapsed: 0.001 s  <<< ERROR!
+java.lang.StringIndexOutOfBoundsException: begin 11, end 16, length 4
+	at edu.brown.cs.student.main.userCommandTest.correctData(userCommandTest.java:24)
 
