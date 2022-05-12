@@ -259,7 +259,6 @@ function MapPanel() {
               id="map-search"
               placeholder="Search" onChange={event => setQuery(event.target.value)} />
           </div>
-
         }
         <div className="controls">
           {(search === 0) &&
