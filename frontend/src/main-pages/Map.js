@@ -304,9 +304,9 @@ function MapPanel() {
           {(search === 2) && (wait) && (toggleSelected === false) &&
             <div>
               {recs === false &&
-                <div>
-                  <p>No fountains available, try searching.</p>
-                  <button onClick={() => setSearch(1)}>Search</button>
+                <div className="no-fountains-view">
+                  <p className="no-fountains-text">Not enough schedule events provided. Try searching!</p>
+                  <button className="no-fountains-search" onClick={() => setSearch(1)}>Search</button>
                 </div>
               }
               {recs !== false &&

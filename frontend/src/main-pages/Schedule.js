@@ -30,6 +30,19 @@ function convertTime(timeStr) {
     return hours + ":" + minutes
 }
 
+function UTCTo12Hr(time) {
+    let first = time.split('T')[1]
+    let second = first.split('Z')[0]
+    var date = new Date("February 04, 2011 " + second + ":00");
+    var options = {
+        hour: 'numeric',
+        minute: 'numeric',
+        hour12: true
+    };
+    var timeString = date.toLocaleString('en-US', options);
+    return timeString
+}
+
 function Schedule() {
     const [monday, setMonday] = useState(false)
     const [tuesday, setTuesday] = useState(false)
@@ -91,10 +104,6 @@ function Schedule() {
                     setLocation(processed_data[0].BuildingName)
                     setFirstLocation(processed_data[0].BuildingName)
                     setAwait(true)
-                    // setAwait(false)
-                    // setCurrentUserID(user.uid);
-                    // setData(convertDataIntoArray(data.values))
-                    // setAwait(true)
                 })
 
                     .catch((error) => console.error("Error:", error))
@@ -105,6 +114,9 @@ function Schedule() {
     function PopUpDelete(props) {
         const ID = props.id
         const location = props.location
+        const startTime = props.startTime
+        const endTime = props.endTime
+
         function closePopUp(close) {
             const sqlCommand = "DELETE FROM events WHERE EventID = '" + ID + "'";
 
@@ -133,9 +145,12 @@ function Schedule() {
                 {close => (
                     <div className="editSchedulePopUpView">
                         <div className="editSchedulePopUp">
-                            <p className="schedulePopUpHeaderText">Delete from your schedule?</p>
+                            <p className="schedulePopUpHeaderText">{location}</p>
+                            <div style={{ display: "flex", flexDirection: "row" }}>
+                                <p className="schedulePopUpHeaderTime">{UTCTo12Hr(startTime)} to {UTCTo12Hr(endTime)}</p>
+                            </div>
                             <div className="schedulePopUpButtons">
-                                <div className="schedulePopUpButton" onClick={() => { closePopUp(close) }} >Confirm</div>
+                                <div className="schedulePopUpButton" onClick={() => { closePopUp(close) }} >Delete</div>
                             </div>
                             <a className="close" onClick={close}>
                                 <IoCloseCircleSharp size={30} />
@@ -205,10 +220,6 @@ function Schedule() {
                 height: heightOfEvent + "px",
                 lineHeight: heightOfEvent + "px",
                 overflow: "hidden",
-                // textAlign: "center",
-                // justifyContent: "center",
-                // alignItems: "center",
-                
                 maxWidth: "100px",
                 background: "#FFFFFF",
                 border: "2px solid #5393C6",
@@ -222,10 +233,12 @@ function Schedule() {
             }
         }
         return (
-            <div style={styles.scheduleViewEvent}>
-                <PopUpDelete
-                    location={location} id={eventID}
-                />
+            <div>
+                <div style={styles.scheduleViewEvent}>
+                    <PopUpDelete
+                        location={location} id={eventID} startTime={startTime} endTime={endTime}
+                    />
+                </div>
             </div>
         );
     }
@@ -289,15 +302,17 @@ function Schedule() {
     }
 
     function getHoursFrom24Hr(startTime) {
-        let hour = startTime[1].split(':')[0]
+        startTime = convertTime(startTime)
+        let hour = startTime.split(':')[0]
         if (hour[0] === "0") {
             return parseInt(hour[1])
         }
         return hour
     }
 
-    function getMinutesFrom24Hr(startTime) {
-        let time_processed = startTime.split(':')[1]
+    function getMinutesFrom24Hr(time) {
+        time = convertTime(time)
+        let time_processed = time.split(':')[1]
         let minutes = time_processed.split(' ')[0]
         if (minutes[0] === "0") {
             return parseInt(minutes[1])
@@ -374,7 +389,7 @@ function Schedule() {
                 setEndTime(endTime)
                 setLocation(location)
             } else {
-                window.alert("Start time is after end time.")
+                window.alert("Start time is at or after end time.")
             }
         } else {
             window.alert("Some fields were not selected.")
@@ -382,7 +397,6 @@ function Schedule() {
     }
 
     return (
-
         <div className="main-page-body">
             {!wait &&
                 <div></div>
