@@ -10,7 +10,7 @@ public class Event {
   private final int startTime;
   private final int endTime;
   private final String dayOfWeek;
-  private static final int MARGIN_OF_ERROR = 10;
+  private static final int MARGIN_OF_ERROR = 30;
 
   public Event(String building, String startTime, String endTime, String dayOfWeek) {
     this.building = building;
@@ -20,10 +20,10 @@ public class Event {
   }
 
   public boolean isHappening() {
-    String day = LocalDate.now().getDayOfWeek().name();
-    int now = this.convertUTC(Instant.now().toString());
+    String day = LocalDate.now().getDayOfWeek().name().toLowerCase();
+    int now = this.convertUTC(Instant.now().toString()) -400;
     return (now >= this.startTime - MARGIN_OF_ERROR)
-            && (now <= this.endTime + MARGIN_OF_ERROR) && (day.equals(this.dayOfWeek));
+            && (now <= this.endTime + MARGIN_OF_ERROR) && (day.equals(this.dayOfWeek.toLowerCase()));
   }
 
   private int convertUTC(String utc) {

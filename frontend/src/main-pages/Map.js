@@ -6,8 +6,11 @@ import { GoogleMap, useLoadScript, Marker, MarkerClusterer, LatLngLiteral, InfoW
 import PictureIcon from '../picture.png'
 import { flushSync } from 'react-dom';
 import PopUp from 'reactjs-popup';
-import { IoCloseCircleSharp } from "react-icons/io5";
+import { IoArrowBack } from "react-icons/io5";
 import { Rating } from 'react-simple-star-rating'
+import { IoCalendarSharp } from "react-icons/io5";
+import { IoSearchSharp } from "react-icons/io5";
+import MapPin from "../map-pin.png"
 
 function Map() {
   // Authentication:
@@ -194,17 +197,17 @@ function MapPanel() {
     setRecs(false)
     fetch('http://localhost:4567/get-fountains-schedule', {
       method: 'POST',
-      body: JSON.stringify({user: user.uid}),
+      body: JSON.stringify({ user: user.uid }),
       headers: {
         "Access-Control-Allow-Origin": "*"
       },
     }).then((response) => response.json())
-    .then((data) => {
-      setRecs(processRecs(data))
-    }).catch((data) => {
-      //respone is "failed"
-      console.log("info not available" + data);
-    })
+      .then((data) => {
+        setRecs(processRecs(data))
+      }).catch((data) => {
+        "response data should be 'failed'"
+        console.log("info not available" + data);
+      })
   }
 
   function processRecs(data) {
@@ -246,7 +249,7 @@ function MapPanel() {
               setSearch(0)
               setFntSelected(false)
             }}>
-              <IoCloseCircleSharp size={30} />
+              <IoArrowBack size={30} />
             </a>
 
             <input type="text"
@@ -258,12 +261,18 @@ function MapPanel() {
         }
         <div className="controls">
           {(search === 0) &&
-            <div>
-              <button onClick={() => {
+            <div className="controls-buttons">
+              <div className="controls-button" onClick={() => {
                 setSearch(2)
                 findRecommendationSched()
-              }}>Find fountain by schedule</button>
-              <button onClick={() => setSearch(1)}>Search for a fountain</button>
+              }}>
+                <IoCalendarSharp style={{ marginRight: 10, marginBottom: 5 }} size={30} />
+                Find fountain by schedule
+              </div>
+              <div className="controls-button" onClick={() => setSearch(1)}>
+                <IoSearchSharp style={{ marginRight: 10, marginBottom: 5 }} size={30} />
+                Search for a fountain
+              </div>
             </div>
           }
           {(search === 1) && (wait) && (toggleSelected === false) && buildingData.filter(bldg => {
@@ -287,25 +296,44 @@ function MapPanel() {
             </div>
           ))}
           {(search === 2) && (wait) && (toggleSelected === false) &&
-            <div className='test'>
-              {recs === false && 
+            <div>
+              {recs === false &&
                 <div>
                   <p>No fountains available, try searching.</p>
                   <button onClick={() => setSearch(1)}>Search</button>
                 </div>
               }
-              {recs !== false && 
-                <div>
-                  <p>3 closest fountains:</p>
+              {recs !== false &&
+                <div className="recommendations-data">
+                  <div style={{ display: "flex", flexDirection: "row" }}>
+                    <IoArrowBack style={{ marginRight: 10, cursor: "pointer" }} size={30}
+                      onClick={() => {
+                        setSearch(0)
+                      }}
+                    />
+                    <p className="recommendations-data-title">3 closest fountains:</p>
+                  </div>
                   {recs.map((rec, index) => (
-                    <div onClick={()=>{
+                    <div onClick={() => {
                       //code for selecting a building and a fountain
-                      
+
                     }}>
-                      <p>Fountain id: {rec.fntID}</p>
-                      <p>Nearest room: {rec.room}</p>
-                      <p>Building: {rec.building}</p>
-                      <p>Average rating: {rec.rating}</p>
+                      <div className="recommendations-data-info">
+                        <img className="recommendations-data-pin" src={MapPin}></img>
+                        <div>
+                          <p className="recommendations-data-building">{rec.building}</p>
+                          <p className="recommendations-data-room">near Room {rec.room}</p>
+                          <div className="recommendations-data-stars">
+                            <Rating
+                              size={15}
+                              fillColor={"#5393C6"}
+                              allowHalfIcon={true}
+                              initialValue={rec.Rating}
+                              readonly={true}
+                            />
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -318,7 +346,7 @@ function MapPanel() {
                 <a className="building-close" onClick={() => {
                   setSelected(false)
                 }}>
-                  <IoCloseCircleSharp size={30} />
+                  <IoArrowBack size={30} />
                 </a>
                 <p className="selected-bldg" onClick={() => {
                   //i.e. if they x out (should make a button) -- not intuitive
@@ -347,6 +375,7 @@ function MapPanel() {
               ))}
               {(toggleFntSelected) &&
                 <div>
+                  {console.log(toggleFntSelected)}
                   {waitForReview &&
                     <div className="reviews-view">
                       {console.log(reviewData)}
@@ -407,19 +436,20 @@ function MapPanel() {
                             }}>Post</button>
                           </div>
                           <a className="close" onClick={close}>
-                            <IoCloseCircleSharp size={30} />
+                            <IoArrowBack size={30} />
                           </a>
                         </div>
                       </div>
                     )}
                   </PopUp>
                 </div>}
-                <p>Can't find fountains you want?</p>
-                <button onClick={()=>{
-                  setSelected(false)
-                  setSearch(2)
-                  findRecommendationLoc()}
-                }>Click for recommendations near you</button>
+              <p className="cannot-find-fountains">Can't find fountains you want?</p>
+              <p className="recommendations-button" onClick={() => {
+                setSelected(false)
+                setSearch(2)
+                findRecommendationLoc()
+              }
+              }>Get Recommendations</p>
             </div>
           }
         </div>

@@ -162,6 +162,7 @@ public class Api {
         json.put("first", Api.this.createInnerJSON(fountainList.get(0)));
         json.put("second", Api.this.createInnerJSON(fountainList.get(1)));
         json.put("third", Api.this.createInnerJSON(fountainList.get(2)));
+        System.out.println(json);
         return gson.toJson(json);
       } else {
         System.out.println("failed");

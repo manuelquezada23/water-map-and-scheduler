@@ -20,6 +20,7 @@ public class User {
       System.out.println("event: "+event);
     }
     for (Event event : this.events) {
+      System.out.println(event.getBuilding());
       if (event.isHappening()) {
         return event.getBuilding();
       }
