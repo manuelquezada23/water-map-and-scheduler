@@ -88,7 +88,7 @@ function Schedule() {
                 }).then((response) => response.json()).then((data) => {
                     const processed_data = convertDataIntoArray(data.values)
                     setLocations(processed_data)
-                    // setLocation(processed_data[0].BuildingName)
+                    setLocation(processed_data[0].BuildingName)
                     setFirstLocation(processed_data[0].BuildingName)
                     setAwait(true)
                     // setAwait(false)
@@ -96,8 +96,8 @@ function Schedule() {
                     // setData(convertDataIntoArray(data.values))
                     // setAwait(true)
                 })
-                
-                .catch((error) => console.error("Error:", error))
+
+                    .catch((error) => console.error("Error:", error))
             }
         });
     }, []);
@@ -147,6 +147,25 @@ function Schedule() {
         );
     }
 
+    function getHours(startTime) {
+        let time = startTime.split('T')
+        let hour = time[1].split(':')[0]
+        if (hour[0] === "0") {
+            return parseInt(hour[1])
+        }
+        return hour
+    }
+
+    function getMinutes(startTime) {
+        let time = startTime.split('T')
+        let time_processed = time[1].split(':')[1]
+        let minutes = time_processed.split('Z')[0]
+        if (minutes[0] === "0") {
+            return parseInt(minutes[1])
+        }
+        return parseInt(minutes)
+    }
+
     function setEvents(data) {
         const location = data.BuildingName;
         const day = data.DaysOfWeek;
@@ -161,12 +180,11 @@ function Schedule() {
         const heightOfEvent = Math.abs((endDate - startDate) / 60000);
 
         //start of event
-        var date = new Date(startTime.toLocaleString('en-US', { timeZone: 'America/New_York' }))
-        const startTimeHour = date.getHours()
-        const startTimeMinutes = date.getMinutes()
+        const startTimeHour = getHours(startTime)
+        const startTimeMinutes = getMinutes(startTime)
 
-        //offset from javascript Date parser
-        let startOfEvent = (startTimeHour * 60) + startTimeMinutes + 300
+        //start of event in pixels
+        const startOfEvent = (startTimeHour * 60) + startTimeMinutes
 
         //each column is 118.5px wide
         const daysMap = new Map();
@@ -186,7 +204,7 @@ function Schedule() {
                 left: daysMap.get(day) + "px",
                 height: heightOfEvent + "px",
                 lineHeight: heightOfEvent + "px",
-                minWidth: "100px",
+                maxWidth: "100px",
                 background: "#FFFFFF",
                 border: "2px solid #5393C6",
                 borderRadius: "10px",
@@ -194,7 +212,8 @@ function Schedule() {
                 color: "#5393C6",
                 textAlign: "center",
                 backgroundColor: "white",
-                cursor: "pointer"
+                cursor: "pointer",
+                overflow: "auto"
             }
         }
         return (
@@ -264,64 +283,94 @@ function Schedule() {
         }
     }
 
+    function getHoursFrom24Hr(startTime) {
+        let hour = startTime[1].split(':')[0]
+        if (hour[0] === "0") {
+            return parseInt(hour[1])
+        }
+        return hour
+    }
+
+    function getMinutesFrom24Hr(startTime) {
+        let time_processed = startTime.split(':')[1]
+        let minutes = time_processed.split(' ')[0]
+        if (minutes[0] === "0") {
+            return parseInt(minutes[1])
+        }
+        return parseInt(minutes)
+    }
+
+    function startIsLessThanEnd(startDate, endDate) {
+        const start = getHoursFrom24Hr(startDate) * 60 + getMinutesFrom24Hr(startDate)
+        const end = getHoursFrom24Hr(endDate) * 60 + getMinutesFrom24Hr(endDate)
+        if (start >= end) {
+            return false;
+        }
+        return true;
+    }
+
     function addToSchedule() {
         let newData = data.slice()
         if (location.length !== 0 && startTime.length !== 0 && endTime.length !== 0) {
-            let formattedStartTime = "2020-01-01T" + convertTime(startTime) + "Z";
-            let formattedEndTime = "2020-01-01T" + convertTime(endTime) + "Z";
-            let sqlCommands = []
-            const eventIDNow = Date.now()
+            if (startIsLessThanEnd(startTime, endTime)) {
+                let formattedStartTime = "2020-01-01T" + convertTime(startTime) + "Z";
+                let formattedEndTime = "2020-01-01T" + convertTime(endTime) + "Z";
+                let sqlCommands = []
+                const eventIDNow = Date.now()
 
-            if (monday) {
-                newData.push({ BuildingName: location, DaysOfWeek: "Monday", EndTime: formattedEndTime, EventID: eventIDNow, StartTime: formattedStartTime, UserID: currentUserID })
-                sqlCommands.push("INSERT INTO events VALUES (" + "'" + currentUserID + "','" + location + "','" + formattedStartTime + "','" + formattedEndTime + "','" + "Monday" + "','" + eventIDNow + "');")
-            }
-            if (tuesday) {
-                newData.push({ BuildingName: location, DaysOfWeek: "Tuesday", EndTime: formattedEndTime, EventID: eventIDNow, StartTime: formattedStartTime, UserID: currentUserID })
-                sqlCommands.push("INSERT INTO events VALUES (" + "'" + currentUserID + "','" + location + "','" + formattedStartTime + "','" + formattedEndTime + "','" + "Tuesday" + "','" + eventIDNow + "');")
-            }
-            if (wednesday) {
-                newData.push({ BuildingName: location, DaysOfWeek: "Wednesday", EndTime: formattedEndTime, EventID: eventIDNow, StartTime: formattedStartTime, UserID: currentUserID })
-                sqlCommands.push("INSERT INTO events VALUES (" + "'" + currentUserID + "','" + location + "','" + formattedStartTime + "','" + formattedEndTime + "','" + "Wednesday" + "','" + eventIDNow + "');")
-            }
-            if (thursday) {
-                newData.push({ BuildingName: location, DaysOfWeek: "Thursday", EndTime: formattedEndTime, EventID: eventIDNow, StartTime: formattedStartTime, UserID: currentUserID })
-                sqlCommands.push("INSERT INTO events VALUES (" + "'" + currentUserID + "','" + location + "','" + formattedStartTime + "','" + formattedEndTime + "','" + "Thursday" + "','" + eventIDNow + "');")
-            }
-            if (friday) {
-                newData.push({ BuildingName: location, DaysOfWeek: "Friday", EndTime: formattedEndTime, EventID: eventIDNow, StartTime: formattedStartTime, UserID: currentUserID })
-                sqlCommands.push("INSERT INTO events VALUES (" + "'" + currentUserID + "','" + location + "','" + formattedStartTime + "','" + formattedEndTime + "','" + "Friday" + "','" + eventIDNow + "');")
-            }
-            if (saturday) {
-                newData.push({ BuildingName: location, DaysOfWeek: "Saturday", EndTime: formattedEndTime, EventID: eventIDNow, StartTime: formattedStartTime, UserID: currentUserID })
-                sqlCommands.push("INSERT INTO events VALUES (" + "'" + currentUserID + "','" + location + "','" + formattedStartTime + "','" + formattedEndTime + "','" + "Saturday" + "','" + eventIDNow + "');")
-            }
-            if (sunday) {
-                newData.push({ BuildingName: location, DaysOfWeek: "Sunday", EndTime: formattedEndTime, EventID: eventIDNow, StartTime: formattedStartTime, UserID: currentUserID })
-                sqlCommands.push("INSERT INTO events VALUES (" + "'" + currentUserID + "','" + location + "','" + formattedStartTime + "','" + formattedEndTime + "','" + "Sunday" + "','" + eventIDNow + "');")
-            }
-
-            for (let i = 0; i < sqlCommands.length; i++) {
-                const postParameters = {
-                    sql: sqlCommands[i]
+                if (monday) {
+                    newData.push({ BuildingName: location, DaysOfWeek: "Monday", EndTime: formattedEndTime, EventID: eventIDNow, StartTime: formattedStartTime, UserID: currentUserID })
+                    sqlCommands.push("INSERT INTO events VALUES (" + "'" + currentUserID + "','" + location + "','" + formattedStartTime + "','" + formattedEndTime + "','" + "Monday" + "','" + eventIDNow + "');")
                 }
-                fetch('http://localhost:4567/get-sql-rs', {
-                    method: 'POST',
-                    body: JSON.stringify(postParameters),
-                    headers: { 'Access-Control-Allow-Origin': '*' },
-                }).then(() => {}).catch((error) => console.error("Error:", error))
+                if (tuesday) {
+                    newData.push({ BuildingName: location, DaysOfWeek: "Tuesday", EndTime: formattedEndTime, EventID: eventIDNow, StartTime: formattedStartTime, UserID: currentUserID })
+                    sqlCommands.push("INSERT INTO events VALUES (" + "'" + currentUserID + "','" + location + "','" + formattedStartTime + "','" + formattedEndTime + "','" + "Tuesday" + "','" + eventIDNow + "');")
+                }
+                if (wednesday) {
+                    newData.push({ BuildingName: location, DaysOfWeek: "Wednesday", EndTime: formattedEndTime, EventID: eventIDNow, StartTime: formattedStartTime, UserID: currentUserID })
+                    sqlCommands.push("INSERT INTO events VALUES (" + "'" + currentUserID + "','" + location + "','" + formattedStartTime + "','" + formattedEndTime + "','" + "Wednesday" + "','" + eventIDNow + "');")
+                }
+                if (thursday) {
+                    newData.push({ BuildingName: location, DaysOfWeek: "Thursday", EndTime: formattedEndTime, EventID: eventIDNow, StartTime: formattedStartTime, UserID: currentUserID })
+                    sqlCommands.push("INSERT INTO events VALUES (" + "'" + currentUserID + "','" + location + "','" + formattedStartTime + "','" + formattedEndTime + "','" + "Thursday" + "','" + eventIDNow + "');")
+                }
+                if (friday) {
+                    newData.push({ BuildingName: location, DaysOfWeek: "Friday", EndTime: formattedEndTime, EventID: eventIDNow, StartTime: formattedStartTime, UserID: currentUserID })
+                    sqlCommands.push("INSERT INTO events VALUES (" + "'" + currentUserID + "','" + location + "','" + formattedStartTime + "','" + formattedEndTime + "','" + "Friday" + "','" + eventIDNow + "');")
+                }
+                if (saturday) {
+                    newData.push({ BuildingName: location, DaysOfWeek: "Saturday", EndTime: formattedEndTime, EventID: eventIDNow, StartTime: formattedStartTime, UserID: currentUserID })
+                    sqlCommands.push("INSERT INTO events VALUES (" + "'" + currentUserID + "','" + location + "','" + formattedStartTime + "','" + formattedEndTime + "','" + "Saturday" + "','" + eventIDNow + "');")
+                }
+                if (sunday) {
+                    newData.push({ BuildingName: location, DaysOfWeek: "Sunday", EndTime: formattedEndTime, EventID: eventIDNow, StartTime: formattedStartTime, UserID: currentUserID })
+                    sqlCommands.push("INSERT INTO events VALUES (" + "'" + currentUserID + "','" + location + "','" + formattedStartTime + "','" + formattedEndTime + "','" + "Sunday" + "','" + eventIDNow + "');")
+                }
+
+                for (let i = 0; i < sqlCommands.length; i++) {
+                    const postParameters = {
+                        sql: sqlCommands[i]
+                    }
+                    fetch('http://localhost:4567/get-sql-rs', {
+                        method: 'POST',
+                        body: JSON.stringify(postParameters),
+                        headers: { 'Access-Control-Allow-Origin': '*' },
+                    }).then(() => { }).catch((error) => console.error("Error:", error))
+                }
+                setData(newData)
+                setMonday(false)
+                setTuesday(false)
+                setWednesday(false)
+                setThursday(false)
+                setFriday(false)
+                setSaturday(false)
+                setSunday(false)
+                setStartTime(startTime)
+                setEndTime(endTime)
+                setLocation(location)
+            } else {
+                window.alert("Start time is after end time.")
             }
-            setData(newData)
-            setMonday(false)
-            setTuesday(false)
-            setWednesday(false)
-            setThursday(false)
-            setFriday(false)
-            setSaturday(false)
-            setSunday(false)
-            setStartTime("12:00 AM")
-            setEndTime("12:00 AM")
-            setLocation(firstLocation)
         } else {
             window.alert("Some fields were not selected.")
         }
@@ -363,7 +412,7 @@ function Schedule() {
                         <div className="row">
                             <div className="column">
                                 <p className="schedule-subtitle-flex">Start Time</p>
-                                <select name="startTimes" id="startTimes" className="schedule-dropdown-time" onChange={(e) => { setStartTime(e.target.value) }}>
+                                <select name="startTimes" id="startTimes" className="schedule-dropdown-time" value={startTime} onChange={(e) => { setStartTime(e.target.value) }}>
                                     {times.map((time) => (
                                         <option key={time} value={time}>{time}</option>
                                     ))}
@@ -371,7 +420,7 @@ function Schedule() {
                             </div>
                             <div className="column">
                                 <p className="schedule-subtitle-flex">End Time</p>
-                                <select name="endTimes" id="endTimes" className="schedule-dropdown-time" onChange={(e) => { setEndTime(e.target.value) }}>
+                                <select name="endTimes" id="endTimes" className="schedule-dropdown-time" value={endTime} onChange={(e) => { setEndTime(e.target.value) }}>
                                     {times.map((time) => (
                                         <option key={time} value={time}>{time}</option>
                                     ))}
