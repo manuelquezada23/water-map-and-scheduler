@@ -183,19 +183,9 @@ function MapPanel() {
       },
     }).then((response) => response.json())
       .then((data) => {
-        var _recs = []
-        _recs.push({
-          fntID: data.nameValuePairs["first"]
-        })
-        _recs.push({
-          fntID: data.nameValuePairs["second"]
-        })
-        _recs.push({
-          fntID: data.nameValuePairs["third"]
-        })
-        setRecs(_recs)
+        setRecs(processRecs(data))
       }).catch((data) => {
-        "response data should be 'failed'"
+        //response data should be "failed"
         console.log("info not available" + data);
       })
   }
@@ -210,21 +200,34 @@ function MapPanel() {
       },
     }).then((response) => response.json())
     .then((data) => {
-      var _recs = []
-      _recs.push({
-        fntID: data.nameValuePairs["first"]
-      })
-      _recs.push({
-        fntID: data.nameValuePairs["second"]
-      })
-      _recs.push({
-        fntID: data.nameValuePairs["third"]
-      })
-      setRecs(_recs)
+      setRecs(processRecs(data))
     }).catch((data) => {
-      "response data should be 'failed'"
+      //respone is "failed"
       console.log("info not available" + data);
     })
+  }
+
+  function processRecs(data) {
+    var _recs = []
+    _recs.push({
+      fntID: data.nameValuePairs["first"].nameValuePairs["id"],
+      building: data.nameValuePairs["first"].nameValuePairs["building"],
+      room: data.nameValuePairs["first"].nameValuePairs["room"],
+      rating: data.nameValuePairs["first"].nameValuePairs["rating"]
+    })
+    _recs.push({
+      fntID: data.nameValuePairs["second"].nameValuePairs["id"],
+      building: data.nameValuePairs["second"].nameValuePairs["building"],
+      room: data.nameValuePairs["second"].nameValuePairs["room"],
+      rating: data.nameValuePairs["second"].nameValuePairs["rating"]
+    })
+    _recs.push({
+      fntID: data.nameValuePairs["third"].nameValuePairs["id"],
+      building: data.nameValuePairs["third"].nameValuePairs["building"],
+      room: data.nameValuePairs["third"].nameValuePairs["room"],
+      rating: data.nameValuePairs["third"].nameValuePairs["rating"]
+    })
+    return _recs
   }
 
   const loadReviews = (event) => {
@@ -295,11 +298,14 @@ function MapPanel() {
                 <div>
                   <p>3 closest fountains:</p>
                   {recs.map((rec, index) => (
-                    <div>
+                    <div onClick={()=>{
+                      //code for selecting a building and a fountain
+                      
+                    }}>
                       <p>Fountain id: {rec.fntID}</p>
-                      <p>Nearest room: {rec.fntID}</p>
-                      <p>Buildinig: {rec.fntID}</p>
-                      <p>Average rating: {rec.fntID}</p>
+                      <p>Nearest room: {rec.room}</p>
+                      <p>Building: {rec.building}</p>
+                      <p>Average rating: {rec.rating}</p>
                     </div>
                   ))}
                 </div>

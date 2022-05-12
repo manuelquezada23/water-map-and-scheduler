@@ -57,6 +57,9 @@ public class Fountain {
         for (Review review : this.reviewList) {
             sum += review.getStarRating();
         }
+        if (reviewList.size() == 0) {
+            return 0; //if there are no ratings (can be changed)
+        }
         return sum/this.reviewList.size();
     }
 }
