@@ -21,7 +21,11 @@ public class Event {
 
   public boolean isHappening() {
     String day = LocalDate.now().getDayOfWeek().name().toLowerCase();
-    int now = this.convertUTC(Instant.now().toString()) -400;
+    int now = this.convertUTC(Instant.now().toString()) - 400;
+    // System.out.println("now"+now);
+    // System.out.println(this.startTime - MARGIN_OF_ERROR);
+    // System.out.println(this.endTime + MARGIN_OF_ERROR);
+    // System.out.println(day.equals(this.dayOfWeek.toLowerCase()));
     return (now >= this.startTime - MARGIN_OF_ERROR)
             && (now <= this.endTime + MARGIN_OF_ERROR) && (day.equals(this.dayOfWeek.toLowerCase()));
   }

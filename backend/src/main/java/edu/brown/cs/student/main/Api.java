@@ -11,7 +11,6 @@ import edu.brown.cs.student.main.userFunc.User;
 import edu.brown.cs.student.main.userFunc.UserCommands;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,7 +19,6 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 import spark.Spark;
-
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -79,7 +77,7 @@ public class Api {
     });
 
     Spark.before((request, response) -> response.header("Access-Control-Allow-Origin", "*"));
-
+    
     // put Routes Here
     Spark.post("/get-sql-rs", new getSQLResultSetHandler());
     Spark.post("/get-fountains-schedule", new getNearestFountainScheduleHandler());
@@ -135,7 +133,6 @@ public class Api {
 
 
   private class getNearestFountainScheduleHandler implements Route {
-
     /**
      * Handles requests for getting the nearest 3 fountains based on schedule.
      * @param req request which maps "user" to their user ID
@@ -155,6 +152,7 @@ public class Api {
       UserCommands userCommands = new UserCommands(Api.this.db);
       User user = userCommands.idToUser(userID);
       String building = user.checkEvent();
+      System.out.println(building);
 
       if (building != null) {
         Building currBuilding = buildingCommands.idToBuilding(building);
