@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class User {
-  private final int userid;
+  private final String userid;
   private String email;
   private String key;
   private String name;
   private List<Event> events;
 
-  public User(int userid) {
+  public User(String userid) {
     this.userid = userid;
     this.events = new ArrayList<>();
   }
@@ -40,7 +40,7 @@ public class User {
     this.key = key;
   }
 
-  public int getUserid() {
+  public String getUserid() {
     return this.userid;
   }
 

@@ -26,17 +26,17 @@ public class UserCommands {
     this.users = new ArrayList<>();
     ResultSet rs = this.database.executeCommand("SELECT UserID FROM users");
     while (rs.next()) {
-      this.users.add(new User(rs.getInt(1)));
+      this.users.add(new User(rs.getString(1)));
     }
     for (User user : this.users) {
-      int id = user.getUserid();
-      rs = this.database.executeCommand("SELECT * FROM users WHERE UserID = " + id);
+      String id = user.getUserid();
+      rs = this.database.executeCommand("SELECT * FROM users WHERE UserID = '" + id +"'");
       while (rs.next()) {
         user.setName(rs.getString("Name"));
         user.setEmail(rs.getString("Email"));
         user.setKey(rs.getString("Key"));
       }
-      rs = this.database.executeCommand("SELECT * FROM events WHERE UserID = " + id);
+      rs = this.database.executeCommand("SELECT * FROM events WHERE UserID = '" + id +"'");
       while (rs.next()) {
         int location = rs.getInt("ProperyCode");
         int startTime = rs.getInt("StartTime");
@@ -51,9 +51,10 @@ public class UserCommands {
     return this.users;
   }
 
-  public User idToUser(int userID) {
+  public User idToUser(String userID) {
     for (User user : this.users) {
-      if (user.getUserid() == userID) {
+      if (user.getUserid().equals(userID)) {
+        System.out.println("users match: "+user);
         return user;
       }
     }

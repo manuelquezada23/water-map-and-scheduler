@@ -135,7 +135,7 @@ public class Api {
     @Override
     public String handle(Request req, Response res) throws JSONException {
       JSONObject obj = new JSONObject(req.body());
-      int userID = obj.getInt("user");
+      String userID = obj.getString("user");
 
       JSONObject json = new JSONObject();
       Gson gson = new Gson();
@@ -152,8 +152,10 @@ public class Api {
         json.put("first", fountainList.get(0).getId());
         json.put("second", fountainList.get(1).getId());
         json.put("third", fountainList.get(2).getId());
+        System.out.println("json"+json);
         return gson.toJson(json);
       } else {
+        System.out.println("failed");
         return "Failed";
       }
     }
