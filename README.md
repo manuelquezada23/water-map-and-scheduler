@@ -1,4 +1,4 @@
-# Term Project: Water Drinking Website
+# Term Project: Water Map & Scheduler
 
 ## Section 1: Introduction 
 ### 1.1 Project Specific Details
