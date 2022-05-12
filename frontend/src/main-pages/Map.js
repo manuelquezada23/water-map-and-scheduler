@@ -2,9 +2,8 @@ import React, { useMemo, useState, useRef, useCallback, useEffect } from 'react'
 import logo from '../logo.png'
 import { useNavigate } from "react-router-dom";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { GoogleMap, useLoadScript, Marker, MarkerClusterer, LatLngLiteral, InfoWindow } from "@react-google-maps/api";
+import { GoogleMap, useLoadScript, Marker, MarkerClusterer, } from "@react-google-maps/api";
 import PictureIcon from '../picture.png'
-import { flushSync } from 'react-dom';
 import PopUp from 'reactjs-popup';
 import { IoArrowBack } from "react-icons/io5";
 import { Rating } from 'react-simple-star-rating'
@@ -208,7 +207,6 @@ function MapPanel() {
       },
     }).then((response) => response.json())
       .then((data) => {
-        console.log(data)
         setRecs(processRecs(data))
       }).catch((data) => {
         "response data should be 'failed'"
@@ -239,10 +237,9 @@ function MapPanel() {
     return _recs
   }
 
-  const loadReviews = (event) => {
-    setFnt(event.target.value) //fountain id
+  function loadReview(fntId){
+    setFnt(fntId) //fountain id
     setFntSelected(true)
-    //load reviews for that fountain id
   }
 
   return (
@@ -253,7 +250,6 @@ function MapPanel() {
           <div style={{ display: "flex", flexDirection: "row" }}>
             <a className="search-close" onClick={() => {
               setSearch(0)
-              setFntSelected(false)
             }}>
               <IoArrowBack size={30} />
             </a>
@@ -321,8 +317,13 @@ function MapPanel() {
                   </div>
                   {recs.map((rec) => (
                     <div onClick={() => {
-                      //code for selecting a building and a fountain
-
+                      buildingData.filter((bldgFromData)=>{
+                        if (bldgFromData.BuildingName === rec.building) {
+                          toBuilding(bldgFromData)
+                          return bldgFromData
+                        } 
+                      })
+                      loadReview(rec.fntID) //loads the reviews
                     }}>
                       <div className="recommendations-data-info">
                         <img className="recommendations-data-pin" src={MapPin}></img>
@@ -351,15 +352,12 @@ function MapPanel() {
               <div style={{ display: "flex", flexDirection: "row" }}>
                 <a className="building-close" onClick={() => {
                   setSelected(false)
+                  setJustClicked(true)
+                  setFntSelected(false)
                 }}>
                   <IoArrowBack size={30} />
                 </a>
-                <p className="selected-bldg" onClick={() => {
-                  //i.e. if they x out (should make a button) -- not intuitive
-                  setSelected(false)
-                  setJustClicked(true)
-                  setFntSelected(false)
-                }}>{currentBldg.BuildingName}</p>
+                <p className="selected-bldg">{currentBldg.BuildingName}</p>
               </div>
               {buildingData.filter(bldg => {
                 if (bldg.BuildingName === currentBldg.BuildingName) {
@@ -367,7 +365,7 @@ function MapPanel() {
                 }
               }).map((bldg) => (
                 <div key={bldg.PropertyCode}> {/*they key of selected building */}
-                  <select id="map-dropdown" className="map-dropdown" value={currentFnt} onChange={loadReviews}>
+                  <select id="map-dropdown" className="map-dropdown" value={currentFnt} onChange={(e)=>loadReview(e.target.value)}>
                     <option>Choose an option by nearest room:</option>
                     {fountainData.filter(fnt => {
                       if (fnt.BuildingName === currentBldg.BuildingName) {
@@ -390,7 +388,7 @@ function MapPanel() {
                           return review
                         }
                       }).map((review, index) => (
-                        <div className="review-view">
+                        <div key={index} className="review-view">
                           <img className="review-view-image" src={PictureIcon}></img>
                           <div className="review-author-info">
                             <p className="review-view-name">{review.Name}</p>
