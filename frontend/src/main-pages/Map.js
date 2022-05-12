@@ -96,6 +96,7 @@ function MapPanel() {
     setZoom(19.5)
     mapRef.current.setZoom(19.5)
     setSelected(true)
+    setSearch(1)
   }
 
   useEffect(() => {
