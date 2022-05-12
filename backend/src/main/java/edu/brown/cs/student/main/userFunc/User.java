@@ -15,13 +15,16 @@ public class User {
     this.events = new ArrayList<>();
   }
 
-  public int checkEvent(){
+  public String checkEvent(){
+    for (Event event: this.events) {
+      System.out.println("event: "+event);
+    }
     for (Event event : this.events) {
       if (event.isHappening()) {
-        return event.getBuildingId();
+        return event.getBuilding();
       }
     }
-    return -1;
+    return null;
   }
 
   public String getEmail() {

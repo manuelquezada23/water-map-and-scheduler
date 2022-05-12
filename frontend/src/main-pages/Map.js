@@ -177,7 +177,7 @@ function MapPanel() {
     setRecs(false)
     fetch('http://localhost:4567/get-fountains-location', {
       method: 'POST',
-      body: JSON.stringify({building: currentBldg.PropertyCode}),
+      body: JSON.stringify({building: currentBldg.BuildingName}),
       headers: {
         "Access-Control-Allow-Origin": "*"
       },

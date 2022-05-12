@@ -154,10 +154,10 @@ public class Api {
       NearestFountain nearestFountain = new NearestFountain(buildingCommands.getBuildings());
       UserCommands userCommands = new UserCommands(Api.this.db);
       User user = userCommands.idToUser(userID);
-      int buildingID = user.checkEvent();
+      String building = user.checkEvent();
 
-      if (buildingID != -1) {
-        Building currBuilding = buildingCommands.idToBuilding(buildingID);
+      if (building != null) {
+        Building currBuilding = buildingCommands.idToBuilding(building);
         List<Fountain> fountainList = nearestFountain.findNearestFountains(currBuilding);
         json.put("first", Api.this.createInnerJSON(fountainList.get(0)));
         json.put("second", Api.this.createInnerJSON(fountainList.get(1)));
@@ -181,13 +181,11 @@ public class Api {
     @Override
     public String handle(Request req, Response res) throws JSONException {
       JSONObject obj = new JSONObject(req.body());
-      System.out.println(obj);
-      String buildingID = obj.getString("building");
-      System.out.println(buildingID);
+      String buildingID = obj.getString("building"); //uses the name now instead of ID
 
       BuildingCommands buildingCommands = new BuildingCommands(Api.this.db);
       NearestFountain nearestFountain = new NearestFountain(buildingCommands.getBuildings());
-      Building currBuilding = buildingCommands.idToBuilding(Integer.parseInt(buildingID));
+      Building currBuilding = buildingCommands.idToBuilding(buildingID);
 
       JSONObject json = new JSONObject();
       Gson gson = new Gson();

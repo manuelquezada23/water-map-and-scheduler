@@ -38,7 +38,7 @@ public class UserCommands {
       }
       rs = this.database.executeCommand("SELECT * FROM events WHERE UserID = '" + id +"'");
       while (rs.next()) {
-        int location = rs.getInt("ProperyCode");
+        String location = rs.getString("BuildingName");
         String startTime = rs.getString("StartTime");
         String endTime = rs.getString("EndTime");
         String day = rs.getString("DaysOfWeek");
