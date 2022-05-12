@@ -46,10 +46,11 @@ public class BuildingCommands {
      */
     private void setUpFountains(Building building) throws SQLException {
         int buildingCode = building.getCode();
-        String sqlCommand = "SELECT FountainID, Floor FROM fountains WHERE PropertyCode = " + buildingCode;
+        String sqlCommand = "SELECT FountainID, Floor, NearestRoom FROM fountains WHERE PropertyCode = " + buildingCode;
         ResultSet rs = this.database.executeCommand(sqlCommand);
         while (rs.next()) {
-            Fountain fountain = new Fountain(rs.getInt("FountainID"), building.getCode(), building.getName(), rs.getInt("Floor"));
+            Fountain fountain = new Fountain(rs.getInt("FountainID"), building.getCode(), building.getName(),
+                    rs.getInt("Floor"), rs.getInt("NearestRoom"));
             building.addFountain(fountain);
             this.setUpReviews(fountain);
         }

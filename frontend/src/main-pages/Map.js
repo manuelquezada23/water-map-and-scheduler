@@ -6,10 +6,11 @@ import { GoogleMap, useLoadScript, Marker, MarkerClusterer, LatLngLiteral, InfoW
 import PictureIcon from '../picture.png'
 import { flushSync } from 'react-dom';
 import PopUp from 'reactjs-popup';
-import { IoCloseCircleSharp } from "react-icons/io5";
+import { IoArrowBack } from "react-icons/io5";
 import { Rating } from 'react-simple-star-rating'
 import { IoCalendarSharp } from "react-icons/io5";
 import { IoSearchSharp } from "react-icons/io5";
+import MapPin from "../map-pin.png"
 
 function Map() {
   // Authentication:
@@ -185,19 +186,9 @@ function MapPanel() {
       },
     }).then((response) => response.json())
       .then((data) => {
-        var _recs = []
-        _recs.push({
-          fntID: data.nameValuePairs["first"]
-        })
-        _recs.push({
-          fntID: data.nameValuePairs["second"]
-        })
-        _recs.push({
-          fntID: data.nameValuePairs["third"]
-        })
-        setRecs(_recs)
+        setRecs(processRecs(data))
       }).catch((data) => {
-        "response data should be 'failed'"
+        //response data should be "failed"
         console.log("info not available" + data);
       })
   }
@@ -229,6 +220,29 @@ function MapPanel() {
       })
   }
 
+  function processRecs(data) {
+    var _recs = []
+    _recs.push({
+      fntID: data.nameValuePairs["first"].nameValuePairs["id"],
+      building: data.nameValuePairs["first"].nameValuePairs["building"],
+      room: data.nameValuePairs["first"].nameValuePairs["room"],
+      rating: data.nameValuePairs["first"].nameValuePairs["rating"]
+    })
+    _recs.push({
+      fntID: data.nameValuePairs["second"].nameValuePairs["id"],
+      building: data.nameValuePairs["second"].nameValuePairs["building"],
+      room: data.nameValuePairs["second"].nameValuePairs["room"],
+      rating: data.nameValuePairs["second"].nameValuePairs["rating"]
+    })
+    _recs.push({
+      fntID: data.nameValuePairs["third"].nameValuePairs["id"],
+      building: data.nameValuePairs["third"].nameValuePairs["building"],
+      room: data.nameValuePairs["third"].nameValuePairs["room"],
+      rating: data.nameValuePairs["third"].nameValuePairs["rating"]
+    })
+    return _recs
+  }
+
   const loadReviews = (event) => {
     setFnt(event.target.value) //fountain id
     setFntSelected(true)
@@ -245,7 +259,7 @@ function MapPanel() {
               setSearch(0)
               setFntSelected(false)
             }}>
-              <IoCloseCircleSharp size={30} />
+              <IoArrowBack size={30} />
             </a>
 
             <input type="text"
@@ -262,11 +276,11 @@ function MapPanel() {
                 setSearch(2)
                 findRecommendationSched()
               }}>
-                <IoCalendarSharp style={{marginRight: 10, marginBottom: 5}} size={30} />
+                <IoCalendarSharp style={{ marginRight: 10, marginBottom: 5 }} size={30} />
                 Find fountain by schedule
               </div>
               <div className="controls-button" onClick={() => setSearch(1)}>
-                <IoSearchSharp style={{marginRight: 10, marginBottom: 5}} size={30} />
+                <IoSearchSharp style={{ marginRight: 10, marginBottom: 5 }} size={30} />
                 Search for a fountain
               </div>
             </div>
@@ -292,7 +306,7 @@ function MapPanel() {
             </div>
           ))}
           {(search === 2) && (wait) && (toggleSelected === false) &&
-            <div className='test'>
+            <div>
               {recs === false &&
                 <div>
                   <p>No fountains available, try searching.</p>
@@ -300,14 +314,36 @@ function MapPanel() {
                 </div>
               }
               {recs !== false &&
-                <div>
-                  <p>3 closest fountains:</p>
+                <div className="recommendations-data">
+                  <div style={{ display: "flex", flexDirection: "row" }}>
+                    <IoArrowBack style={{ marginRight: 10, cursor: "pointer" }} size={30}
+                      onClick={() => {
+                        setSearch(0)
+                      }}
+                    />
+                    <p className="recommendations-data-title">3 closest fountains:</p>
+                  </div>
                   {recs.map((rec, index) => (
-                    <div>
-                      <p>Fountain id: {rec.fntID}</p>
-                      <p>Nearest room: {rec.fntID}</p>
-                      <p>Buildinig: {rec.fntID}</p>
-                      <p>Average rating: {rec.fntID}</p>
+                    <div onClick={() => {
+                      //code for selecting a building and a fountain
+
+                    }}>
+                      <div className="recommendations-data-info">
+                        <img className="recommendations-data-pin" src={MapPin}></img>
+                        <div>
+                          <p className="recommendations-data-building">{rec.building}</p>
+                          <p className="recommendations-data-room">near Room {rec.room}</p>
+                          <div className="recommendations-data-stars">
+                            <Rating
+                              size={15}
+                              fillColor={"#5393C6"}
+                              allowHalfIcon={true}
+                              initialValue={rec.Rating}
+                              readonly={true}
+                            />
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -320,7 +356,7 @@ function MapPanel() {
                 <a className="building-close" onClick={() => {
                   setSelected(false)
                 }}>
-                  <IoCloseCircleSharp size={30} />
+                  <IoArrowBack size={30} />
                 </a>
                 <p className="selected-bldg" onClick={() => {
                   //i.e. if they x out (should make a button) -- not intuitive
@@ -410,7 +446,7 @@ function MapPanel() {
                             }}>Post</button>
                           </div>
                           <a className="close" onClick={close}>
-                            <IoCloseCircleSharp size={30} />
+                            <IoArrowBack size={30} />
                           </a>
                         </div>
                       </div>

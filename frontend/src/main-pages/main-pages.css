@@ -1016,6 +1016,54 @@ input[type='file'] {
   color: transparent;
 }
 
+.recommendations-data {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.recommendations-data-title {
+  font-size: 22px;
+  color: #5393C6;
+  font-weight: bold;
+  margin-top: 0px
+}
+
+.recommendations-data-info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: -20px;
+  margin-bottom: 15px;
+  cursor: pointer;
+}
+
+.recommendations-data-pin {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+  object-fit: contain;
+  /* height: 30px; */
+}
+
+.recommendations-data-building {
+  font-size: 18px;
+  color: #5393C6;
+  font-weight: bold;
+}
+
+.recommendations-data-room {
+  font-size: 16px;
+  color: black;
+  font-weight: bold;
+  margin-top: -20px;
+}
+
+.recommendations-data-stars {
+  margin-top: -15px;
+}
+
+
 /*Map*/
 
 .map-container {
@@ -1251,8 +1299,4 @@ input[type='file'] {
 .map-searchBar:focus {
   outline: none;
   position: relative;
-}
-
-.test {
-  background-color: red;
 }

@@ -88,7 +88,7 @@ function Schedule() {
                 }).then((response) => response.json()).then((data) => {
                     const processed_data = convertDataIntoArray(data.values)
                     setLocations(processed_data)
-                    setLocation(processed_data[0].BuildingName)
+                    // setLocation(processed_data[0].BuildingName)
                     setFirstLocation(processed_data[0].BuildingName)
                     setAwait(true)
                     // setAwait(false)

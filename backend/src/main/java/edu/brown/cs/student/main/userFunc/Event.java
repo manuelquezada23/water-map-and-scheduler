@@ -1,6 +1,7 @@
 package edu.brown.cs.student.main.userFunc;
 
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Date;
 
@@ -11,26 +12,25 @@ public class Event {
   private final String dayOfWeek;
   private static final int MARGIN_OF_ERROR = 10;
 
-  public Event(int building, int startTime, int endTime, String dayOfWeek) {
+  public Event(int building, String startTime, String endTime, String dayOfWeek) {
     this.building = building;
-    this.startTime = startTime;
-    this.endTime = endTime;
+    this.startTime = this.convertUTC(startTime);
+    this.endTime = this.convertUTC(endTime);
     this.dayOfWeek = dayOfWeek;
   }
 
   public boolean isHappening() {
-    Date currentDate = new Date();
     String day = LocalDate.now().getDayOfWeek().name();
-    SimpleDateFormat formatter = new SimpleDateFormat("kk:mm:ss");
-    String time = formatter.format(currentDate); // hh:mm:ss format (24 hour)
-    String hourMinCombined = time.substring(0,4);
-    hourMinCombined = hourMinCombined.replace(":", ""); // HHMM format (24 hr)
-    int hourMinCombinedInt = Integer.parseInt(hourMinCombined);
-
-    // check if correct day of the week and within time range
-    return (hourMinCombinedInt >= this.startTime - MARGIN_OF_ERROR)
-            && (hourMinCombinedInt <= this.endTime + MARGIN_OF_ERROR) && (day.equals(this.dayOfWeek));
+    int now = this.convertUTC(Instant.now().toString());
+    return (now >= this.startTime - MARGIN_OF_ERROR)
+            && (now <= this.endTime + MARGIN_OF_ERROR) && (day.equals(this.dayOfWeek));
   }
+
+  private int convertUTC(String utc) {
+    String substring = utc.substring(11, 16);
+    return Integer.parseInt(substring.replace(":",""));
+  }
+
 
   public int getBuildingId() {
     return this.building;
