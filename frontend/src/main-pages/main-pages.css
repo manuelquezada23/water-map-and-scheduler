@@ -808,6 +808,48 @@ Contact Page
   height: 10%;
 }
 
+.reviews-view {
+  overflow-y: auto;
+  height: 350px;
+  margin-right: 10px;
+  margin-top: 10px;
+}
+
+.review-view {
+  height: auto;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+}
+
+.review-view-image {
+  height: 45px;
+  width: 45px;
+  /* margin-left: 20px; */
+}
+
+.review-view-name {
+  font-family: "Playfair Display";
+  color: #5393C6;
+  font-weight: bold;
+  font-size: 16px;
+  margin-top: 5px;
+}
+
+.review-author-info {
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+}
+
+.review-view-stars {
+  margin-top: -15px;
+}
+
+.review-view-text {
+  margin-top: 0px;
+}
+
 .author-box {
   margin-left: 50px;
   display: flex;
@@ -1153,4 +1195,8 @@ input[type='file'] {
 .map-searchBar:focus {
   outline: none;
   position: relative;
+}
+
+.test {
+  background-color: red;
 }

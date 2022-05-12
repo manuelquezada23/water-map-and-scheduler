@@ -40,7 +40,7 @@ function Schedule() {
     const [sunday, setSunday] = useState(false)
     const [startTime, setStartTime] = useState('12:00 AM')
     const [endTime, setEndTime] = useState('12:00 AM')
-    const [location, setLocation] = useState()
+    const [location, setLocation] = useState('')
     const [locations, setLocations] = useState([])
     const [firstLocation, setFirstLocation] = useState()
     const [data, setData] = useState([])
@@ -88,8 +88,8 @@ function Schedule() {
                 }).then((response) => response.json()).then((data) => {
                     const processed_data = convertDataIntoArray(data.values)
                     setLocations(processed_data)
-                    setLocation(processed_data[0])
-                    setFirstLocation(processed_data[0])
+                    setLocation(processed_data[0].BuildingName)
+                    setFirstLocation(processed_data[0].BuildingName)
                     setAwait(true)
                     // setAwait(false)
                     // setCurrentUserID(user.uid);
@@ -309,9 +309,7 @@ function Schedule() {
                     method: 'POST',
                     body: JSON.stringify(postParameters),
                     headers: { 'Access-Control-Allow-Origin': '*' },
-                }).then(() => {
-
-                }).catch((error) => console.error("Error:", error))
+                }).then(() => {}).catch((error) => console.error("Error:", error))
             }
             setData(newData)
             setMonday(false)

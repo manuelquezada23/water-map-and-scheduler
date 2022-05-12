@@ -172,7 +172,9 @@ public class Api {
     @Override
     public String handle(Request req, Response res) throws JSONException {
       JSONObject obj = new JSONObject(req.body());
+      System.out.println(obj);
       String buildingID = obj.getString("building");
+      System.out.println(buildingID);
 
       BuildingCommands buildingCommands = new BuildingCommands(Api.this.db);
       NearestFountain nearestFountain = new NearestFountain(buildingCommands.getBuildings());
