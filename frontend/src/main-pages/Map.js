@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { GoogleMap, useLoadScript, Marker, MarkerClusterer, LatLngLiteral, InfoWindow } from "@react-google-maps/api";
 import PictureIcon from '../picture.png'
-import { flushSync } from 'react-dom';
 import PopUp from 'reactjs-popup';
 import { IoArrowBack } from "react-icons/io5";
 import { Rating } from 'react-simple-star-rating'
@@ -241,7 +240,6 @@ function MapPanel() {
   const loadReviews = (event) => {
     setFnt(event.target.value) //fountain id
     setFntSelected(true)
-    //load reviews for that fountain id
   }
 
   return (
@@ -252,7 +250,6 @@ function MapPanel() {
           <div style={{ display: "flex", flexDirection: "row" }}>
             <a className="search-close" onClick={() => {
               setSearch(0)
-              setFntSelected(false)
             }}>
               <IoArrowBack size={30} />
             </a>
@@ -350,15 +347,12 @@ function MapPanel() {
               <div style={{ display: "flex", flexDirection: "row" }}>
                 <a className="building-close" onClick={() => {
                   setSelected(false)
+                  setJustClicked(true)
+                  setFntSelected(false)
                 }}>
                   <IoArrowBack size={30} />
                 </a>
-                <p className="selected-bldg" onClick={() => {
-                  //i.e. if they x out (should make a button) -- not intuitive
-                  setSelected(false)
-                  setJustClicked(true)
-                  setFntSelected(false)
-                }}>{currentBldg.BuildingName}</p>
+                <p className="selected-bldg">{currentBldg.BuildingName}</p>
               </div>
               {buildingData.filter(bldg => {
                 if (bldg.BuildingName === currentBldg.BuildingName) {
