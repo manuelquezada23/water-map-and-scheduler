@@ -9,6 +9,7 @@ import joptsimple.OptionSet;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONArray;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -17,7 +18,9 @@ import spark.Spark;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.ResultSetMetaData;
 import java.util.Map;
+
 
 public class Api {
   private Database db;
@@ -104,14 +107,36 @@ public class Api {
 
       Gson gson = new Gson();
       ResultSet rs = Api.this.db.executeCommand(command);
-
+      if (rs == null && command.contains("INSERT")) {
+        return "success";
+      }
       if (rs != null) {
         String json = gson.toJson(turnRSIntoString(rs));
+        System.out.println(json);
         return json;
       }
       return "";
     }
   }
+
+  // private class getSQLResultSetHandler implements Route {
+  //   @Override
+  //   public String handle(Request req, Response res) throws JSONException {
+  //     JSONObject obj = new JSONObject(req.body());
+  //     String command = obj.getString("sql");
+
+  //     Gson gson = new Gson();
+  //     ResultSet rs = Api.this.db.executeCommand(command);
+  //     if (rs != null) {
+  //       Map dataToJson = ImmutableMap.of("rs", Api.this.db.executeCommand(command));
+  //       String json = gson.toJson(dataToJson);
+  //       return json;
+  //     }
+  //     return "";
+  //   }
+  // }
+
+
 
   /**
    * Handles requests for updating a row in the table.
