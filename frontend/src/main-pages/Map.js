@@ -79,6 +79,7 @@ function MapPanel() {
   const [wait, setAwait] = useState(false)
   const [user, setCurrentUser] = useState()
   const [rating, setRating] = useState(0) // initial rating value
+  const [waitForReview, setWaitForReview] = useState(true)
 
   // Catch Rating value
   const handleRating = (rate) => {
@@ -91,8 +92,8 @@ function MapPanel() {
 
   function toBuilding(bldg) {
     setCenter({ lat: parseFloat(bldg.Latitude), lng: parseFloat(bldg.Longitude) });
-    setZoom(20)  //a bit buggy once zoom is changed?
-    // set up the left panel to correspond
+    setZoom(19.5)  //a bit buggy once zoom is changed?
+    mapRef.current.setZoom(19.5)
     setBldg(bldg.BuildingName)
     setSelected(true)
   }
@@ -159,28 +160,19 @@ function MapPanel() {
 
   function sendReview() {
     //loads reviews
+    setWaitForReview(false)
     fetch('http://localhost:4567/get-sql-rs', {
       method: 'POST',
-      body: JSON.stringify({ sql: "INSERT INTO reviews VALUES ('" + user.uid + "', '" + currentFnt + "', '" + review + "', '" + (rating / 20) + "')" }),
+      body: JSON.stringify({ sql: "INSERT INTO reviews VALUES ('" + user.uid + "', '" + currentFnt + "', '" + review + "', '" + (rating / 20) + "', '" + user.displayName + "')" }),
       headers: {
         "Access-Control-Allow-Origin": "*"
       },
-    }).then((data) => {
-      console.log("added: ", data)
-    })
-  }
-
-  function findUsername(id) {
-    // let name = "";
-    fetch('http://localhost:4567/get-sql-rs', {
-      method: 'POST',
-      body: JSON.stringify({ sql: "SELECT Name FROM users WHERE UserID='" + id + "'" }),
-      headers: {
-        "Access-Control-Allow-Origin": "*"
-      },
-    }).then((response) => response.json()).then((data) => {
-      const name = processData(data["values"])
-      return name["0"].Name;
+    }).then(() => {
+      let new_review_data = reviewData.slice();
+      new_review_data.push({ FountainID: currentFnt, Rating: (rating / 20), Review: review, UserID: user.uid })
+      console.log(new_review_data)
+      setReviewData(new_review_data)
+      setWaitForReview(true)
     })
   }
 
@@ -196,10 +188,19 @@ function MapPanel() {
       {(!wait) && (wait === "") && <div>NOTHING TO SHOW</div>}
       <div className="map-leftSide">
         {(search === 1) && (toggleSelected === false) &&
-          <input type="text"
-            className="map-searchBar"
-            id="map-search"
-            placeholder="Search" onChange={event => setQuery(event.target.value)} />
+          <div style={{ display: "flex", flexDirection: "row" }}>
+            <a className="search-close" onClick={() => {
+              setSearch(0)
+              setFntSelected(false)
+            }}>
+              <IoCloseCircleSharp size={30} />
+            </a>
+
+            <input type="text"
+              className="map-searchBar"
+              id="map-search"
+              placeholder="Search" onChange={event => setQuery(event.target.value)} />
+          </div>
 
         }
         <div className="controls">
@@ -234,12 +235,19 @@ function MapPanel() {
           ))}
           {(wait) && (toggleSelected === true) &&
             <div className="building-info">
-              <p className="selected-bldg" onClick={() => {
-                //i.e. if they x out (should make a button) -- not intuitive
-                setSelected(false)
-                setJustClicked(true)
-                setFntSelected(false)
-              }}>{currentBldg}</p>
+              <div style={{ display: "flex", flexDirection: "row" }}>
+                <a className="building-close" onClick={() => {
+                  setSelected(false)
+                }}>
+                  <IoCloseCircleSharp size={30} />
+                </a>
+                <p className="selected-bldg" onClick={() => {
+                  //i.e. if they x out (should make a button) -- not intuitive
+                  setSelected(false)
+                  setJustClicked(true)
+                  setFntSelected(false)
+                }}>{currentBldg}</p>
+              </div>
               {buildingData.filter(bldg => {
                 if (bldg.BuildingName === currentBldg) {
                   return bldg
@@ -260,30 +268,33 @@ function MapPanel() {
               ))}
               {(toggleFntSelected) &&
                 <div>
-                  {/* {findUsername} */}
-                  <div className="reviews-view">
-                    {reviewData.filter(review => {
-                      if (review.FountainID === parseFloat(currentFnt)) {
-                        return review
-                      }
-                    }).map((review, index) => (
-                      <div className="review-view">
-                        <img className="review-view-image" src={PictureIcon}></img>
-                        <div className="review-author-info">
-                          <p className="review-view-name">{findUsername(review.UserID)}</p>
-                          <div className="review-view-stars">
-                            <Rating
-                              size={15}
-                              fillColor={"#5393C6"}
-                              allowHalfIcon={true}
-                              initialValue={review.rating}
-                            />
+                  {waitForReview &&
+                    <div className="reviews-view">
+                      {console.log(reviewData)}
+                      {reviewData.filter(review => {
+                        if (review.FountainID === parseFloat(currentFnt)) {
+                          return review
+                        }
+                      }).map((review, index) => (
+                        <div className="review-view">
+                          <img className="review-view-image" src={PictureIcon}></img>
+                          <div className="review-author-info">
+                            <p className="review-view-name">{review.Name}</p>
+                            <div className="review-view-stars">
+                              <Rating
+                                size={15}
+                                fillColor={"#5393C6"}
+                                allowHalfIcon={true}
+                                initialValue={review.Rating}
+                                readonly={true}
+                              />
+                            </div>
+                            <p className="review-view-text">{review.Review}</p>
                           </div>
-                          <p className="review-view-text">{review.Review}</p>
                         </div>
-                      </div>
-                    ))}
-                  </div>
+                      ))}
+                    </div>
+                  }
                   <PopUp trigger={
                     <button className="map-review-button">
                       Add a review

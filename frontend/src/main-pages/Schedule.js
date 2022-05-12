@@ -166,7 +166,7 @@ function Schedule() {
         const startTimeMinutes = date.getMinutes()
 
         //offset from javascript Date parser
-        const startOfEvent = (startTimeHour * 60) + startTimeMinutes + 300
+        let startOfEvent = (startTimeHour * 60) + startTimeMinutes + 300
 
         //each column is 118.5px wide
         const daysMap = new Map();
