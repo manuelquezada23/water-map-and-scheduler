@@ -206,7 +206,6 @@ function MapPanel() {
       },
     }).then((response) => response.json())
       .then((data) => {
-        console.log(data)
         setRecs(processRecs(data))
       }).catch((data) => {
         "response data should be 'failed'"
@@ -237,8 +236,8 @@ function MapPanel() {
     return _recs
   }
 
-  const loadReviews = (event) => {
-    setFnt(event.target.value) //fountain id
+  function loadReview(fntId){
+    setFnt(fntId) //fountain id
     setFntSelected(true)
   }
 
@@ -317,8 +316,13 @@ function MapPanel() {
                   </div>
                   {recs.map((rec) => (
                     <div onClick={() => {
-                      //code for selecting a building and a fountain
-
+                      buildingData.filter((bldgFromData)=>{
+                        if (bldgFromData.BuildingName === rec.building) {
+                          toBuilding(bldgFromData)
+                          return bldgFromData
+                        } 
+                      })
+                      loadReview(rec.fntID) //loads the reviews
                     }}>
                       <div className="recommendations-data-info">
                         <img className="recommendations-data-pin" src={MapPin}></img>
@@ -360,7 +364,7 @@ function MapPanel() {
                 }
               }).map((bldg) => (
                 <div key={bldg.PropertyCode}> {/*they key of selected building */}
-                  <select id="map-dropdown" className="map-dropdown" value={currentFnt} onChange={loadReviews}>
+                  <select id="map-dropdown" className="map-dropdown" value={currentFnt} onChange={(e)=>loadReview(e.target.value)}>
                     <option>Choose an option by nearest room:</option>
                     {fountainData.filter(fnt => {
                       if (fnt.BuildingName === currentBldg.BuildingName) {
@@ -383,7 +387,7 @@ function MapPanel() {
                           return review
                         }
                       }).map((review, index) => (
-                        <div className="review-view">
+                        <div key={index} className="review-view">
                           <img className="review-view-image" src={PictureIcon}></img>
                           <div className="review-author-info">
                             <p className="review-view-name">{review.Name}</p>
