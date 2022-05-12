@@ -6,13 +6,13 @@ import java.time.LocalDate;
 import java.util.Date;
 
 public class Event {
-  private int building;
+  private String building;
   private final int startTime;
   private final int endTime;
   private final String dayOfWeek;
-  private static final int MARGIN_OF_ERROR = 10;
+  private static final int MARGIN_OF_ERROR = 30;
 
-  public Event(int building, String startTime, String endTime, String dayOfWeek) {
+  public Event(String building, String startTime, String endTime, String dayOfWeek) {
     this.building = building;
     this.startTime = this.convertUTC(startTime);
     this.endTime = this.convertUTC(endTime);
@@ -20,10 +20,14 @@ public class Event {
   }
 
   public boolean isHappening() {
-    String day = LocalDate.now().getDayOfWeek().name();
-    int now = this.convertUTC(Instant.now().toString());
+    String day = LocalDate.now().getDayOfWeek().name().toLowerCase();
+    int now = this.convertUTC(Instant.now().toString()) - 400;
+    // System.out.println("now"+now);
+    // System.out.println(this.startTime - MARGIN_OF_ERROR);
+    // System.out.println(this.endTime + MARGIN_OF_ERROR);
+    // System.out.println(day.equals(this.dayOfWeek.toLowerCase()));
     return (now >= this.startTime - MARGIN_OF_ERROR)
-            && (now <= this.endTime + MARGIN_OF_ERROR) && (day.equals(this.dayOfWeek));
+            && (now <= this.endTime + MARGIN_OF_ERROR) && (day.equals(this.dayOfWeek.toLowerCase()));
   }
 
   private int convertUTC(String utc) {
@@ -32,12 +36,16 @@ public class Event {
   }
 
 
-  public int getBuildingId() {
+  public String getBuilding() {
     return this.building;
   }
 
-  public void setBuilding(int building) {
+  public void setBuilding(String building) {
     this.building = building;
+  }
+
+  public String toString() {
+    return "start: "+startTime +", end: "+endTime;
   }
 }
 

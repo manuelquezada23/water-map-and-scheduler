@@ -10,7 +10,8 @@ import { IoArrowBack } from "react-icons/io5";
 import { Rating } from 'react-simple-star-rating'
 import { IoCalendarSharp } from "react-icons/io5";
 import { IoSearchSharp } from "react-icons/io5";
-import MapPin from "../map-pin.png"
+import MapPin from "../map-pin.png";
+import MapPin2 from "../google-maps-pin.png";
 
 function Map() {
   // Authentication:
@@ -81,11 +82,14 @@ function MapPanel() {
   const [recs, setRecs] = useState(false)
   const [waitForReview, setWaitForReview] = useState(true)
 
-  // Catch Rating value
   const handleRating = (rate) => {
     setRating(rate)
-    // other logic
   }
+
+  var icon = {
+    url: MapPin2,
+    scaledSize: { height: 40, width: 25}, // scaled size
+  };
 
   //search or schedule
   const [search, setSearch] = useState(0) //0 means not chosen, 1 is by schedule, 2 is by search
@@ -181,7 +185,7 @@ function MapPanel() {
     setRecs(false)
     fetch('http://localhost:4567/get-fountains-location', {
       method: 'POST',
-      body: JSON.stringify({ building: currentBldg.PropertyCode }),
+      body: JSON.stringify({building: currentBldg.BuildingName}),
       headers: {
         "Access-Control-Allow-Origin": "*"
       },
@@ -204,17 +208,8 @@ function MapPanel() {
       },
     }).then((response) => response.json())
       .then((data) => {
-        var _recs = []
-        _recs.push({
-          fntID: data.nameValuePairs["first"]
-        })
-        _recs.push({
-          fntID: data.nameValuePairs["second"]
-        })
-        _recs.push({
-          fntID: data.nameValuePairs["third"]
-        })
-        setRecs(_recs)
+        console.log(data)
+        setRecs(processRecs(data))
       }).catch((data) => {
         "response data should be 'failed'"
         console.log("info not available" + data);
@@ -324,7 +319,7 @@ function MapPanel() {
                     />
                     <p className="recommendations-data-title">3 closest fountains:</p>
                   </div>
-                  {recs.map((rec, index) => (
+                  {recs.map((rec) => (
                     <div onClick={() => {
                       //code for selecting a building and a fountain
 
@@ -473,6 +468,8 @@ function MapPanel() {
               buildingData.map((bldg, index) => (
                 <Marker
                   key={index}
+                  icon={icon}
+                  // iconSize={0.2}
                   position={{ lat: parseFloat(bldg.Latitude), lng: parseFloat(bldg.Longitude) }}
                   onClick={() => {
                     toBuilding(bldg)

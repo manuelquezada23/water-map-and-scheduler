@@ -32,7 +32,7 @@ function Home() {
               <button className="home-get-started-button" onClick={() => {navigate('/login')}}>Get Started</button>
             }
             {(isLoggedIn) &&
-              <button className="home-get-started-button" onClick={() => {navigate('/map')}}>Map</button>
+              <button className="home-get-started-button" onClick={() => {navigate('/map')}}>Fill up!</button>
             }
           </div>
           <div className="split right">

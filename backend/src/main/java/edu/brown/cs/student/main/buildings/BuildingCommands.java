@@ -78,9 +78,9 @@ public class BuildingCommands {
         return this.buildings;
     }
 
-    public Building idToBuilding(int buildingID) {
+    public Building idToBuilding(String buildingName) {
         for (Building building : this.buildings) {
-            if (building.getCode() == buildingID) {
+            if (building.getName().equals(buildingName)) {
                 return building;
             }
         }

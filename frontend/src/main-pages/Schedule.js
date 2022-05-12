@@ -204,6 +204,11 @@ function Schedule() {
                 left: daysMap.get(day) + "px",
                 height: heightOfEvent + "px",
                 lineHeight: heightOfEvent + "px",
+                overflow: "hidden",
+                // textAlign: "center",
+                // justifyContent: "center",
+                // alignItems: "center",
+                
                 maxWidth: "100px",
                 background: "#FFFFFF",
                 border: "2px solid #5393C6",

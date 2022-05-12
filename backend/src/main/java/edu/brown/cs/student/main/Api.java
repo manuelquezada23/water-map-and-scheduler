@@ -11,7 +11,6 @@ import edu.brown.cs.student.main.userFunc.User;
 import edu.brown.cs.student.main.userFunc.UserCommands;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,7 +19,6 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 import spark.Spark;
-
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -79,7 +77,7 @@ public class Api {
     });
 
     Spark.before((request, response) -> response.header("Access-Control-Allow-Origin", "*"));
-
+    
     // put Routes Here
     Spark.post("/get-sql-rs", new getSQLResultSetHandler());
     Spark.post("/get-fountains-schedule", new getNearestFountainScheduleHandler());
@@ -135,7 +133,6 @@ public class Api {
 
 
   private class getNearestFountainScheduleHandler implements Route {
-
     /**
      * Handles requests for getting the nearest 3 fountains based on schedule.
      * @param req request which maps "user" to their user ID
@@ -154,14 +151,16 @@ public class Api {
       NearestFountain nearestFountain = new NearestFountain(buildingCommands.getBuildings());
       UserCommands userCommands = new UserCommands(Api.this.db);
       User user = userCommands.idToUser(userID);
-      int buildingID = user.checkEvent();
+      String building = user.checkEvent();
+      System.out.println(building);
 
-      if (buildingID != -1) {
-        Building currBuilding = buildingCommands.idToBuilding(buildingID);
+      if (building != null) {
+        Building currBuilding = buildingCommands.idToBuilding(building);
         List<Fountain> fountainList = nearestFountain.findNearestFountains(currBuilding);
         json.put("first", Api.this.createInnerJSON(fountainList.get(0)));
         json.put("second", Api.this.createInnerJSON(fountainList.get(1)));
         json.put("third", Api.this.createInnerJSON(fountainList.get(2)));
+        System.out.println(json);
         return gson.toJson(json);
       } else {
         System.out.println("failed");
@@ -181,13 +180,11 @@ public class Api {
     @Override
     public String handle(Request req, Response res) throws JSONException {
       JSONObject obj = new JSONObject(req.body());
-      System.out.println(obj);
-      String buildingID = obj.getString("building");
-      System.out.println(buildingID);
+      String buildingID = obj.getString("building"); //uses the name now instead of ID
 
       BuildingCommands buildingCommands = new BuildingCommands(Api.this.db);
       NearestFountain nearestFountain = new NearestFountain(buildingCommands.getBuildings());
-      Building currBuilding = buildingCommands.idToBuilding(Integer.parseInt(buildingID));
+      Building currBuilding = buildingCommands.idToBuilding(buildingID);
 
       JSONObject json = new JSONObject();
       Gson gson = new Gson();
