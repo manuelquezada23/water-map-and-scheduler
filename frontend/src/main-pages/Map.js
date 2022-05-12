@@ -76,6 +76,7 @@ function MapPanel() {
 
   //search or schedule
   const [search, setSearch] = useState(0) //0 means not chosen, 1 is by schedule, 2 is by search
+  const arr = []
 
   function toBuilding(bldg) {
     setCenter({ lat: parseFloat(bldg.Latitude), lng: parseFloat(bldg.Longitude) });
@@ -172,10 +173,25 @@ function MapPanel() {
     })
   }
 
+  function findRecommendation() {
+    fetch('http://localhost:4567/get-fountains-schedule', {
+      method: 'POST',
+      body: JSON.stringify({user: "userId"}), //get user ID here!
+      headers: {
+        "Access-Control-Allow-Origin": "*"
+      },
+    }).then((response) => response.json())
+    .then((data) => {
+      //could either be first, second, third or
+      // "Failed"
+      
+    })
+
+  }
+
   const loadReviews = (event) => {
     setFnt(event.target.value) //fountain id
     setFntSelected(true)
-    // setFnt(event.target.id);
     //load reviews for that fountain id
   }
 
@@ -188,12 +204,14 @@ function MapPanel() {
             className="map-searchBar"
             id="map-search"
             placeholder="Search" onChange={event => setQuery(event.target.value)} />
-
         }
         <div className="controls">
           {(search === 0) && 
             <div>
-              <button onClick={()=>setSearch(2)}>Find fountain by schedule</button> 
+              <button onClick={()=>{
+                setSearch(2)
+                findRecommendation()
+              }}>Find fountain by schedule</button> 
               {/*what happens if they want to fill up by schedule?
                   somehow the correct fountain should be found and it should jump to there 
                   (should be easy enough) */}
@@ -220,6 +238,9 @@ function MapPanel() {
               <p className='search-input'>{bldg.BuildingName}</p>
             </div>
           ))}
+          {(search === 2) && (wait) && (toggleSelected === false) &&
+            <div>nearest fountains displayed here</div>
+          }
           {(wait) && (toggleSelected === true) &&
             <div className="building-info">
               <p className="selected-bldg" onClick={() => {
@@ -250,16 +271,18 @@ function MapPanel() {
                 {/* {findUsername} */}
                 {reviewData.filter(review => {
                   if (review.FountainID === parseFloat(currentFnt)) {
+                    arr.push({
+                      name: findUsername(review.UserID)
+                    })
                     return review
                   }
                 }).map((review, index) => (
-                  <p key={index}>{review.Review} by {review.UserID}</p>
+                  <p key={index}>{review.Review} by {review.UserID}</p> //findUsername
                 ))}
                 <button className="map-review-button" onClick={() => {
                 setReviewToggle(true)
                 }}>Add a review</button>
               </div>}
-             
               {toggleReview && 
                   <div className="popup">
                     <div className='review-popup'>
