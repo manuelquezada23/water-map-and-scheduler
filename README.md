@@ -26,31 +26,31 @@ Users can choose ro register with the website in which case they can receive upd
 
 ### 1.3 Intended Audience and Intended Use
 * Who are your intended end-users?
- * Our intended end-users will be anyone who frequents Brown’s campus. THis could be expanded later but for now and for simplicity it will be limited to Brown.
+  * Our intended end-users will be anyone who frequents Brown’s campus. THis could be expanded later but for now and for simplicity it will be limited to Brown.
 * How will the app fit into the lives of your users?
- * This project will be best for personal use and we anticipate that users will use it anytime they find themselves in a situation where they cannot find access to water or they would like help reminding themselves of their water drinking habits.
- * They can connect and find the best water and find out about new locations near them that have clean drinking water.
+  * This project will be best for personal use and we anticipate that users will use it anytime they find themselves in a situation where they cannot find access to water or they would like help reminding themselves of their water drinking habits.
+  * They can connect and find the best water and find out about new locations near them that have clean drinking water.
 
 ### 1.4 External Stakeholders
 * Managers/owners of public water sources (water fountains or bottle filling stations)
- * The increased use or demand of these locations could put them under pressure. Drinking water locations would require upkeep for things such as replacing the filters and funding the water.
+  * The increased use or demand of these locations could put them under pressure. Drinking water locations would require upkeep for things such as replacing the filters and funding the water.
 * Direct competitors
- * Other apps/websites/projects who attempt to provide the same service, such as WeTap that we mentioned earlier.
+  * Other apps/websites/projects who attempt to provide the same service, such as WeTap that we mentioned earlier.
 * Water-providing private companies might feel threatened due to the decrease in sales
- * We encourage these organisations to support us in the attempt of giving access to public water to those most in need.
+  * We encourage these organisations to support us in the attempt of giving access to public water to those most in need.
 
 ### 1.5 Scope and User Stories
 * What our app is NOT doing:
- * Actively tracking a user’s location
- * Providing the service anywhere other than on or near Brown’s campus
+  * Actively tracking a user’s location
+  * Providing the service anywhere other than on or near Brown’s campus
 * What are your app’s user stories?
- * User can find places to refill their reusable water bottle
- * User can create and log into a personal account
-  * They can specify their general routine, water bottle size and goal water intake
- * Users can submit their own locations and comment/rate already existing locations
- * Users can be routed to the closest water locations or any water location of their choosing
- * Users can see how much water they should have consumer and monitor this throughout the day
- * They can input when and where they fill up their bottle
+  * User can find places to refill their reusable water bottle
+  * User can create and log into a personal account
+   * They can specify their general routine, water bottle size and goal water intake
+  * Users can submit their own locations and comment/rate already existing locations
+  * Users can be routed to the closest water locations or any water location of their choosing
+  * Users can see how much water they should have consumer and monitor this throughout the day
+  * They can input when and where they fill up their bottle
 
 ### 1.6 Definitions and Acronyms
 None
@@ -66,16 +66,16 @@ None
 
 ### 2.2 Assumptions and dependencies
 * What software and other technology does your project rely on?
- * Java, React JS, HTML, CSS, SQLite3, Google Maps API
+  * Java, React JS, HTML, CSS, SQLite3, Google Maps API
 * What non-technical dependencies does your project rely on?
- * The application relies on users to improve and keep the data current.
- * The public water access needs to remain available and of a high enough standard that users will use them.
+  * The application relies on users to improve and keep the data current.
+  * The public water access needs to remain available and of a high enough standard that users will use them.
 * What normative assumptions are you making?
- * We are assuming that people will use a web app rather than asking around or using a map or another way of gathering information.
- * People have a goal of drinking sufficient water throughout the day and struggle to do this.
- * People will check the website throughout the day.
+  * We are assuming that people will use a web app rather than asking around or using a map or another way of gathering information.
+  * People have a goal of drinking sufficient water throughout the day and struggle to do this.
+  * People will check the website throughout the day.
 * Financial dependencies
- * Continued access to IntelliJ through Brown, internet costs, potential costs of any APIs used.
+  * Continued access to IntelliJ through Brown, internet costs, potential costs of any APIs used.
 
 ## Section 3: System Features and Requirements
 ### 3.1 Risks
@@ -95,43 +95,41 @@ None
 * **Environmental harms**: Although some of our technical dependencies still rely on unsustainable energy (such as fossil fuels) in some place and, as previously stated, like any computing project, our app relies on a global supply chain supported by cheap labour in “developing” countries, our project will also have a positive impact in encouraging reusable water bottles and advocating for sustainable water locations.
 
 ### 3.2 Data Requirements 
-The user will need to give a name and an email address to make an account. This data will need to be stored somewhere (as a list of users) and able to be easily retrieved when a user tries to log in or make a new profile.
-
-We will also need to store data of all the existing water locations and all the comments and ratings that the location has received. The data would have different types of water locations as well as their physical location.
-
-All of this data needs to be visible on the UI and needs to be retrieved quickly and efficiently from any device anywhere geographically.
+* The user will need to give a name and an email address to make an account. This data will need to be stored somewhere (as a list of users) and able to be easily retrieved when a user tries to log in or make a new profile.
+* We will also need to store data of all the existing water locations and all the comments and ratings that the location has received. The data would have different types of water locations as well as their physical location.
+* All of this data needs to be visible on the UI and needs to be retrieved quickly and efficiently from any device anywhere geographically.
 
 ### 3.3 System Features 
 Instructions for using the GUI:
 * To run the website open 3 terminals:
- * In the first, cd into backend and run mvn package && ./run –gui
- * In the second, cd into frontend and run node server.js
- * In the third, cd into frontend and run npm start 
+  * In the first, cd into backend and run mvn package && ./run –gui
+  * In the second, cd into frontend and run node server.js
+  * In the third, cd into frontend and run npm start 
 * This should run the website.
- * Once on the website, there will be a navigation bar with different pages.  Home, About, Map, Contact and Sign up and Log in.
- * To use the page, a user needs to make a profile.
- * After a profile is created, the user can edit their information by clicking on their name in the top right corner.  They can also add schedule information (or log out).  The schedule is used in the recommendations of the closest water fountain. 
- * The Map page can be used to find a place to fill up a water bottle.  The user can either look for a filling station based on their location or they can ask for a recommendation based on where their schedule says they should be.
-  * By schedule: If there is no available schedule information (none relevant to the time of day), it will report that and give the option for the user to find a fountain by searching using location.  If there is available information, it will find the location of the relevant event and give 3 suggested fountains near you.
-  * By location: It will give 3 suggested fountains near you.
+  * Once on the website, there will be a navigation bar with different pages.  Home, About, Map, Contact and Sign up and Log in.
+  * To use the page, a user needs to make a profile.
+  * After a profile is created, the user can edit their information by clicking on their name in the top right corner.  They can also add schedule information (or log out).  The schedule is used in the recommendations of the closest water fountain. 
+  * The Map page can be used to find a place to fill up a water bottle.  The user can either look for a filling station based on their location or they can ask for a recommendation based on where their schedule says they should be.
+    * By schedule: If there is no available schedule information (none relevant to the time of day), it will report that and give the option for the user to find a fountain by searching using location.  If there is available information, it will find the location of the relevant event and give 3 suggested fountains near you.
+    * By location: It will give 3 suggested fountains near you.
  * The user can search for a building or click on a pin on the map to see the water fountains available at that building.
  * If a fountain is selected, the reviews and ratings for that fountain will be displayed.  The current user can add a review for the fountain and give a star rating.
 
 We will organise our code into packages based on frontend and backend:
 * `frontend` package: 
- * `components`
-  * React functional components that are reused throughout the website, for example the Bottom Bar and the Navigation Bar.
- * `main-pages`
-  * React functional components that make up the structure of the website. All files are functional components that return a JSX element. Firebase is used for Authentication and sqlite3 is used for storing data.
-  * This contains a page for each of the main pages of the website, namely Home, About, Map and Contact.  It also has pages for UserProfile and Schedule.
-  * The Maps pages uses the Google Maps Api and the Contact page uses a node.js server for the sending of emails.
- * `App.js`
-  * Initialises Firebase and sets up a BrowserRouter for Main.js. 
-  * Firebase is used for user authentication.
- * `Main.js`
-  * Sets up the React Router paths for all of our components. Specifically, it uses React.Routes and React.Route.
+  * `components`
+    * React functional components that are reused throughout the website, for example the Bottom Bar and the Navigation Bar.
+  * `main-pages`
+    * React functional components that make up the structure of the website. All files are functional components that return a JSX element. Firebase is used for Authentication and sqlite3 is used for storing data.
+    * This contains a page for each of the main pages of the website, namely Home, About, Map and Contact.  It also has pages for UserProfile and Schedule.
+    * The Maps pages uses the Google Maps Api and the Contact page uses a node.js server for the sending of emails.
+  * `App.js`
+    * Initialises Firebase and sets up a BrowserRouter for Main.js. 
+    * Firebase is used for user authentication.
+  * `Main.js`
+    * Sets up the React Router paths for all of our components. Specifically, it uses React.Routes and React.Route.
 * `backend` package
- * NOT DONE YET
+  * NOT DONE YET
 
 ### 3.4 Functional Requirements 
 **3.4.1 API and Database connections****
@@ -153,7 +151,7 @@ We will organise our code into packages based on frontend and backend:
 * This will be done with JUnit. Testing folder can be found [here](https://github.com/cs0320-s2022/term-project-cpelling-ehinds3-mfleisc1-mquezad1/tree/master/backend/src/test/java/edu/brown/cs/student/main).
 
 ### 3.6 External Interface Requirements
-Users will interact with the app via a web page. It will require the use of a mouse to navigate the screen, or an accepted alternative that works on a desktop. This web page will require an active internet connection, and access to the location of the user (if this information is not wanted to given the user can manually input their location)
+* Users will interact with the app via a web page. It will require the use of a mouse to navigate the screen, or an accepted alternative that works on a desktop. This web page will require an active internet connection, and access to the location of the user (if this information is not wanted to given the user can manually input their location)
 
 ### 3.7 Non-functional Requirements
 * **Performance**: given that someone would like to be able to identify and rate a location with ease and quickly, it is important that our site be reliable and fast. The user should not have to wait for anything to load or be changed and all updates should seem seamless.
