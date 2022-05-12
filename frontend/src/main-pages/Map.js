@@ -2,7 +2,7 @@ import React, { useMemo, useState, useRef, useCallback, useEffect } from 'react'
 import logo from '../logo.png'
 import { useNavigate } from "react-router-dom";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { GoogleMap, useLoadScript, Marker, MarkerClusterer, LatLngLiteral, InfoWindow } from "@react-google-maps/api";
+import { GoogleMap, useLoadScript, Marker, MarkerClusterer, } from "@react-google-maps/api";
 import PictureIcon from '../picture.png'
 import PopUp from 'reactjs-popup';
 import { IoArrowBack } from "react-icons/io5";
