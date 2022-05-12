@@ -189,7 +189,8 @@ public class Api {
     /**
      * Handles requests for getting the average rating of a water fountain.
      * @param req request which maps "fountain" to the fountain id
-     * @return GSON which maps "rating" to the average fountain rating
+     * @return GSON which maps "rating" to the average fountain rating,
+     *         "building" to building name, and "room" to the nearest room
      */
     @Override
     public String handle(Request req, Response res) throws JSONException {
@@ -202,6 +203,8 @@ public class Api {
 
       Gson gson = new Gson();
       json.put("rating", currFountain.getAverageRating());
+      json.put("building", currFountain.getBuildingName());
+      json.put("room", currFountain.getNearestRoom());
       return gson.toJson(json);
     }
   }
