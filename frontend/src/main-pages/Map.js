@@ -171,18 +171,17 @@ function MapPanel() {
   }
 
   function findUsername(id) {
+    // let name = "";
     fetch('http://localhost:4567/get-sql-rs', {
       method: 'POST',
       body: JSON.stringify({ sql: "SELECT Name FROM users WHERE UserID='" + id + "'" }),
       headers: {
         "Access-Control-Allow-Origin": "*"
       },
-    }).then((response) => response.json())
-      .then((data) => {
-        const d = processData(data["values"])
-        console.log(d["0"].Name)
-        return (d["0"].Name)
-      })
+    }).then((response) => response.json()).then((data) => {
+      const name = processData(data["values"])
+      return name["0"].Name;
+    })
   }
 
   const loadReviews = (event) => {
@@ -259,55 +258,72 @@ function MapPanel() {
                   </select>
                 </div>
               ))}
-              {(toggleFntSelected) && <div>
-                {/* {findUsername} */}
-                {reviewData.filter(review => {
-                  if (review.FountainID === parseFloat(currentFnt)) {
-                    return review
-                  }
-                }).map((review, index) => (
-                  <p key={index}>{review.Review} by {review.userID}</p>
-                ))}
-                <PopUp trigger={
-                  <button className="map-review-button">
-                    Add a review
-                  </button>
-                } arrow={false} position="top left">
-                  {close => (
-                    <div className="editSchedulePopUpView">
-                      <div className="mapPopUp">
-                        <p className="building-name">{currentBldg}</p>
-                        <div className='author-box'>
-                          <img className="review-image" src={PictureIcon}></img>
-                          <div className="stars">
-                            <p className="author">{user.displayName}</p>
-                            <div className="star-rating-view">
-                              <Rating 
-                              onClick={handleRating} 
-                              ratingValue={rating} 
-                              size={20}
+              {(toggleFntSelected) &&
+                <div>
+                  {/* {findUsername} */}
+                  <div className="reviews-view">
+                    {reviewData.filter(review => {
+                      if (review.FountainID === parseFloat(currentFnt)) {
+                        return review
+                      }
+                    }).map((review, index) => (
+                      <div className="review-view">
+                        <img className="review-view-image" src={PictureIcon}></img>
+                        <div className="review-author-info">
+                          <p className="review-view-name">{findUsername(review.UserID)}</p>
+                          <div className="review-view-stars">
+                            <Rating
+                              size={15}
                               fillColor={"#5393C6"}
                               allowHalfIcon={true}
-                              />
+                              initialValue={review.rating}
+                            />
+                          </div>
+                          <p className="review-view-text">{review.Review}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <PopUp trigger={
+                    <button className="map-review-button">
+                      Add a review
+                    </button>
+                  } arrow={false} position="top left">
+                    {close => (
+                      <div className="editSchedulePopUpView">
+                        <div className="mapPopUp">
+                          <p className="building-name">{currentBldg}</p>
+                          <div className='author-box'>
+                            <img className="review-image" src={PictureIcon}></img>
+                            <div className="stars">
+                              <p className="author">{user.displayName}</p>
+                              <div className="star-rating-view">
+                                <Rating
+                                  onClick={handleRating}
+                                  ratingValue={rating}
+                                  size={20}
+                                  fillColor={"#5393C6"}
+                                  allowHalfIcon={true}
+                                />
+                              </div>
                             </div>
                           </div>
+                          <textarea className="review-box" placeholder="What did you think?" type="text" onChange={(e) => { setReview(e.target.value) }} required />
+                          <div className="review-submit">
+                            <button className="review-submit-button" onClick={(e) => {
+                              e.preventDefault()
+                              sendReview();
+                              close()
+                            }}>Post</button>
+                          </div>
+                          <a className="close" onClick={close}>
+                            <IoCloseCircleSharp size={30} />
+                          </a>
                         </div>
-                        <textarea className="review-box" placeholder="What did you think?" type="text" onChange={(e) => { setReview(e.target.value) }} required />
-                        <div className="review-submit">
-                          <button className="review-submit-button" onClick={(e) => {
-                            e.preventDefault()
-                            sendReview();
-                            close()
-                          }}>Post</button>
-                        </div>
-                        <a className="close" onClick={close}>
-                          <IoCloseCircleSharp size={30} />
-                        </a>
                       </div>
-                    </div>
-                  )}
-                </PopUp>
-              </div>}
+                    )}
+                  </PopUp>
+                </div>}
             </div>
           }
         </div>
