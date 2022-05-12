@@ -84,6 +84,20 @@ function UserProfile() {
                 body: JSON.stringify(postParameters),
                 headers: { 'Access-Control-Allow-Origin': '*' },
             }).then(() => {
+
+            }).catch((error) => console.error("Error:", error))
+
+            const sqlCommandTwo = "UPDATE reviews SET Name = '" + newName + "' WHERE UserID = '" + user.uid + "';";
+
+            const postParametersTwo = {
+                sql: sqlCommandTwo
+            }
+
+            fetch('http://localhost:4567/get-sql-rs', {
+                method: 'POST',
+                body: JSON.stringify(postParametersTwo),
+                headers: { 'Access-Control-Allow-Origin': '*' },
+            }).then(() => {
                 alert("Information saved!")
                 window.location.reload(false);
             }).catch((error) => console.error("Error:", error))

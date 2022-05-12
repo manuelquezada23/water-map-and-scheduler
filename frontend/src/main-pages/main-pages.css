@@ -810,9 +810,10 @@ Contact Page
 
 .reviews-view {
   overflow-y: auto;
-  height: 350px;
+  max-height: 340px;
   margin-right: 10px;
   margin-top: 10px;
+  min-height: 0px;
 }
 
 .review-view {
@@ -1117,6 +1118,17 @@ input[type='file'] {
   right: 15px;
 }
 
+.search-close {
+  cursor: pointer;
+  align-self: center;
+}
+
+.building-close {
+  cursor: pointer;
+  align-self: center;
+  margin-right: 5px;
+}
+
 .search-box {
   /* padding-top: 2px; */
   height: 40px;
@@ -1185,10 +1197,11 @@ input[type='file'] {
 .map-searchBar {
   border: 1px solid #5393C6;
   height: 35px;
-  width: 90%;
+  width: 80%;
   border-radius: 20px;
   font-size: 16px;
   padding-left: 15px;
+  margin-left: 10px;
   font-family: "Playfair Display";
 }
 
