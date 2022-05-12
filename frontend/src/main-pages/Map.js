@@ -8,6 +8,8 @@ import { flushSync } from 'react-dom';
 import PopUp from 'reactjs-popup';
 import { IoCloseCircleSharp } from "react-icons/io5";
 import { Rating } from 'react-simple-star-rating'
+import { IoCalendarSharp } from "react-icons/io5";
+import { IoSearchSharp } from "react-icons/io5";
 
 function Map() {
   // Authentication:
@@ -177,7 +179,7 @@ function MapPanel() {
     setRecs(false)
     fetch('http://localhost:4567/get-fountains-location', {
       method: 'POST',
-      body: JSON.stringify({building: currentBldg.PropertyCode}),
+      body: JSON.stringify({ building: currentBldg.PropertyCode }),
       headers: {
         "Access-Control-Allow-Origin": "*"
       },
@@ -204,27 +206,27 @@ function MapPanel() {
     setRecs(false)
     fetch('http://localhost:4567/get-fountains-schedule', {
       method: 'POST',
-      body: JSON.stringify({user: user.uid}),
+      body: JSON.stringify({ user: user.uid }),
       headers: {
         "Access-Control-Allow-Origin": "*"
       },
     }).then((response) => response.json())
-    .then((data) => {
-      var _recs = []
-      _recs.push({
-        fntID: data.nameValuePairs["first"]
+      .then((data) => {
+        var _recs = []
+        _recs.push({
+          fntID: data.nameValuePairs["first"]
+        })
+        _recs.push({
+          fntID: data.nameValuePairs["second"]
+        })
+        _recs.push({
+          fntID: data.nameValuePairs["third"]
+        })
+        setRecs(_recs)
+      }).catch((data) => {
+        "response data should be 'failed'"
+        console.log("info not available" + data);
       })
-      _recs.push({
-        fntID: data.nameValuePairs["second"]
-      })
-      _recs.push({
-        fntID: data.nameValuePairs["third"]
-      })
-      setRecs(_recs)
-    }).catch((data) => {
-      "response data should be 'failed'"
-      console.log("info not available" + data);
-    })
   }
 
   const loadReviews = (event) => {
@@ -255,12 +257,18 @@ function MapPanel() {
         }
         <div className="controls">
           {(search === 0) &&
-            <div>
-              <button onClick={() => {
+            <div className="controls-buttons">
+              <div className="controls-button" onClick={() => {
                 setSearch(2)
                 findRecommendationSched()
-              }}>Find fountain by schedule</button>
-              <button onClick={() => setSearch(1)}>Search for a fountain</button>
+              }}>
+                <IoCalendarSharp style={{marginRight: 10, marginBottom: 5}} size={30} />
+                Find fountain by schedule
+              </div>
+              <div className="controls-button" onClick={() => setSearch(1)}>
+                <IoSearchSharp style={{marginRight: 10, marginBottom: 5}} size={30} />
+                Search for a fountain
+              </div>
             </div>
           }
           {(search === 1) && (wait) && (toggleSelected === false) && buildingData.filter(bldg => {
@@ -285,13 +293,13 @@ function MapPanel() {
           ))}
           {(search === 2) && (wait) && (toggleSelected === false) &&
             <div className='test'>
-              {recs === false && 
+              {recs === false &&
                 <div>
                   <p>No fountains available, try searching.</p>
                   <button onClick={() => setSearch(1)}>Search</button>
                 </div>
               }
-              {recs !== false && 
+              {recs !== false &&
                 <div>
                   <p>3 closest fountains:</p>
                   {recs.map((rec, index) => (
@@ -341,6 +349,7 @@ function MapPanel() {
               ))}
               {(toggleFntSelected) &&
                 <div>
+                  {console.log(toggleFntSelected)}
                   {waitForReview &&
                     <div className="reviews-view">
                       {console.log(reviewData)}
@@ -408,12 +417,13 @@ function MapPanel() {
                     )}
                   </PopUp>
                 </div>}
-                <p>Can't find fountains you want?</p>
-                <button onClick={()=>{
-                  setSelected(false)
-                  setSearch(2)
-                  findRecommendationLoc()}
-                }>Click for recommendations near you</button>
+              <p className="cannot-find-fountains">Can't find fountains you want?</p>
+              <p className="recommendations-button" onClick={() => {
+                setSelected(false)
+                setSearch(2)
+                findRecommendationLoc()
+              }
+              }>Get Recommendations</p>
             </div>
           }
         </div>

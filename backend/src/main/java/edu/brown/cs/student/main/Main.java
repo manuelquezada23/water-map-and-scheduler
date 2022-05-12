@@ -31,6 +31,6 @@ public final class Main {
   }
 
   private void run() {
-    new Api(this.args, "/Users/mayafleischer/Desktop/cs32/term-project-cpelling-ehinds3-mfleisc1-mquezad1/data/data.sqlite");//"..data/test-data.sqlite");
+    Api api = new Api(this.args, "/Users/manuelquezada/Desktop/browncs/course/cs0320/projects/term-project-cpelling-ehinds3-mfleisc1-mquezad1/data/data.sqlite");
   }
 }
