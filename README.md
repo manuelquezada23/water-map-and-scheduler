@@ -3,7 +3,7 @@
 ## Section 1: Introduction 
 ### 1.1 Project Specific Details
 * Project Name:
-  * Public Water Map
+  * Water Map & Scheduler
 * Team members & Division of labour:
   * Manuel Quezada (mquezad1) - Frontend
   * Maya Fleischer (mfleisc1) - Frontend
