@@ -2,19 +2,29 @@ package edu.brown.cs.student.main;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
+import edu.brown.cs.student.main.buildings.Building;
+import edu.brown.cs.student.main.buildings.BuildingCommands;
+import edu.brown.cs.student.main.buildings.Fountain;
+import edu.brown.cs.student.main.buildings.NearestFountain;
 import edu.brown.cs.student.main.database.Database;
+import edu.brown.cs.student.main.userFunc.User;
+import edu.brown.cs.student.main.userFunc.UserCommands;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONArray;
 import spark.Request;
 import spark.Response;
 import spark.Route;
 import spark.Spark;
-
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Map;
+
 
 public class Api {
   private Database db;
@@ -67,98 +77,149 @@ public class Api {
     });
 
     Spark.before((request, response) -> response.header("Access-Control-Allow-Origin", "*"));
-
+    
     // put Routes Here
     Spark.post("/get-sql-rs", new getSQLResultSetHandler());
-    Spark.post("/get-users", new getUsersHandler());
-    Spark.post("/get-review", new getReviewsHandler());
-    Spark.post("/get-buildings-fountains", new getBuildingsFountainHandler());
-    // not sure about primary condition
-    // update needs form "column1 = value1, column2 = value2, ..."
+    Spark.post("/get-fountains-schedule", new getNearestFountainScheduleHandler());
+    Spark.post("/get-fountains-location", new getNearestFountainLocationHandler());
+    Spark.post("/get-average-rating", new getAverageRatingHandler());
+
     Spark.init();
+  }
+
+  public JSONArray turnRSIntoString(ResultSet rs) throws SQLException, JSONException {
+    JSONArray json = new JSONArray();
+    ResultSetMetaData rsmd = rs.getMetaData();
+    while (rs.next()) {
+      int numColumns = rsmd.getColumnCount();
+      JSONObject obj = new JSONObject();
+      for (int i = 1; i <= numColumns; i++) {
+        String column_name = rsmd.getColumnName(i);
+        obj.put(column_name, rs.getObject(column_name));
+      }
+      json.put(obj);
+    }
+    return json;
+  }
+
+  public JSONObject createInnerJSON(Fountain fountain) throws JSONException {
+    JSONObject json = new JSONObject();
+    json.put("id", fountain.getId());
+    json.put("building", fountain.getBuildingName());
+    json.put("room", fountain.getNearestRoom());
+    json.put("rating", fountain.getAverageRating());
+
+    return json;
   }
 
   private class getSQLResultSetHandler implements Route {
     @Override
-    public String handle(Request req, Response res) throws JSONException {
-      System.out.println(req.body());
+    public String handle(Request req, Response res) throws JSONException, SQLException {
       JSONObject obj = new JSONObject(req.body());
       String command = obj.getString("sql");
 
       Gson gson = new Gson();
       ResultSet rs = Api.this.db.executeCommand(command);
+      if (rs == null && command.contains("INSERT")) {
+        return "success";
+      }
       if (rs != null) {
-        Map dataToJson = ImmutableMap.of("rs", Api.this.db.executeCommand(command));
-        System.out.println(dataToJson);
-        String json = gson.toJson(dataToJson);
-        System.out.println("after json");
+        String json = gson.toJson(turnRSIntoString(rs));
         return json;
       }
       return "";
     }
   }
 
-  /**
-   * Handles requests for updating a row in the table.
-   *
-   * @return GSON which contains the updated table; returns null if any error.
-   */
-  private class getUsersHandler implements Route {
+
+  private class getNearestFountainScheduleHandler implements Route {
+    /**
+     * Handles requests for getting the nearest 3 fountains based on schedule.
+     * @param req request which maps "user" to their user ID
+     * @return GSON which maps "first" "second" and "third" to the respective
+     *         fountain IDs; returns null if there isn't a current event (within 10 minutes).
+     */
     @Override
     public String handle(Request req, Response res) throws JSONException {
       JSONObject obj = new JSONObject(req.body());
-      String tableName = obj.getString("table");
+      String userID = obj.getString("user");
 
-      String json = "";
-      try {
-        json = Api.this.db.getUsers();
-      } catch (SQLException e) {
-        e.printStackTrace();
+      JSONObject json = new JSONObject();
+      Gson gson = new Gson();
+
+      BuildingCommands buildingCommands = new BuildingCommands(Api.this.db);
+      NearestFountain nearestFountain = new NearestFountain(buildingCommands.getBuildings());
+      UserCommands userCommands = new UserCommands(Api.this.db);
+      User user = userCommands.idToUser(userID);
+      String building = user.checkEvent();
+      System.out.println(building);
+
+      if (building != null) {
+        Building currBuilding = buildingCommands.idToBuilding(building);
+        List<Fountain> fountainList = nearestFountain.findNearestFountains(currBuilding);
+        json.put("first", Api.this.createInnerJSON(fountainList.get(0)));
+        json.put("second", Api.this.createInnerJSON(fountainList.get(1)));
+        json.put("third", Api.this.createInnerJSON(fountainList.get(2)));
+        System.out.println(json);
+        return gson.toJson(json);
+      } else {
+        System.out.println("failed");
+        return "Failed";
       }
-      return json;
     }
   }
 
-  /**
-   * Handles requests for updating a row in the table.
-   *
-   * @return GSON which contains the updated table; returns null if any error.
-   */
-  private class getReviewsHandler implements Route {
+  private class getNearestFountainLocationHandler implements Route {
+
+    /**
+     * Handles requests for getting the nearest 3 fountains based on location.
+     * @param req request which maps "building" to the building id
+     * @return GSON which maps "first" "second" and "third" to the respective
+     *         fountain IDs; returns null if there isn't a current event (within 10 minutes).
+     */
     @Override
     public String handle(Request req, Response res) throws JSONException {
       JSONObject obj = new JSONObject(req.body());
-      String tableName = obj.getString("table");
+      String buildingID = obj.getString("building"); //uses the name now instead of ID
 
-      String json = "";
-      try {
-        json = Api.this.db.getReviews();
-      } catch (SQLException e) {
-        e.printStackTrace();
-      }
-      return json;
+      BuildingCommands buildingCommands = new BuildingCommands(Api.this.db);
+      NearestFountain nearestFountain = new NearestFountain(buildingCommands.getBuildings());
+      Building currBuilding = buildingCommands.idToBuilding(buildingID);
+
+      JSONObject json = new JSONObject();
+      Gson gson = new Gson();
+
+      List<Fountain> fountainList = nearestFountain.findNearestFountains(currBuilding);
+      json.put("first", Api.this.createInnerJSON(fountainList.get(0)));
+      json.put("second", Api.this.createInnerJSON(fountainList.get(1)));
+      json.put("third", Api.this.createInnerJSON(fountainList.get(2)));
+
+      return gson.toJson(json);
     }
   }
 
-  /**
-   * Handles requests for updating a row in the table.
-   *
-   * @return GSON which contains the updated table; returns null if any error.
-   */
-  private class getBuildingsFountainHandler implements Route {
+  private class getAverageRatingHandler implements Route {
+
+    /**
+     * Handles requests for getting the average rating of a water fountain.
+     * @param req request which maps "fountain" to the fountain id
+     * @return GSON which maps "rating" to the average fountain rating,
+     *         "building" to building name, and "room" to the nearest room
+     */
     @Override
     public String handle(Request req, Response res) throws JSONException {
       JSONObject obj = new JSONObject(req.body());
-      String tableName = obj.getString("table");
+      int fountainID = obj.getInt("fountain");
 
-      String json = "";
-      try {
-        json = Api.this.db.getBuildingsFountain();
-      } catch (SQLException e) {
-        e.printStackTrace();
-      }
-      return json;
+      BuildingCommands buildingCommands = new BuildingCommands(Api.this.db);
+      Fountain currFountain = buildingCommands.idToFountain(fountainID);
+      JSONObject json = new JSONObject();
+
+      Gson gson = new Gson();
+      json.put("rating", currFountain.getAverageRating());
+      json.put("building", currFountain.getBuildingName());
+      json.put("room", currFountain.getNearestRoom());
+      return gson.toJson(json);
     }
   }
-
 }

@@ -18,7 +18,6 @@ function createUserInDatabase(id, name, email, key) {
     })
         .then((response) => response.json())
         .then((data) => { })
-        // .then((data: tableInfo) => updateTable(data))
         .catch((error) => console.error("Error:", error))
 }
 

@@ -227,6 +227,13 @@ Contact Page
 .contact-input[type="text"] {
   font-size: 18px;
   text-indent: 15px;
+  font-family: "Playfair Display";
+}
+
+.contact-input[type="email"] {
+  font-size: 18px;
+  text-indent: 15px;
+  font-family: "Playfair Display";
 }
 
 .contact-input {
@@ -303,6 +310,12 @@ Contact Page
   font-size: 40px;
 }
 
+.about-sub-title {
+  color: #5393C6;
+  font-weight: bold;
+  font-size: 25px;
+}
+
 .about-middle-text {
   font-size: 20px;
   max-width: 60%;
@@ -322,6 +335,14 @@ Contact Page
   margin-right: auto;
   margin-bottom: 50px;
   margin-top: -20px;
+}
+
+.about-diagram-left {
+  width: 50%;
+}
+
+.about-diagram-right {
+  width: 50%;
 }
 
 .about-drop-logo {
@@ -774,9 +795,8 @@ Contact Page
 }
 
 .building-name {
-  display: flex;
-  justify-content: left;
-  margin-left: 10%;
+  margin-left: 50px;
+  margin-top: 0px;
   font-size: 25px;
   font-weight: bold;
   font-family: 'Playfair Display';
@@ -786,32 +806,124 @@ Contact Page
 .review-image {
   width: 10%;
   height: 10%;
-  margin-left: 5%;
-  margin-top: -5px;
-  margin-bottom: 20px;
-  margin-right: 20px;
 }
 
-.author-box {
-  margin-left: 5%;
+.reviews-view {
+  overflow-y: auto;
+  max-height: 285px;
+  margin-right: 10px;
+  margin-top: 10px;
+  min-height: 0px;
+}
+
+.controls-buttons {
+  display: flex;
+  flex-direction: column;
+}
+
+.controls-button {
+  display: flex;
+  flex-direction: row;
+  margin-top: 20px;
+  color: #5393C6;
+  font-size: 18px;
+  font-weight: bold;
+  font-family: 'Playfair Display';
+  font-style: normal;
+  align-items: center;
+  text-align: left;
+  height: 50px;
+  line-height: 50px;
+  cursor: pointer;
+}
+
+.cannot-find-fountains {
+  font-size: 18px;
+  font-weight: bold;
+  font-family: 'Playfair Display';
+  font-style: normal;
+  margin-bottom: 5px;
+}
+
+.recommendations-button {
+  border: none;
+  color: #5393C6;
+  font-size: 16px;
+  font-weight: bold;
+  font-family: 'Playfair Display';
+  font-style: normal;
+  text-align: center;
+  text-align: left;
+  height: 30px;
+  cursor: pointer;
+  margin-top: 0px;
+}
+
+.review-view {
+  height: auto;
+  width: 100%;
   display: flex;
   flex-direction: row;
 }
 
+.review-view-image {
+  height: 45px;
+  width: 45px;
+  /* margin-left: 20px; */
+}
+
+.review-view-name {
+  font-family: "Playfair Display";
+  color: #5393C6;
+  font-weight: bold;
+  font-size: 16px;
+  margin-top: 5px;
+}
+
+.review-author-info {
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+}
+
+.review-view-stars {
+  margin-top: -15px;
+}
+
+.review-view-text {
+  margin-top: 0px;
+}
+
+.author-box {
+  margin-left: 50px;
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 10px;
+}
+
 .review-box {
-  width: 80%;
+  width: 85%;
   height: 40%;
-  left: 506px;
-  top: 441px;
+  /* left: 506px; */
+  /* top: 441px; */
+  margin-top: 10px;
+  margin-left: 50px;
   background: #FFFFFF;
   border: 1px solid #5393C6;
   box-sizing: border-box;
   border-radius: 20px;
   margin-bottom: 20px;
   padding-right: 20px;
-  margin-left: auto;
-  margin-right: auto;
   resize: none;
+}
+
+.review-box:focus {
+  outline: none;
+}
+
+.star-rating-view {
+  /* height: 5 */
+  margin-top: -10px;
 }
 
 .review-box[type="text"] {
@@ -849,24 +961,27 @@ Contact Page
   width: 17%;
   height: 40px;
   cursor: pointer;
+  margin-right: -20px;
 }
 
 .stars {
   display: flex;
-  flex-flow: column wrap;
-  align-content: flex-start;
-  justify-content: left;
-  width: 50%;
+  flex-flow: column;
+  width: 80%;
   margin-top: -15px;
+  margin-left: 20px;
 }
 
 .author {
   color: #5393C6;
-  margin-left: 2%;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: bold;
   font-family: 'Playfair Display';
   font-style: normal;
+}
+
+.star-rating {
+  margin-top: -15px
 }
 
 .user-image-buttons {
@@ -901,28 +1016,125 @@ input[type='file'] {
   color: transparent;
 }
 
+.recommendations-data {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.recommendations-data-title {
+  font-size: 22px;
+  color: #5393C6;
+  font-weight: bold;
+  margin-top: 0px
+}
+
+.recommendations-data-info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: -20px;
+  margin-bottom: 15px;
+  cursor: pointer;
+}
+
+.recommendations-data-pin {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+  object-fit: contain;
+  /* height: 30px; */
+}
+
+.recommendations-data-building {
+  font-size: 18px;
+  color: #5393C6;
+  font-weight: bold;
+}
+
+.recommendations-data-room {
+  font-size: 16px;
+  color: black;
+  font-weight: bold;
+  margin-top: -20px;
+}
+
+.recommendations-data-stars {
+  margin-top: -15px;
+}
+
+.no-fountains-text {
+  text-align: left;
+  justify-content: left;
+  align-items: flex-start;
+}
+
+.no-fountains-text {
+  font-size: 20px;
+  color: #5393C6;
+  font-weight: bold;
+  font-family: "Playfair Display";
+  width: 90%;
+}
+
+.no-fountains-search {
+  background-color: #5393C6;
+  color: white;
+  font-size: 16px;
+  padding: 8px;
+  border-radius: 100px;
+  width: 50%;
+  font-weight: bold;
+  border: none;
+  /* align-self: left; */
+  cursor: pointer;
+}
+
+.hide {
+  display: none;
+  color: blue;
+  z-index: 10000;
+  position: relative;
+  background-color: red;
+  width: 200px;
+  margin-bottom: 50px
+}
+
+.myDIV:hover + .hide {
+  display: block;
+}
+
+
 /*Map*/
 
 .map-container {
-  width: 100%;
+  width: 85%;
   height: 100%;
+  margin-left: auto;
+  margin-right: auto;
   display: flex;
-  ;
+  position: relative;
   flex-flow: column wrap;
   align-content: flex-end;
 }
 
-.controls {
+.map-leftSide {
+  display: flex;
+  flex-direction: column;
   width: 30%;
-  height:100%;
-  /* display: flex;
-  flex-flow: column wrap; */
-  /* background-color: green; */
+  height: 90%;
+}
+
+.controls {
+  height: 100%;
+  justify-content: left;
+  overflow-y: auto;
 }
 
 #google-map {
-  height: 100%;
+  height: 90%;
   width: 70%;
+  border: 3px solid #5393C6;
 }
 
 .editSchedulePopUpView {
@@ -946,7 +1158,20 @@ input[type='file'] {
   background: #FFFFFF;
   border: 3px solid #5393C6;
   border-radius: 30px;
-  padding-top: 30px
+  padding-top: 30px;
+}
+
+.mapPopUp {
+  width: 45%;
+  height: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #FFFFFF;
+  border: 3px solid #5393C6;
+  border-radius: 30px;
+  padding-top: 30px;
 }
 
 .schedulePopUpLeft {
@@ -963,16 +1188,26 @@ input[type='file'] {
   display: flex;
   flex-direction: row;
   width: 100%;
-  background-color: red;
 }
 
 .schedulePopUpHeaderText {
   font-size: 20px;
   font-family: "Playfair Display";
+  color: #5393C6;
   font-weight: bold;
   margin-top: -5px;
   width: 100%;
   text-align: center;
+}
+
+.schedulePopUpHeaderTime {
+  font-size: 16px;
+  font-family: "Playfair Display";
+  font-weight: bold;
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  margin-top: -15px;
 }
 
 .schedulePopUpDropdown {
@@ -997,7 +1232,7 @@ input[type='file'] {
   width: 100%;
   height: 100px;
   position: absolute;
-  bottom: 0;
+  bottom: -20px;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -1026,13 +1261,55 @@ input[type='file'] {
   right: 15px;
 }
 
-.search-box{
-  padding-top: 2px;
+.search-close {
+  cursor: pointer;
+  align-self: center;
+}
+
+.building-close {
+  cursor: pointer;
+  align-self: center;
+  margin-right: 5px;
+}
+
+.search-box {
+  /* padding-top: 2px; */
+  height: 40px;
+  line-height: 40px;
+  cursor: pointer;
+  /* width: 20%; */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.search-input {
+  font-family: 'Playfair Display';
+  font-size: 16px;
+  font-weight: bold;
   cursor: pointer;
 }
 
-.search-input{
-  font-family: 'Playfair Display';
+.building-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  align-items: left;
+  text-align: left;
+  margin-left: 20px;
+}
+
+.map-review-button {
+  height: 35px;
+  background-color: #5393C6;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  border-radius: 50px;
+  width: 50%;
+  margin-top: 20px;
+  border: none;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .selected-bldg {
@@ -1040,9 +1317,38 @@ input[type='file'] {
   font-size: 30px;
   color: #5393C6;
   font-family: 'Playfair Display';
+  margin-bottom: 20px;
+}
+
+.map-dropdown {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  background-color: white;
+  height: 35px;
+  padding: 8px 16px;
 }
 
 #map-search {
-  width: 70%;
+  /* width: 20%; */
   padding-bottom: 3px;
+}
+
+.popup {
+  z-index: 9;
+}
+
+.map-searchBar {
+  border: 1px solid #5393C6;
+  height: 35px;
+  width: 80%;
+  border-radius: 20px;
+  font-size: 16px;
+  padding-left: 15px;
+  margin-left: 10px;
+  font-family: "Playfair Display";
+}
+
+.map-searchBar:focus {
+  outline: none;
+  position: relative;
 }

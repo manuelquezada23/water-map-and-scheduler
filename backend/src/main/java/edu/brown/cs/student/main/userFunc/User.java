@@ -4,16 +4,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class User {
-  private int userid;
+  private final String userid;
   private String email;
   private String key;
   private String name;
   private List<Event> events;
-  private double waterBottleSize;
 
-  public User(int userid) {
+  public User(String userid) {
     this.userid = userid;
-    this.events = new ArrayList<Event>();
+    this.events = new ArrayList<>();
+  }
+
+  public String checkEvent(){
+    for (Event event: this.events) {
+      System.out.println("event: "+event);
+    }
+    for (Event event : this.events) {
+      System.out.println(event.getBuilding());
+      if (event.isHappening()) {
+        return event.getBuilding();
+      }
+    }
+    return null;
   }
 
   public String getEmail() {
@@ -32,15 +44,7 @@ public class User {
     this.key = key;
   }
 
-  public double getWaterBottleSize() {
-    return this.waterBottleSize;
-  }
-
-  public void setWaterBottleSize(double waterBottleSize) {
-    this.waterBottleSize = waterBottleSize;
-  }
-
-  public int getUserid() {
+  public String getUserid() {
     return this.userid;
   }
 

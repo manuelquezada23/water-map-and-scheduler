@@ -1,11 +1,21 @@
 edu/brown/cs/student/main/buildings/Review.class
+edu/brown/cs/student/main/Api$getNearestFountainLocationHandler.class
 edu/brown/cs/student/main/Api.class
 edu/brown/cs/student/main/database/Database.class
+<<<<<<< HEAD
+edu/brown/cs/student/main/userFunc/UserCommands.class
+edu/brown/cs/student/main/Api$getAverageRatingHandler.class
+=======
 edu/brown/cs/student/main/Api$getBuildingsFountainHandler.class
 edu/brown/cs/student/main/Api$getReviewsHandler.class
+>>>>>>> master
 edu/brown/cs/student/main/buildings/Fountain.class
 edu/brown/cs/student/main/buildings/BuildingCommands.class
+edu/brown/cs/student/main/Api$getNearestFountainScheduleHandler.class
 edu/brown/cs/student/main/buildings/Building.class
 edu/brown/cs/student/main/userFunc/Event.class
+<<<<<<< HEAD
+=======
 edu/brown/cs/student/main/userFunc/userCommands.class
 edu/brown/cs/student/main/Api$getUsersHandler.class
+>>>>>>> master

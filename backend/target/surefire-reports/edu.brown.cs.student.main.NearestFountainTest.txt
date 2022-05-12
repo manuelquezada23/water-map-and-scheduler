@@ -1,4 +1,16 @@
 -------------------------------------------------------------------------------
 Test set: edu.brown.cs.student.main.NearestFountainTest
 -------------------------------------------------------------------------------
+<<<<<<< HEAD
+<<<<<<< HEAD
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.431 s - in edu.brown.cs.student.main.NearestFountainTest
+=======
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.804 s <<< FAILURE! - in edu.brown.cs.student.main.NearestFountainTest
+edu.brown.cs.student.main.NearestFountainTest.TestNearestFountain  Time elapsed: 0.73 s  <<< ERROR!
+java.lang.NullPointerException: Cannot invoke "edu.brown.cs.student.main.buildings.Fountain.getBuildingName()" because the return value of "java.util.List.get(int)" is null
+	at edu.brown.cs.student.main.NearestFountainTest.TestNearestFountain(NearestFountainTest.java:25)
+
+>>>>>>> maya
+=======
 Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.65 s - in edu.brown.cs.student.main.NearestFountainTest
+>>>>>>> master

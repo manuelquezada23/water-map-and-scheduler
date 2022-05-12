@@ -27,6 +27,7 @@ function NavigationBar() {
   const [isLoggedIn, setLoggedIn] = useState(false)
   const [userEmail, setUserEmail] = useState('')
   const [userDisplayName, setUserDisplayName] = useState('')
+  const [wait, finishAwait] = useState(false)
 
   useEffect(() => {
     const auth = getAuth();
@@ -37,9 +38,11 @@ function NavigationBar() {
         setLoggedIn(true)
         setUserEmail(user.email)
         setUserDisplayName(user.displayName)
+        finishAwait(true)
       } else {
         // User is signed out
         setLoggedIn(false)
+        finishAwait(true)
       }
     });
 
@@ -106,6 +109,9 @@ function NavigationBar() {
 
   return (
     <div className="navigationBar">
+      {!wait &&
+        <div></div>
+      }
       <img id="navigationBar-logo" src={logo} alt="logo"></img>
       <div className="navigationBar-mainPageButtons">
         <button className="navigationBar-button" id="home-button" onClick={() => { navBarButtonOnClick("home-button") }}>Home</button>
@@ -113,7 +119,7 @@ function NavigationBar() {
         <button className="navigationBar-button" id="map-button" onClick={() => { navBarButtonOnClick("map-button") }}>Map</button>
         <button className="navigationBar-button" id="contact-button" onClick={() => { navBarButtonOnClick("contact-button") }}>Contact</button>
       </div>
-      {(isLoggedIn === true) &&
+      {(isLoggedIn === true && wait === true) &&
         <div className="navigationBar-userButtons">
           <p className="navigationBar-profile-name" onClick={handleClick}>{userDisplayName}</p>
           <Menu
@@ -172,13 +178,14 @@ function NavigationBar() {
           </Menu>
         </div>
       }
-      {(isLoggedIn === false) &&
+      {(isLoggedIn === false && wait === true) &&
         <div className="navigationBar-userButtons">
           <button className="navigationBar-button" id="signup-button" onClick={() => { navBarButtonOnClick("signup-button") }}>Sign Up</button>
           <button className="navigationBar-button" id="login-button" onClick={() => { navBarButtonOnClick("login-button") }}>Log In</button>
         </div>
       }
     </div>
+
   );
 }
 

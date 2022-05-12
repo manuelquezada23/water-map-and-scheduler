@@ -1,5 +1,4 @@
 package edu.brown.cs.student.main.buildings;
-
 import java.util.ArrayList;
 import java.util.List;
 
