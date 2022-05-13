@@ -18,14 +18,16 @@ function Map() {
   const [isLoggedIn, setLogIn] = useState(false)
   const [wait, finishAwait] = useState(false)
 
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      setLogIn(true)
-      finishAwait(true)
-    } else {
-      finishAwait(true)
-    }
-  });
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setLogIn(true)
+        finishAwait(true)
+      } else {
+        finishAwait(true)
+      }
+    });
+  })
 
   const navigate = useNavigate()
 
@@ -87,7 +89,7 @@ function MapPanel() {
 
   var icon = {
     url: MapPin2,
-    scaledSize: { height: 40, width: 25}, // scaled size
+    scaledSize: { height: 40, width: 25 }, // scaled size
   };
 
   //search or schedule
@@ -184,7 +186,7 @@ function MapPanel() {
     setRecs(false)
     fetch('http://localhost:4567/get-fountains-location', {
       method: 'POST',
-      body: JSON.stringify({building: currentBldg.BuildingName}),
+      body: JSON.stringify({ building: currentBldg.BuildingName }),
       headers: {
         "Access-Control-Allow-Origin": "*"
       },
@@ -237,7 +239,7 @@ function MapPanel() {
     return _recs
   }
 
-  function loadReview(fntId){
+  function loadReview(fntId) {
     setFnt(fntId) //fountain id
     setFntSelected(true)
   }
@@ -316,11 +318,11 @@ function MapPanel() {
                   </div>
                   {recs.map((rec) => (
                     <div onClick={() => {
-                      buildingData.filter((bldgFromData)=>{
+                      buildingData.filter((bldgFromData) => {
                         if (bldgFromData.BuildingName === rec.building) {
                           toBuilding(bldgFromData)
                           return bldgFromData
-                        } 
+                        }
                       })
                       loadReview(rec.fntID) //loads the reviews
                     }}>
@@ -364,7 +366,7 @@ function MapPanel() {
                 }
               }).map((bldg) => (
                 <div key={bldg.PropertyCode}> {/*they key of selected building */}
-                  <select id="map-dropdown" className="map-dropdown" value={currentFnt} onChange={(e)=>loadReview(e.target.value)}>
+                  <select id="map-dropdown" className="map-dropdown" value={currentFnt} onChange={(e) => loadReview(e.target.value)}>
                     <option>Choose an option by nearest room:</option>
                     {fountainData.filter(fnt => {
                       if (fnt.BuildingName === currentBldg.BuildingName) {

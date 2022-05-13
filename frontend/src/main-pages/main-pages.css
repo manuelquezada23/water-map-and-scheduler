@@ -1090,21 +1090,6 @@ input[type='file'] {
   cursor: pointer;
 }
 
-.hide {
-  display: none;
-  color: blue;
-  z-index: 10000;
-  position: relative;
-  background-color: red;
-  width: 200px;
-  margin-bottom: 50px
-}
-
-.myDIV:hover+.hide {
-  display: block;
-}
-
-
 /*Map*/
 
 .map-container {
@@ -1240,15 +1225,7 @@ input[type='file'] {
 }
 
 .pop-up-location {
-  color: red;
-  text-overflow: ellipsis
-  /* overflow: hidden;
-  text-overflow: ellipsis;
-  line-height: 5px;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
-  -webkit-box-orient: vertical; */
+  
 }
 
 .schedulePopUpButton {
