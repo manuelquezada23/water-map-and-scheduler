@@ -200,17 +200,18 @@ function MapPanel() {
 
   function findRecommendationSched() {
     setRecs(false)
+    console.log(user.uid)
     fetch('http://localhost:4567/get-fountains-schedule', {
       method: 'POST',
       body: JSON.stringify({ user: user.uid }),
       headers: {
         "Access-Control-Allow-Origin": "*"
       },
-    }).then((response) => response.json())
-      .then((data) => {
+    }).then((response) => response.json()).then((data) => {
+        console.log(data)
         setRecs(processRecs(data))
       }).catch((data) => {
-        "response data should be 'failed'"
+        // "response data should be 'failed'"
         console.log("info not available" + data);
       })
   }

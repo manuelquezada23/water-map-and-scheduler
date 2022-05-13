@@ -5,7 +5,7 @@ const creds = require('./config');
 const nodemailer = require('nodemailer');
 const { getMaxListeners } = require('process');
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 4000;
 
 //middleware
 app.use(express.static('public'));

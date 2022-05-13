@@ -7,7 +7,34 @@ function Contact() {
     const [message, setMessage] = useState("");
     const [success, setSuccess] = useState(false)
 
-    const redirectToPage = () => setSuccess(true) ;  
+    const redirectToPage = () => setSuccess(true);
+
+    function handleContact(n, e, m) {
+        axios({
+            method: 'post',
+            url: '/send',
+            data: {
+                name: n,
+                email: e,
+                message: m
+            },
+            // headers: { "Content-Type": "multipart/form-data" },
+        })
+            .then(function (response) {
+                for (const el of document.getElementById('contact-form').querySelectorAll("[required]")) {
+                    el.value = ""
+                }
+                alert("Email sent!")
+                setEmail('')
+                setName('')
+                setMessage('')
+            })
+            .catch(function (error) {
+                console.log(error);
+                alert("Oops, you dropped something")
+            });
+    }
+
     return (
         <div className="main-page-body">
             <p className="login-header">Have questions?</p>
@@ -34,31 +61,6 @@ function Contact() {
             </form>
         </div>
     );
-}
-
-function handleContact(n, e, m) {
-    axios({
-        method: 'post',
-        url: '/send',
-        data: {
-            name: n,
-            email: e,
-            message: m
-        },
-        // headers: { "Content-Type": "multipart/form-data" },
-    })
-    .then(function (response) {
-        console.log(response);
-        console.log("hello yes")
-        for (const el of document.getElementById('contact-form').querySelectorAll("[required]")) {
-                el.value = ""
-        }
-        alert("Email sent!")
-    })
-    .catch(function (error) {
-        console.log(error);
-        alert("Oops, you dropped something")
-    });
 }
 
 export default Contact;
