@@ -176,7 +176,6 @@ function MapPanel() {
     }).then(() => {
       let new_review_data = reviewData.slice();
       new_review_data.push({ FountainID: currentFnt, Rating: (rating / 20), Review: review, UserID: user.uid })
-      console.log(new_review_data)
       setReviewData(new_review_data)
       setWaitForReview(true)
     })
@@ -380,10 +379,8 @@ function MapPanel() {
               ))}
               {(toggleFntSelected) &&
                 <div>
-                  {console.log(toggleFntSelected)}
                   {waitForReview &&
                     <div className="reviews-view">
-                      {console.log(reviewData)}
                       {reviewData.filter(review => {
                         if (review.FountainID === parseFloat(currentFnt)) {
                           return review
