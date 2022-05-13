@@ -131,6 +131,19 @@ We will organise our code into packages based on frontend and backend:
 * `backend` package
   * NOT DONE YET
 
+* `backend` package: This will manage the databases and the APIs. 
+  * `Main.java`
+    * In main ./run –gui can be run to run the code and instantiate the API to enable connection with the front.
+  * `Api.java`
+     * Contains the APIs. We have `/get-sql-rs`, `/get-fountains-schedule`, `/get-fountains-location`, and `/get-average-rating`. These return the contents of a result set for a given SQL command, 3 recommended fountains based on the user’s schedule, 3 recommended fountains based on the user’s current location, and the average rating of a given water fountain, respectively.
+  * `buildings` package
+     * Handles everything relating to buildings, fountains, and reviews. BuildingCommands reads in the data on buildings, fountains, and reviews from the database and constructs a list of Building objects. Each Building contains a list of Fountain objects, and each Fountain has a list of Review objects. Also, the NearestFountain class is used to calculate the fountain recommendations. It uses the FountainComparator class and a PriorityQueue. The FountainComparator uses Euclidean distance but if two fountains are within a small radius of each other, the fountain with the higher average rating is chosen.
+  * `database` package
+     * Contains the Database class, which initializes the connection to the local SQLite database and contains a method to execute SQL commands on the database.
+  * `userFunc` package
+     * Handles everything relating to users and events. UserCommands reads in the user data from the database and constructs a list of user objects. Each User object has a list of Event objects to represent the events in their schedule.
+
+
 ### 3.4 Functional Requirements 
 **3.4.1 API and Database connections****
 * Google Maps API
