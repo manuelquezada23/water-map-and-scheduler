@@ -128,9 +128,6 @@ We will organise our code into packages based on frontend and backend:
     * Firebase is used for user authentication.
   * `Main.js`
     * Sets up the React Router paths for all of our components. Specifically, it uses React.Routes and React.Route.
-* `backend` package
-  * NOT DONE YET
-
 * `backend` package: This will manage the databases and the APIs. 
   * `Main.java`
     * In main ./run –gui can be run to run the code and instantiate the API to enable connection with the front.
