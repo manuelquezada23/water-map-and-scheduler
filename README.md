@@ -102,9 +102,9 @@ None
 ### 3.3 System Features 
 Instructions for using the GUI:
 * To run the website open 3 terminals:
-  * In the first, cd into backend and run mvn package && ./run –gui
-  * In the second, cd into frontend and run node server.js
-  * In the third, cd into frontend and run npm start 
+  * In the first, `cd` into `backend` and run `mvn package && ./run –gui`
+  * In the second, `cd` into `frontend` and run `node server.js`
+  * In the third, `cd` into frontend and run `npm start`
 * This should run the website.
   * Once on the website, there will be a navigation bar with different pages.  Home, About, Map, Contact and Sign up and Log in.
   * To use the page, a user needs to make a profile.
