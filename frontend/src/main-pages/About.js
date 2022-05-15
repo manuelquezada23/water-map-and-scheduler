@@ -34,7 +34,7 @@ function About() {
       <p className="about-middle-text">
         This website was built as the final project for Brown University's Intro to Software Engineering (CSCI 0320) course.
         We are a group of Brown undergraduates passionate about providing other students and the general public with access
-        to water. If you have any comments or questions, feel free to <span style={{ color: "#5393C6", fontWeight: "bold", cursor: "pointer" }} onClick={() => { navigate('/contact') }}>contact us</span>!
+        to water. Our code is open source and can be found <a style={{ color: "#5393C6", fontWeight: "bold", cursor: "pointer" }} href="https://github.com/cs0320-s2022/term-project-cpelling-ehinds3-mfleisc1-mquezad1">here</a>. If you have any comments or questions, feel free to <span style={{ color: "#5393C6", fontWeight: "bold", cursor: "pointer" }} onClick={() => { navigate('/contact') }}>contact us</span>!
       </p>
     </div>
   );
