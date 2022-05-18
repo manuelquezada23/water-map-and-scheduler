@@ -205,8 +205,8 @@ function Schedule() {
         const daysMap = new Map();
         daysMap.set("Sunday", 17)
         daysMap.set("Monday", 135.5)
-        daysMap.set("Tuesday", 254)
-        daysMap.set("Wednesday", 372.5)
+        daysMap.set("Tuesday", 252)
+        daysMap.set("Wednesday", 375)
         daysMap.set("Thursday", 491)
         daysMap.set("Friday", 609.5)
         daysMap.set("Saturday", 728)
@@ -220,7 +220,7 @@ function Schedule() {
                 height: heightOfEvent + "px",
                 lineHeight: heightOfEvent + "px",
                 overflow: "hidden",
-                maxWidth: "100px",
+                minWidth: "100px",
                 background: "#FFFFFF",
                 border: "2px solid #5393C6",
                 borderRadius: "10px",
